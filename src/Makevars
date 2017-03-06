@@ -1,3 +1,6 @@
+PKG_CXXFLAGS=-I. -Iinclude
+PKG_LIBS=-Llib -larchive -lnettle
+
 .PHONY: all libarchive clean
 
 all: $(OBJECTS) $(SHLIB)
@@ -6,11 +9,12 @@ $(SHLIB): libarchive
 
 libarchive-3.3.1/Makefile:
 	(cd libarchive-3.3.1 && \
-configure --enable-shared=no --enable-static=yes)
+configure --enable-shared=no --enable-static=yes --prefix=$(PWD))
 
 libarchive: libarchive-3.3.1/Makefile
 	(cd libarchive-3.3.1 && \
-make PREFIX="../" CC="$(CC)" CXX="$(CXX)" AR="$(AR)" ARFLAGS=$(ARFLAGS) libarchive.la)
+make CC="$(CC)" AR="$(AR)" ARFLAGS=$(ARFLAGS) && \
+make install)
 
 clean:
 	(cd libarchive-3.3.1 make clean)

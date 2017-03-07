@@ -1,21 +1,30 @@
 PKG_CXXFLAGS=-I. -Iinclude
-PKG_LIBS=-Llib -larchive -lnettle
+PKG_LIBS=-Llib -larchive -lnettle -lxml2
 
 .PHONY: all libarchive clean
 
 all: $(OBJECTS) $(SHLIB)
 
-$(SHLIB): libarchive
+$(OBJECTS): libarchive
 
 libarchive-3.3.1/Makefile:
 	(cd libarchive-3.3.1 && \
-configure --enable-shared=no --enable-static=yes --prefix=$(PWD))
+configure \
+--enable-shared=no \
+--enable-static=yes \
+--prefix=$(PWD) \
+--disable-bsdtar \
+--disable-bsdcat \
+--disable-bsdcpio \
+--disable-mainter-mode)
 
 libarchive: libarchive-3.3.1/Makefile
 	(cd libarchive-3.3.1 && \
-make CC="$(CC)" AR="$(AR)" ARFLAGS=$(ARFLAGS) && \
-make install)
+make CC="$(CC)" AR="$(AR)" ARFLAGS=$(ARFLAGS) libarchive.la && \
+make install-includeHEADERS install-libLTLIBRARIES)
 
 clean:
-	(cd libarchive-3.3.1 make clean)
 	rm -f $(OBJECTS) $(SHLIB)
+	rm -rf include lib
+	(cd libarchive-3.3.1 && \
+make distclean)

@@ -6,14 +6,26 @@
 using namespace Rcpp;
 
 // read_connection
-SEXP read_connection(const std::string filename, size_t sz);
-RcppExport SEXP archive_read_connection(SEXP filenameSEXP, SEXP szSEXP) {
+SEXP read_connection(const std::string& path, const std::string& filename, size_t sz);
+RcppExport SEXP archive_read_connection(SEXP pathSEXP, SEXP filenameSEXP, SEXP szSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type path(pathSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type filename(filenameSEXP);
     Rcpp::traits::input_parameter< size_t >::type sz(szSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_connection(filename, sz));
+    rcpp_result_gen = Rcpp::wrap(read_connection(path, filename, sz));
+    return rcpp_result_gen;
+END_RCPP
+}
+// archive_metadata
+Rcpp::List archive_metadata(const std::string& path);
+RcppExport SEXP archive_archive_metadata(SEXP pathSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type path(pathSEXP);
+    rcpp_result_gen = Rcpp::wrap(archive_metadata(path));
     return rcpp_result_gen;
 END_RCPP
 }

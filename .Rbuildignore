@@ -1,2 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^src/lib$
+^src/include$
+^script\.R$

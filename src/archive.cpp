@@ -29,6 +29,7 @@ Rconnection get_connection(SEXP con) {
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
 typedef struct {
+  char* path;
   char* filename;
   char* buf;
   char* cur;
@@ -71,22 +72,28 @@ void copy_data(rchive *r) {
 static Rboolean rchive_open(Rconnection con) {
   rchive *r = (rchive *) con->private_ptr;
 
-  if ((r->last_response = archive_read_open_filename(r->ar, r->filename, 10240)) != ARCHIVE_OK) {
+  if ((r->last_response = archive_read_open_filename(r->ar, r->path, 10240)) != ARCHIVE_OK) {
     Rcpp::stop(archive_error_string(r->ar));
   }
   if ((r->last_response = archive_read_next_header(r->ar, &r->entry)) != ARCHIVE_OK) {
     Rcpp::stop(archive_error_string(r->ar));
   }
-  r->size = archive_entry_size(r->entry);
-  if (r->size <= 0) {
-    Rcpp::stop("empty entry");
-  }
-  r->cur = r->buf;
-  r->has_more = 1;
-  con->isopen = TRUE;
-  copy_data(r);
 
-  return TRUE;
+  /* Find entry to extract */
+  while (archive_read_next_header(r->ar, &r->entry) == ARCHIVE_OK) {
+    const char * str = archive_entry_pathname(r->entry);
+    if (strcmp(r->filename, str) == 0) {
+      r->size = archive_entry_size(r->entry);
+      r->cur = r->buf;
+      r->has_more = 1;
+      con->isopen = TRUE;
+      copy_data(r);
+      return TRUE;
+    }
+    archive_read_data_skip(r->ar);
+  }
+  Rcpp::stop("'%s' not found in archive", r->filename);
+  return FALSE;
 }
 
 void rchive_close(Rconnection con) {
@@ -102,6 +109,7 @@ void rchive_destroy(Rconnection con) {
   /* free the handle connection */
   archive_read_free(r->ar);
   free(r->buf);
+  free(r->path);
   free(r->filename);
   free(r);
 }
@@ -122,14 +130,17 @@ static size_t rchive_read(void *target, size_t sz, size_t ni, Rconnection con) {
 }
 
 // [[Rcpp::export]]
-SEXP read_connection(const std::string filename, size_t sz = 16384) {
+SEXP read_connection(const std::string & path, const std::string & filename, size_t sz = 16384) {
   Rconnection con;
-  SEXP rc = PROTECT(R_new_custom_connection(filename.c_str(), "r", "archive", &con));
+  SEXP rc = PROTECT(R_new_custom_connection(std::string(path + '[' + filename + ']').c_str(), "r", "archive", &con));
 
   /* Setup archive */
   rchive *r = (rchive *) malloc(sizeof(rchive));
   r->limit = sz;
   r->buf = (char *) malloc(r->limit);
+
+  r->path = (char *) malloc(strlen(path.c_str()) + 1);
+  strcpy(r->path, path.c_str());
 
   r->filename = (char *) malloc(strlen(filename.c_str()) + 1);
   strcpy(r->filename, filename.c_str());
@@ -155,3 +166,46 @@ SEXP read_connection(const std::string filename, size_t sz = 16384) {
   UNPROTECT(1);
   return rc;
 }
+
+// [[Rcpp::export]]
+Rcpp::List archive_metadata(const std::string & path) {
+  std::vector<std::string> paths;
+  std::vector<la_int64_t> sizes;
+  std::vector<time_t> dates;
+
+  struct archive *a;
+  struct archive_entry *entry;
+  int r;
+
+  a = archive_read_new();
+  archive_read_support_filter_all(a);
+  archive_read_support_format_all(a);
+  r = archive_read_open_filename(a, path.c_str(), 10240);
+  if (r != ARCHIVE_OK) {
+      Rcpp::stop(archive_error_string(a));
+  }
+  while (archive_read_next_header(a, &entry) == ARCHIVE_OK) {
+    paths.push_back(archive_entry_pathname(entry));
+    sizes.push_back(archive_entry_size(entry));
+    dates.push_back(archive_entry_mtime(entry));
+    archive_read_data_skip(a);
+  }
+  r = archive_read_free(a);
+  if (r != ARCHIVE_OK) {
+    Rcpp::stop(archive_error_string(a));
+  }
+
+  static Rcpp::Function as_tibble("as_tibble", Rcpp::Environment::namespace_env("tibble"));
+  Rcpp::NumericVector d = Rcpp::wrap(dates);
+  d.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+
+  Rcpp::List out = as_tibble(Rcpp::List::create(
+      Rcpp::_["path"] = paths,
+      Rcpp::_["size"] = sizes,
+      Rcpp::_["date"] = d));
+
+  out.attr("path") = path;
+
+  return out;
+}
+

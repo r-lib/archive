@@ -1,11 +1,12 @@
 Package: archive
-Title: Comprehensive support for file archives, including tar, ZIP, 7-zip, RAR,
-CAB including those compressed by gzip, bzip2, compress, lzma, xz, and others.
+Title: R bindings to libarchive <http://www.libarchive.org>, which provides
+  support for many file archives, including tar, ZIP, 7-zip, RAR, CAB including
+  those compressed by gzip, bzip2, compress, lzma, xz, and others.
 Version: 0.0.0.9000
 Authors@R: person("Jim", "Hester", email = "james.f.hester@gmail.com", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
 Depends: R (>= 3.3.2)
-Imports: Imports: Rcpp
+Imports: Rcpp
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

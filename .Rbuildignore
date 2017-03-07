@@ -3,3 +3,4 @@
 ^src/lib$
 ^src/include$
 ^script\.R$
+^\.travis\.yml$

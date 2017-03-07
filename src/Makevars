@@ -9,14 +9,14 @@ $(OBJECTS): libarchive
 
 libarchive-3.3.1/Makefile:
 	(cd libarchive-3.3.1 && \
-configure \
+./configure \
 --enable-shared=no \
 --enable-static=yes \
 --prefix=$(PWD) \
 --disable-bsdtar \
 --disable-bsdcat \
 --disable-bsdcpio \
---disable-mainter-mode)
+--disable-maintainer-mode)
 
 libarchive: libarchive-3.3.1/Makefile
 	(cd libarchive-3.3.1 && \

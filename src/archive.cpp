@@ -48,6 +48,26 @@ static size_t pop(void *target, size_t max, rchive *r){
   return copy_size;
 }
 
+void copy_data(rchive *r) {
+  R_CheckUserInterrupt();
+  la_int64_t offset;
+  if(r->last_response != ARCHIVE_EOF) {
+
+    /* move existing data to front of buffer (if any) */
+    memcpy(r->buf, r->cur, r->size);
+
+    r->last_response = archive_read_data_block(r->ar, (const void **) &r->buf, &r->size, &offset);
+    if (r->last_response == ARCHIVE_EOF) {
+      r->has_more = 0;
+      return;
+    }
+    if (r->last_response != ARCHIVE_OK) {
+      Rcpp::stop(archive_error_string(r->ar));
+    }
+    r->cur = r->buf;
+  }
+}
+
 static Rboolean rchive_open(Rconnection con) {
   rchive *r = (rchive *) con->private_ptr;
 
@@ -57,13 +77,14 @@ static Rboolean rchive_open(Rconnection con) {
   if ((r->last_response = archive_read_next_header(r->ar, &r->entry)) != ARCHIVE_OK) {
     Rcpp::stop(archive_error_string(r->ar));
   }
-  size_t entries = archive_entry_size(r->entry);
-  if (entries <= 0) {
+  r->size = archive_entry_size(r->entry);
+  if (r->size <= 0) {
     Rcpp::stop("empty entry");
   }
-  r->size = 0;
+  r->cur = r->buf;
   r->has_more = 1;
   con->isopen = TRUE;
+  copy_data(r);
 
   return TRUE;
 }
@@ -83,22 +104,6 @@ void rchive_destroy(Rconnection con) {
   free(r->buf);
   free(r->filename);
   free(r);
-}
-
-void copy_data(rchive *r) {
-  R_CheckUserInterrupt();
-  size_t size;
-  la_int64_t offset;
-  while(r->last_response != ARCHIVE_EOF) {
-    r->last_response = archive_read_data_block(r->ar, (const void **) &r->buf, &size, &offset);
-    if (r->last_response == ARCHIVE_EOF) {
-      r->has_more = 0;
-      return;
-    }
-    if (r->last_response != ARCHIVE_OK) {
-      Rcpp::stop(archive_error_string(r->ar));
-    }
-  }
 }
 
 /* Support for readBin() */

@@ -1,0 +1,42 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+library(archive)
+```
+# archive
+[![Travis-CI Build Status](https://travis-ci.org/jimhester/archive.svg?branch=master)](https://travis-ci.org/jimhester/archive)
+
+R bindings to libarchive <http://www.libarchive.org>, providing support for
+many file archives, including tar, ZIP, 7-zip, RAR, CAB including those
+compressed by gzip, bzip2, compress, lzma, xz, and others.
+
+## Installation
+
+You can install archive from github with:
+
+
+``` r
+# install.packages("devtools")
+devtools::install_github("jimhester/archive")
+```
+
+## Example
+
+```{r}
+a <- archive("~/data/trip_fare.7z")
+a
+
+con <- archive_con(a, 5)
+
+readr::read_csv(con)
+```
+

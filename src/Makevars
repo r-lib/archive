@@ -25,7 +25,8 @@ ARFLAGS=$(ARFLAGS) \
 --disable-maintainer-mode \
 --without-nettle \
 --without-xml2 \
---without-expat)
+--without-expat \
+--without-openssl)
 
 libarchive: libarchive-3.3.1/Makefile
 	(cd libarchive-3.3.1 && \

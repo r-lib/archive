@@ -1,5 +1,5 @@
-PKG_CXXFLAGS=-I. -Iinclude
-PKG_LIBS=-Llib -larchive -lnettle -lxml2
+PKG_CXXFLAGS = -I. `PKG_CONFIG_PATH=lib/pkgconfig:$(PKG_CONFIG_PATH) pkg-config --cflags libarchive`
+PKG_LIBS = `PKG_CONFIG_PATH=lib/pkgconfig:$(PKG_CONFIG_PATH) pkg-config --libs libarchive`
 
 .PHONY: all libarchive clean
 
@@ -7,9 +7,11 @@ all: $(OBJECTS) $(SHLIB)
 
 $(OBJECTS): libarchive
 
+
 libarchive-3.3.1/Makefile:
 	(cd libarchive-3.3.1 && \
 ./configure \
+--cache-file=../config.cache \
 CC="$(CC)" \
 CFLAGS="$(CFLAGS) $(CPICFLAGS)" \
 AR="$(AR)" \
@@ -20,12 +22,15 @@ ARFLAGS=$(ARFLAGS) \
 --disable-bsdtar \
 --disable-bsdcat \
 --disable-bsdcpio \
---disable-maintainer-mode)
+--disable-maintainer-mode \
+--without-nettle \
+--without-xml2 \
+--without-expat)
 
 libarchive: libarchive-3.3.1/Makefile
 	(cd libarchive-3.3.1 && \
 make libarchive.la && \
-make install-includeHEADERS install-libLTLIBRARIES)
+make install-includeHEADERS install-libLTLIBRARIES install-pkgconfigDATA)
 
 clean:
 	rm -f $(OBJECTS) $(SHLIB)

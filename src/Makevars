@@ -11,7 +11,7 @@ libarchive-3.3.1/Makefile:
 	(cd libarchive-3.3.1 && \
 ./configure \
 CC="$(CC)" \
-CFLAGS="$(CFLAGS)" \
+CFLAGS="$(CFLAGS) $(CPICFLAGS)" \
 AR="$(AR)" \
 ARFLAGS=$(ARFLAGS) \
 --enable-shared=no \

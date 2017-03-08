@@ -4,3 +4,5 @@
 ^src/include$
 ^script\.R$
 ^\.travis\.yml$
+^README\.Rmd$
+^README-.*\.png$

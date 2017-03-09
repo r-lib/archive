@@ -3,5 +3,6 @@
 export(archive)
 export(archive_read)
 export(archive_write)
+export(archive_write_files)
 importFrom(Rcpp,sourceCpp)
 useDynLib(archive)

@@ -9,6 +9,7 @@
 #include <archive.h>
 #include <archive_entry.h>
 #include <Rcpp.h>
+#include <fcntl.h>
 
 #define class class_name
 #define private private_ptr
@@ -274,6 +275,46 @@ SEXP write_connection(const std::string & archive_filename, const std::string & 
 
   UNPROTECT(1);
   return rc;
+}
+
+// [[Rcpp::export]]
+SEXP write_files(const std::string & archive_filename, Rcpp::CharacterVector files, size_t sz = 16384) {
+  struct archive *a;
+  struct archive_entry *entry;
+  struct stat st;
+  char buff[8192];
+  int len;
+  int fd;
+
+  a = archive_write_new();
+  /* Set archive format and filter according to output file extension.
+   * If it fails, set default format. Platform depended function.
+   * See supported formats in archive_write_set_format_filter_by_ext.c */
+  if (archive_write_set_format_filter_by_ext(a, archive_filename.c_str()) != ARCHIVE_OK)  {
+    archive_write_add_filter_gzip(a);
+    archive_write_set_format_ustar(a);
+  }
+
+  archive_write_open_filename(a, archive_filename.c_str());
+  for (int i = 0; i < files.size(); ++i) {
+    stat(files[i], &st);
+    entry = archive_entry_new();
+    archive_entry_copy_stat(entry, &st);
+    archive_entry_set_pathname(entry, files[i]);
+    archive_write_header(a, entry);
+    if ((fd = open(files[i], O_RDONLY)) != -1) {
+      len = read(fd, buff, sizeof(buff));
+      while (len > 0) {
+        archive_write_data(a, buff, len);
+        len = read(fd, buff, sizeof(buff));
+      }
+      close(fd);
+    }
+    archive_entry_free(entry);
+  }
+  archive_write_free(a);
+
+  return R_NilValue;
 }
 
 // [[Rcpp::export]]

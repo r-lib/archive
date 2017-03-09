@@ -49,7 +49,8 @@ archive_read <- function(archive, file = 1L) {
 
 #' Construct a write only connection into an archive
 #'
-#' @param archive The archive filename
+#' @param archive The archive filename, the extension(s) given will
+#' automatically determine the archive type and compression used.
 #' @param file The filename within the archive.
 #' @export
 archive_write <- function(archive, file) {
@@ -61,4 +62,19 @@ archive_write <- function(archive, file) {
     stop("`file` must be a length one character vector", call. = FALSE)
   }
   write_connection(archive, file)
+}
+
+#' @export
+archive_write_files <- function(archive, files) {
+  write_files(archive, files)
+
+  invisible(archive)
+}
+
+#' @rdname archive_write
+#' @param ... additional paramters passed to `base::dir`
+#' @inheritParams base::dir
+archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = TRUE) {
+  files <- dir(..., recursive = recursive, full.names = full.names)
+  archive_write_files(archive, files)
 }

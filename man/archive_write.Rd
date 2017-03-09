@@ -2,14 +2,25 @@
 % Please edit documentation in R/pkg.R
 \name{archive_write}
 \alias{archive_write}
+\alias{archive_write_dir}
 \title{Construct a write only connection into an archive}
 \usage{
 archive_write(archive, file)
+
+archive_write_dir(archive, dir, ..., recursive = TRUE, include.dirs = TRUE)
 }
 \arguments{
-\item{archive}{The archive filename}
+\item{archive}{The archive filename, the extension(s) given will
+automatically determine the archive type and compression used.}
 
 \item{file}{The filename within the archive.}
+
+\item{...}{additional paramters passed to `base::dir`}
+
+\item{recursive}{logical.  Should the listing recurse into directories?}
+
+\item{include.dirs}{logical.  Should subdirectory names be included in
+    recursive listings?  (They always are in non-recursive ones).}
 }
 \description{
 Construct a write only connection into an archive

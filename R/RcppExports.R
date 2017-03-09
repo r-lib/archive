@@ -9,6 +9,10 @@ write_connection <- function(archive_filename, filename, sz = 16384L) {
     .Call('archive_write_connection', PACKAGE = 'archive', archive_filename, filename, sz)
 }
 
+write_files <- function(archive_filename, files, sz = 16384L) {
+    .Call('archive_write_files', PACKAGE = 'archive', archive_filename, files, sz)
+}
+
 archive_metadata <- function(path) {
     .Call('archive_archive_metadata', PACKAGE = 'archive', path)
 }

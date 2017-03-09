@@ -68,6 +68,7 @@ archive_write_files("data.tar.xz", c("iris.csv", "mtcars.csv", "airquality.csv")
 
 # View archive contents
 a <- archive("data.tar.xz")
+a
 
 # Read a specific file from the archive
 readr::read_csv(archive_read(a, "mtcars.csv"))

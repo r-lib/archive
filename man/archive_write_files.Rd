@@ -6,6 +6,12 @@
 \usage{
 archive_write_files(archive, files)
 }
+\arguments{
+\item{archive}{The archive filename, extension will automatically determine
+the archive format and filters (if any).}
+
+\item{One}{or more files to add to the archive.}
+}
 \description{
 `archive_write_files()` adds one or more files to a new archive.
 `archive_write_dir()` adds all the file(s) in a directory to a new archive.

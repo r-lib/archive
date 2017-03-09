@@ -77,6 +77,7 @@ archive_write <- function(archive, file) {
 #' - lz4 compression
 #' - lzop compression
 #' @inheritParams archive_write
+#' @param type The type of filters to use for the file.
 #' @export
 file_write <- function(file, type) {
   if (!is.character(file) || length(file) != 1) {
@@ -90,6 +91,9 @@ file_write <- function(file, type) {
 #'
 #' `archive_write_files()` adds one or more files to a new archive.
 #' `archive_write_dir()` adds all the file(s) in a directory to a new archive.
+#' @param archive The archive filename, extension will automatically determine
+#' the archive format and filters (if any).
+#' @param One or more files to add to the archive.
 #' @export
 archive_write_files <- function(archive, files) {
   if (!is.character(archive) || length(archive) != 1) {
@@ -106,7 +110,7 @@ archive_write_files <- function(archive, files) {
 
 #' @rdname archive_write
 #' @param ... additional paramters passed to `base::dir`
-#' @inheritParams base::dir
+#' @inheritParams base::list.files
 archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = TRUE) {
   files <- dir(..., recursive = recursive, full.names = full.names)
   archive_write_files(archive, files)

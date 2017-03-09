@@ -8,6 +8,8 @@ file_write(file, type)
 }
 \arguments{
 \item{file}{The filename within the archive.}
+
+\item{type}{The type of filters to use for the file.}
 }
 \description{
 This works similar to R's builtin [connections]. However it supports one on

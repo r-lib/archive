@@ -1,17 +1,21 @@
-PKG_CXXFLAGS = -I. `PKG_CONFIG_PATH=lib/pkgconfig:$(PKG_CONFIG_PATH) pkg-config --cflags libarchive` -Wno-keyword-macro
-PKG_LIBS = `PKG_CONFIG_PATH=lib/pkgconfig:$(PKG_CONFIG_PATH) pkg-config --libs libarchive`
+PKG_CXXFLAGS = -I. `PKG_CONFIG_PATH=lib/pkgconfig:$(PKG_CONFIG_PATH) pkg-config --cflags libarchive`
+PKG_LIBS = `PKG_CONFIG_PATH=lib/pkgconfig:$(PKG_CONFIG_PATH) pkg-config --static --libs libarchive`
 
 .PHONY: all libarchive clean
 
 all: $(OBJECTS) $(SHLIB)
+  @echo $(PKG_CXXFLAGS)
+  @echo $(PKG_LIBS)
 
-$(OBJECTS): libarchive
+$(OBJECTS): info libarchive
 
+info: libarchive
+	@echo "# PKG_CXXFLAGS: '$(PKG_CXXFLAGS)'"
+	@echo "# PKG_LIBS: '$(PKG_LIBS)'"
 
 libarchive-3.3.1/Makefile:
 	(cd libarchive-3.3.1 && \
 ./configure \
---cache-file=../config.cache \
 CC="$(CC)" \
 CFLAGS="$(CFLAGS) $(CPICFLAGS)" \
 AR="$(AR)" \
@@ -35,3 +39,5 @@ make install-includeHEADERS install-libLTLIBRARIES install-pkgconfigDATA)
 clean:
 	rm -f $(OBJECTS) $(SHLIB)
 	rm -rf include lib
+	(cd libarchive-3.3.1 && \
+make distclean)

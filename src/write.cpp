@@ -1,11 +1,11 @@
 #include "r_archive.h"
 #include <Rcpp.h>
 #include <fcntl.h>
+#include <string.h>
 
-const char * my_basename (const char * filename)
-{
-  char *p = strrchr (filename, '/');
-  return p ? p + 1 : (char *) filename;
+std::string my_basename (std::string const & str) {
+  std::size_t found = str.find_last_of("/\\");
+  return str.substr(found + 1);
 }
 
 /* callback function to store received data */

@@ -32,11 +32,24 @@ devtools::install_github("jimhester/archive")
 ## Example
 
 ```{r}
-a <- archive("~/data/trip_fare.7z")
+# Write data to zip
+w_con <- archive_write("mtcars.7z", "mtcars.csv")
+readr::write_csv(mtcars, w_con)
+
+# Read from zip
+a <- archive("mtcars.zip")
 a
 
-con <- archive_con(a, 5)
+con2 <- archive_read(a, 1)
 
-readr::read_csv(con)
+mt <- readr::read_csv(con2)
+mt
+
+# Write and Read from 7z
+readr::write_csv(archive_write("mtcars.7z", "mtcars.csv"), mt)
+readr::read_csv(archive_read("mtcars.7z"))
+
+# Archive file sizes
+file.size(c("mtcars.zip", "mtcars.7z"))
 ```
 

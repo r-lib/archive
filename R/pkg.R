@@ -20,13 +20,13 @@ archive <- function(path) {
   res
 }
 
-#' Construct a new connection into an archive
+#' Construct a read only connection into an archive
 #'
 #' @param archive An archive object or character vector to the archive
 #' @param file The file to open the connection to. Can also be an numeric index
 #' into the `archive()` data.frame.
 #' @export
-archive_con <- function(archive, file = 1L) {
+archive_read <- function(archive, file = 1L) {
   if (is.character(archive) && length(archive) == 1) {
     archive <- archive(archive)
   }
@@ -45,4 +45,20 @@ archive_con <- function(archive, file = 1L) {
   }
 
   read_connection(attr(archive, "path"), file)
+}
+
+#' Construct a write only connection into an archive
+#'
+#' @param archive The archive filename
+#' @param file The filename within the archive.
+#' @export
+archive_write <- function(archive, file) {
+  if (!is.character(archive) || length(archive) != 1) {
+    stop("`archive` must be a length one character vector", call. = FALSE)
+  }
+
+  if (!is.character(file) || length(file) != 1) {
+    stop("`file` must be a length one character vector", call. = FALSE)
+  }
+  write_connection(archive, file)
 }

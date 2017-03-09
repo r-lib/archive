@@ -29,7 +29,7 @@ Rconnection get_connection(SEXP con) {
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
 typedef struct {
-  char* path;
+  char* archive_filename;
   char* filename;
   char* buf;
   char* cur;
@@ -40,6 +40,35 @@ typedef struct {
   size_t limit;
   size_t size;
 } rchive;
+
+/* callback function to store received data */
+static size_t push(const void *contents, size_t sz, size_t nmemb, Rconnection ctx) {
+  /* avoids compiler warning on windows */
+  rchive* r = (rchive*) ctx->private_ptr;
+
+  /* move existing data to front of buffer (if any) */
+  memcpy(r->buf, r->cur, r->size);
+
+  /* allocate more space if required */
+  size_t realsize = sz * nmemb;
+  size_t newsize = r->size + realsize;
+  if(newsize > r->limit) {
+    size_t newlimit = 2 * r->limit;
+    //Rprintf("Resizing buffer to %d.\n", newlimit);
+    void *newbuf = (void *) realloc(r->buf, newlimit);
+    if (!newbuf) {
+      Rcpp::stop("Failure in realloc. Out of memory?");
+    }
+    r->buf = (char *) newbuf;
+    r->limit = newlimit;
+  }
+
+  /* append new data */
+  memcpy(r->buf + r->size, contents, realsize);
+  r->size = newsize;
+  r->cur = r->buf;
+  return realsize;
+}
 
 static size_t pop(void *target, size_t max, rchive *r){
   size_t copy_size = min(r->size, max);
@@ -69,10 +98,53 @@ void copy_data(rchive *r) {
   }
 }
 
-static Rboolean rchive_open(Rconnection con) {
+static Rboolean rchive_write_open(Rconnection con) {
   rchive *r = (rchive *) con->private_ptr;
 
-  if ((r->last_response = archive_read_open_filename(r->ar, r->path, 10240)) != ARCHIVE_OK) {
+  r->ar = archive_write_new();
+
+  /* Set archive format and filter according to output file extension.
+   * If it fails, set default format. Platform depended function.
+   * See supported formats in archive_write_set_format_filter_by_ext.c */
+  if (archive_write_set_format_filter_by_ext(r->ar, r->archive_filename) != ARCHIVE_OK)  {
+    archive_write_add_filter_gzip(r->ar);
+    archive_write_set_format_ustar(r->ar);
+  }
+  archive_write_open_filename(r->ar, r->archive_filename);
+  r->entry = archive_entry_new();
+  archive_entry_set_pathname(r->entry, r->filename);
+  archive_entry_set_filetype(r->entry, AE_IFREG);
+  archive_entry_set_perm(r->entry, 0644);
+
+  con->isopen = TRUE;
+  return TRUE;
+}
+
+void rchive_write_close(Rconnection con) {
+  rchive *r = (rchive *) con->private_ptr;
+  archive_entry_set_size(r->entry, r->size);
+  archive_write_header(r->ar, r->entry);
+  archive_write_data(r->ar, r->buf, r->size);
+  archive_write_close(r->ar);
+
+  con->isopen = FALSE;
+}
+
+void rchive_write_destroy(Rconnection con) {
+  rchive *r = (rchive *) con->private_ptr;
+
+  /* free the handle connection */
+  archive_write_free(r->ar);
+  //free(r->buf);
+  free(r->archive_filename);
+  free(r->filename);
+  free(r);
+}
+
+static Rboolean rchive_read_open(Rconnection con) {
+  rchive *r = (rchive *) con->private_ptr;
+
+  if ((r->last_response = archive_read_open_filename(r->ar, r->archive_filename, 10240)) != ARCHIVE_OK) {
     Rcpp::stop(archive_error_string(r->ar));
   }
   if ((r->last_response = archive_read_next_header(r->ar, &r->entry)) != ARCHIVE_OK) {
@@ -96,20 +168,20 @@ static Rboolean rchive_open(Rconnection con) {
   return FALSE;
 }
 
-void rchive_close(Rconnection con) {
+void rchive_read_close(Rconnection con) {
   rchive *r = (rchive *) con->private_ptr;
   archive_read_close(r->ar);
 
   con->isopen = FALSE;
 }
 
-void rchive_destroy(Rconnection con) {
+void rchive_read_destroy(Rconnection con) {
   rchive *r = (rchive *) con->private_ptr;
 
   /* free the handle connection */
   archive_read_free(r->ar);
   free(r->buf);
-  free(r->path);
+  free(r->archive_filename);
   free(r->filename);
   free(r);
 }
@@ -130,17 +202,17 @@ static size_t rchive_read(void *target, size_t sz, size_t ni, Rconnection con) {
 }
 
 // [[Rcpp::export]]
-SEXP read_connection(const std::string & path, const std::string & filename, size_t sz = 16384) {
+SEXP read_connection(const std::string & archive_filename, const std::string & filename, size_t sz = 16384) {
   Rconnection con;
-  SEXP rc = PROTECT(R_new_custom_connection(std::string(path + '[' + filename + ']').c_str(), "r", "archive", &con));
+  SEXP rc = PROTECT(R_new_custom_connection("input", "rb", "archive", &con));
 
   /* Setup archive */
   rchive *r = (rchive *) malloc(sizeof(rchive));
   r->limit = sz;
   r->buf = (char *) malloc(r->limit);
 
-  r->path = (char *) malloc(strlen(path.c_str()) + 1);
-  strcpy(r->path, path.c_str());
+  r->archive_filename = (char *) malloc(strlen(archive_filename.c_str()) + 1);
+  strcpy(r->archive_filename, archive_filename.c_str());
 
   r->filename = (char *) malloc(strlen(filename.c_str()) + 1);
   strcpy(r->filename, filename.c_str());
@@ -158,10 +230,50 @@ SEXP read_connection(const std::string & path, const std::string & filename, siz
   con->blocking = TRUE;
   con->text = FALSE;
   con->UTF8out = FALSE;
-  con->open = rchive_open;
-  con->close = rchive_close;
-  con->destroy = rchive_destroy;
+  con->open = rchive_read_open;
+  con->close = rchive_read_close;
+  con->destroy = rchive_read_destroy;
   con->read = rchive_read;
+
+  UNPROTECT(1);
+  return rc;
+}
+
+// [[Rcpp::export]]
+SEXP write_connection(const std::string & archive_filename, const std::string & filename, size_t sz = 16384) {
+  Rconnection con;
+  SEXP rc = PROTECT(R_new_custom_connection("input", "wb", "archive", &con));
+
+  /* Setup archive */
+  rchive *r = (rchive *) malloc(sizeof(rchive));
+  r->limit = sz;
+  r->buf = (char *) malloc(r->limit);
+  r->cur = r->buf;
+  r->size = 0;
+
+  r->archive_filename = (char *) malloc(strlen(archive_filename.c_str()) + 1);
+  strcpy(r->archive_filename, archive_filename.c_str());
+
+  r->filename = (char *) malloc(strlen(filename.c_str()) + 1);
+  strcpy(r->filename, filename.c_str());
+
+  r->ar = archive_read_new();
+  r->last_response = archive_read_support_filter_all(r->ar);
+  r->last_response = archive_read_support_format_all(r->ar);
+
+  /* set connection properties */
+  con->incomplete = TRUE;
+  con->private_ptr = r;
+  con->canread = FALSE;
+  con->canseek = FALSE;
+  con->canwrite = TRUE;
+  con->isopen = FALSE;
+  con->blocking = TRUE;
+  con->text = FALSE;
+  con->open = rchive_write_open;
+  con->close = rchive_write_close;
+  con->destroy = rchive_write_destroy;
+  con->write = push;
 
   UNPROTECT(1);
   return rc;

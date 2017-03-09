@@ -29,8 +29,8 @@ ARFLAGS=$(ARFLAGS) \
 
 libarchive: libarchive-3.3.1/Makefile
 	(cd libarchive-3.3.1 && \
-make && \
-make install)
+make libarchive.la libarchive_fe.la && \
+make install-includeHEADERS install-libLTLIBRARIES install-pkgconfigDATA)
 
 clean:
 	rm -f $(OBJECTS) $(SHLIB)

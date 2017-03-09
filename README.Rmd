@@ -46,7 +46,7 @@ mt <- readr::read_csv(con2)
 mt
 
 # Write and Read from 7z
-readr::write_csv(archive_write("mtcars.7z", "mtcars.csv"), mt)
+readr::write_csv(mt, archive_write("mtcars.7z", "mtcars.csv"))
 readr::read_csv(archive_read("mtcars.7z"))
 
 # Archive file sizes

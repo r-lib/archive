@@ -21,56 +21,84 @@ Example
 -------
 
 ``` r
-a <- archive("~/data/trip_fare.7z")
+# Write data to zip
+w_con <- archive_write("mtcars.7z", "mtcars.csv")
+readr::write_csv(mtcars, w_con)
+
+# Read from zip
+a <- archive("mtcars.zip")
 a
-#> # A tibble: 12 × 3
-#>                path       size                date
-#>               <chr>      <dbl>              <dttm>
-#> 1   trip_fare_1.csv 1681610043 2013-08-25 21:04:08
-#> 2  trip_fare_10.csv 1712562557 2014-01-15 01:49:22
-#> 3  trip_fare_11.csv 1641999933 2014-01-15 02:28:06
-#> 4  trip_fare_12.csv 1593879813 2014-01-15 03:05:04
-#> 5   trip_fare_2.csv 1593003695 2013-08-25 21:36:04
-#> 6   trip_fare_3.csv 1794836351 2013-08-25 22:15:36
-#> 7   trip_fare_4.csv 1721514415 2013-08-25 22:50:08
-#> 8   trip_fare_5.csv 1743431041 2013-08-25 23:24:16
-#> 9   trip_fare_6.csv 1641402184 2013-08-25 23:55:34
-#> 10  trip_fare_7.csv 1576268209 2014-01-14 23:55:36
-#> 11  trip_fare_8.csv 1436875197 2014-01-15 00:30:56
-#> 12  trip_fare_9.csv 1610146825 2014-01-15 01:09:06
+#> # A tibble: 1 × 3
+#>         path  size       date
+#>        <chr> <dbl>     <dttm>
+#> 1 mtcars.csv  1281 1980-01-01
 
-con <- archive_con(a, 5)
+con2 <- archive_read(a, 1)
 
-readr::read_csv(con)
+mt <- readr::read_csv(con2)
 #> Parsed with column specification:
 #> cols(
-#>   medallion = col_character(),
-#>   hack_license = col_character(),
-#>   vendor_id = col_character(),
-#>   pickup_datetime = col_datetime(format = ""),
-#>   payment_type = col_character(),
-#>   fare_amount = col_double(),
-#>   surcharge = col_double(),
-#>   mta_tax = col_double(),
-#>   tip_amount = col_double(),
-#>   tolls_amount = col_double(),
-#>   total_amount = col_double()
+#>   mpg = col_double(),
+#>   cyl = col_integer(),
+#>   disp = col_double(),
+#>   hp = col_integer(),
+#>   drat = col_double(),
+#>   wt = col_double(),
+#>   qsec = col_double(),
+#>   vs = col_integer(),
+#>   am = col_integer(),
+#>   gear = col_integer(),
+#>   carb = col_integer()
 #> )
-#> # A tibble: 13,990,176 × 11
-#>                           medallion                     hack_license
-#>                               <chr>                            <chr>
-#> 1  1B5C0970F2AE8CFFBA8AE4584BEAED29 D961332334524990D1BBD462E2EFB8A4
-#> 2  B42249AE16E2B8E556F1CB1F940D6FB4 D4BB308D1F3FCB3434D9DB282CDC93D7
-#> 3  890699222C47C09FBC898758CEC69762 6318C3AEC02248928C3345B5805EB905
-#> 4  74B7D835C2CD98606D5256DA8A38E045 D5E278C918256D1F97680A1F04D290E0
-#> 5  4003B8478418FEC5D761E2F37602769B 0B766F1054A5C16D86BC023858BD8143
-#> 6  D72DF7B12201912BFDBB93081EF04C96 AFD828EEF790A2485BBB0B568A8BE22E
-#> 7  FA5337E245DE9B2E124AFA735B41B4DF 6E6B7D73303D5AE3808A9ABF4D3FF65B
-#> 8  BE63343BAD5CD6F99EC435812E332445 88CF6CAA78CE8B2000FBCF39DFAB3E69
-#> 9  58598FD2F8811C4F52A264D15D6FECAF F6F9DF7755F186C183EEBB5B03DBA23C
-#> 10 FE13CDF111CE4A3811F3E5D942BFD3B9 BAC511461590FAF7D7BB4C8F29C31AC5
-#> # ... with 13,990,166 more rows, and 9 more variables: vendor_id <chr>,
-#> #   pickup_datetime <dttm>, payment_type <chr>, fare_amount <dbl>,
-#> #   surcharge <dbl>, mta_tax <dbl>, tip_amount <dbl>, tolls_amount <dbl>,
-#> #   total_amount <dbl>
+mt
+#> # A tibble: 32 × 11
+#>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+#>    <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
+#> 1   21.0     6 160.0   110  3.90 2.620 16.46     0     1     4     4
+#> 2   21.0     6 160.0   110  3.90 2.875 17.02     0     1     4     4
+#> 3   22.8     4 108.0    93  3.85 2.320 18.61     1     1     4     1
+#> 4   21.4     6 258.0   110  3.08 3.215 19.44     1     0     3     1
+#> 5   18.7     8 360.0   175  3.15 3.440 17.02     0     0     3     2
+#> 6   18.1     6 225.0   105  2.76 3.460 20.22     1     0     3     1
+#> 7   14.3     8 360.0   245  3.21 3.570 15.84     0     0     3     4
+#> 8   24.4     4 146.7    62  3.69 3.190 20.00     1     0     4     2
+#> 9   22.8     4 140.8    95  3.92 3.150 22.90     1     0     4     2
+#> 10  19.2     6 167.6   123  3.92 3.440 18.30     1     0     4     4
+#> # ... with 22 more rows
+
+# Write and Read from 7z
+readr::write_csv(mt, archive_write("mtcars.7z", "mtcars.csv"))
+readr::read_csv(archive_read("mtcars.7z"))
+#> Parsed with column specification:
+#> cols(
+#>   mpg = col_double(),
+#>   cyl = col_integer(),
+#>   disp = col_double(),
+#>   hp = col_integer(),
+#>   drat = col_double(),
+#>   wt = col_double(),
+#>   qsec = col_double(),
+#>   vs = col_integer(),
+#>   am = col_integer(),
+#>   gear = col_integer(),
+#>   carb = col_integer()
+#> )
+#> # A tibble: 32 × 11
+#>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+#>    <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
+#> 1   21.0     6 160.0   110  3.90 2.620 16.46     0     1     4     4
+#> 2   21.0     6 160.0   110  3.90 2.875 17.02     0     1     4     4
+#> 3   22.8     4 108.0    93  3.85 2.320 18.61     1     1     4     1
+#> 4   21.4     6 258.0   110  3.08 3.215 19.44     1     0     3     1
+#> 5   18.7     8 360.0   175  3.15 3.440 17.02     0     0     3     2
+#> 6   18.1     6 225.0   105  2.76 3.460 20.22     1     0     3     1
+#> 7   14.3     8 360.0   245  3.21 3.570 15.84     0     0     3     4
+#> 8   24.4     4 146.7    62  3.69 3.190 20.00     1     0     4     2
+#> 9   22.8     4 140.8    95  3.92 3.150 22.90     1     0     4     2
+#> 10  19.2     6 167.6   123  3.92 3.440 18.30     1     0     4     4
+#> # ... with 22 more rows
+
+# Archive file sizes
+file.size(c("mtcars.zip", "mtcars.7z"))
+#> [1] 714 641
 ```

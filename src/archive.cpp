@@ -29,6 +29,13 @@ Rconnection get_connection(SEXP con) {
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
+char * basename (const char * filename)
+{
+  char *p = strrchr (filename, '/');
+  return p ? p + 1 : (char *) filename;
+}
+
+
 typedef struct {
   char* archive_filename;
   char* filename;
@@ -43,32 +50,14 @@ typedef struct {
 } rchive;
 
 /* callback function to store received data */
-static size_t push(const void *contents, size_t sz, size_t nmemb, Rconnection ctx) {
-  /* avoids compiler warning on windows */
+static size_t rchive_write_data(const void *contents, size_t sz, size_t n, Rconnection ctx) {
   rchive* r = (rchive*) ctx->private_ptr;
 
-  /* move existing data to front of buffer (if any) */
-  memcpy(r->buf, r->cur, r->size);
+  size_t realsize = sz * n;
+  archive_write_data(r->ar, contents, realsize);
+  r->size += realsize;
 
-  /* allocate more space if required */
-  size_t realsize = sz * nmemb;
-  size_t newsize = r->size + realsize;
-  if(newsize > r->limit) {
-    size_t newlimit = 2 * r->limit;
-    //Rprintf("Resizing buffer to %d.\n", newlimit);
-    void *newbuf = (void *) realloc(r->buf, newlimit);
-    if (!newbuf) {
-      Rcpp::stop("Failure in realloc. Out of memory?");
-    }
-    r->buf = (char *) newbuf;
-    r->limit = newlimit;
-  }
-
-  /* append new data */
-  memcpy(r->buf + r->size, contents, realsize);
-  r->size = newsize;
-  r->cur = r->buf;
-  return realsize;
+  return n;
 }
 
 static size_t pop(void *target, size_t max, rchive *r){
@@ -99,35 +88,77 @@ void copy_data(rchive *r) {
   }
 }
 
+std::string scratch_file(const char* filename) {
+  static Rcpp::Function tempdir("tempdir", R_BaseEnv);
+  std::string out = std::string(CHAR(STRING_ELT(tempdir(), 0))) + '/' + basename(filename);
+  return out;
+}
+
 static Rboolean rchive_write_open(Rconnection con) {
   rchive *r = (rchive *) con->private_ptr;
 
-  r->ar = archive_write_new();
+  r->ar = archive_write_disk_new();
 
-  /* Set archive format and filter according to output file extension.
-   * If it fails, set default format. Platform depended function.
-   * See supported formats in archive_write_set_format_filter_by_ext.c */
-  if (archive_write_set_format_filter_by_ext(r->ar, r->archive_filename) != ARCHIVE_OK)  {
-    archive_write_add_filter_gzip(r->ar);
-    archive_write_set_format_ustar(r->ar);
-  }
-  archive_write_open_filename(r->ar, r->archive_filename);
   r->entry = archive_entry_new();
-  archive_entry_set_pathname(r->entry, r->filename);
+
+  archive_entry_set_pathname(r->entry, scratch_file(r->filename).c_str());
   archive_entry_set_filetype(r->entry, AE_IFREG);
   archive_entry_set_perm(r->entry, 0644);
+  archive_write_header(r->ar, r->entry);
 
   con->isopen = TRUE;
   return TRUE;
 }
 
+/* This function closes the temporary scratch file, then writes the actual
+ * archive file based on the archive filename given and then unlinks the
+ * scratch file */
 void rchive_write_close(Rconnection con) {
+  char buf[8192];
+  size_t bytes_read;
   rchive *r = (rchive *) con->private_ptr;
-  archive_entry_set_size(r->entry, r->size);
-  archive_write_header(r->ar, r->entry);
-  archive_write_data(r->ar, r->buf, r->size);
-  archive_write_close(r->ar);
 
+  /* Close scratch file */
+  archive_write_finish_entry(r->ar);
+  archive_write_close(r->ar);
+  archive_write_free(r->ar);
+  archive_entry_free(r->entry);
+
+  /* Write scratch file to archive */
+  struct archive *in;
+  struct archive *out;
+  struct archive_entry *entry;
+  in = archive_read_disk_new();
+  entry = archive_entry_new();
+
+  std::string scratch = scratch_file(r->filename);
+  int fd = open(scratch.c_str(), O_RDONLY);
+  if (fd < 0) {
+    Rcpp::stop("Could not open scratch file");
+  }
+  archive_read_disk_entry_from_file(in, entry, fd, NULL);
+  archive_entry_set_pathname(entry, r->filename);
+
+  out = archive_write_new();
+  /* Set archive format and filter according to output file extension.
+   * If it fails, set default format. Platform depended function.
+   * See supported formats in archive_write_set_format_filter_by_ext.c */
+  if (archive_write_set_format_filter_by_ext(out, r->archive_filename) != ARCHIVE_OK)  {
+    archive_write_add_filter_gzip(out);
+    archive_write_set_format_ustar(out);
+  }
+  archive_write_open_filename(out, r->archive_filename);
+  archive_write_header(out, entry);
+
+  while ((bytes_read = read(fd, buf, sizeof(buf))) > 0) {
+    archive_write_data(out, buf, bytes_read);
+  }
+  close(fd);
+  archive_write_free(out);
+  archive_entry_free(entry);
+  archive_read_free(in);
+
+  unlink(scratch.c_str());
   con->isopen = FALSE;
 }
 
@@ -135,8 +166,6 @@ void rchive_write_destroy(Rconnection con) {
   rchive *r = (rchive *) con->private_ptr;
 
   /* free the handle connection */
-  archive_write_free(r->ar);
-  //free(r->buf);
   free(r->archive_filename);
   free(r->filename);
   free(r);
@@ -244,20 +273,16 @@ SEXP write_connection(const std::string & archive_filename, const std::string & 
 
   /* Setup archive */
   rchive *r = (rchive *) malloc(sizeof(rchive));
-  r->limit = sz;
-  r->buf = (char *) malloc(r->limit);
-  r->cur = r->buf;
-  r->size = 0;
+  //r->limit = sz;
+  //r->buf = (char *) malloc(r->limit);
+  //r->cur = r->buf;
+  //r->size = 0;
 
   r->archive_filename = (char *) malloc(strlen(archive_filename.c_str()) + 1);
   strcpy(r->archive_filename, archive_filename.c_str());
 
   r->filename = (char *) malloc(strlen(filename.c_str()) + 1);
   strcpy(r->filename, filename.c_str());
-
-  r->ar = archive_read_new();
-  r->last_response = archive_read_support_filter_all(r->ar);
-  r->last_response = archive_read_support_format_all(r->ar);
 
   /* set connection properties */
   con->incomplete = TRUE;
@@ -271,7 +296,7 @@ SEXP write_connection(const std::string & archive_filename, const std::string & 
   con->open = rchive_write_open;
   con->close = rchive_write_close;
   con->destroy = rchive_write_destroy;
-  con->write = push;
+  con->write = rchive_write_data;
 
   UNPROTECT(1);
   return rc;

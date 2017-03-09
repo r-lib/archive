@@ -100,5 +100,5 @@ readr::read_csv(archive_read("mtcars.7z"))
 
 # Archive file sizes
 file.size(c("mtcars.zip", "mtcars.7z"))
-#> [1] 714 641
+#> [1] 714 677
 ```

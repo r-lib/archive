@@ -1,4 +1,4 @@
-PKG_CXXFLAGS = -I. `PKG_CONFIG_PATH=lib/pkgconfig:$(PKG_CONFIG_PATH) pkg-config --cflags libarchive`
+PKG_CXXFLAGS = -I. `PKG_CONFIG_PATH=lib/pkgconfig:$(PKG_CONFIG_PATH) pkg-config --cflags libarchive` -Wno-keyword-macro
 PKG_LIBS = `PKG_CONFIG_PATH=lib/pkgconfig:$(PKG_CONFIG_PATH) pkg-config --libs libarchive`
 
 .PHONY: all libarchive clean

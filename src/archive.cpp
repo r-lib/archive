@@ -147,9 +147,6 @@ static Rboolean rchive_read_open(Rconnection con) {
   if ((r->last_response = archive_read_open_filename(r->ar, r->archive_filename, 10240)) != ARCHIVE_OK) {
     Rcpp::stop(archive_error_string(r->ar));
   }
-  if ((r->last_response = archive_read_next_header(r->ar, &r->entry)) != ARCHIVE_OK) {
-    Rcpp::stop(archive_error_string(r->ar));
-  }
 
   /* Find entry to extract */
   while (archive_read_next_header(r->ar, &r->entry) == ARCHIVE_OK) {

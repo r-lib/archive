@@ -96,8 +96,8 @@ archive_write_files <- function(archive, files) {
     stop("`archive` must be a length one character vector", call. = FALSE)
   }
 
-  if (!is.character(file) || length(file) != 1) {
-    stop("`file` must be a length one character vector", call. = FALSE)
+  if (!is.character(files) || length(files) < 1) {
+    stop("`file` must be a length 1 or greater character vector", call. = FALSE)
   }
   write_files(archive, files)
 

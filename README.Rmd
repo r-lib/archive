@@ -10,8 +10,12 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "README-"
 )
+dir <- tempfile()
+dir.create(dir)
+knitr::opts_knit$set(root.dir = dir)
 library(archive)
 ```
+
 # archive
 [![Travis-CI Build Status](https://travis-ci.org/jimhester/archive.svg?branch=master)](https://travis-ci.org/jimhester/archive)
 
@@ -31,25 +35,48 @@ devtools::install_github("jimhester/archive")
 
 ## Example
 
+### Single file archives
+
 ```{r}
-# Write data to zip
-w_con <- archive_write("mtcars.7z", "mtcars.csv")
-readr::write_csv(mtcars, w_con)
+# Write a single dataset to zip
+readr::write_csv(mtcars, archive_write("mtcars.zip", "mtcars.csv"))
 
-# Read from zip
-a <- archive("mtcars.zip")
-a
+# Read the data back, by default the first file is read from the archive.
+readr::read_csv(archive_read("mtcars.zip"))
 
-con2 <- archive_read(a, 1)
+# Also supports archiving and compression together
+# Write a single dataset to zip
+readr::write_csv(mtcars, archive_write("mtcars.tar.gz", "mtcars.csv"))
 
-mt <- readr::read_csv(con2)
-mt
-
-# Write and Read from 7z
-readr::write_csv(mt, archive_write("mtcars.7z", "mtcars.csv"))
-readr::read_csv(archive_read("mtcars.7z"))
+# Read the data back
+readr::read_csv(archive_read("mtcars.tar.gz"))
 
 # Archive file sizes
-file.size(c("mtcars.zip", "mtcars.7z"))
+file.size(c("mtcars.zip", "mtcars.tar.gz"))
 ```
 
+### Multi file archives
+
+```{r}
+# Write a few files to the temp directory
+readr::write_csv(iris, "iris.csv")
+readr::write_csv(mtcars, "mtcars.csv")
+readr::write_csv(airquality, "airquality.csv")
+
+# Add them to a new archive
+archive_write_files("data.tar.xz", c("iris.csv", "mtcars.csv", "airquality.csv"))
+
+# View archive contents
+a <- archive("data.tar.xz")
+
+# Read a specific file from the archive
+readr::read_csv(archive_read(a, "mtcars.csv"))
+```
+
+### Regular files (with compression)
+`file_write()` returns a connection to filtered by one or more compressions or encodings.
+
+```{r}
+# Write bzip2, base 64 encoded data
+readr::write_csv(mtcars, file_write("mtcars.bz2", c("b64encode", "bzip2")))
+```

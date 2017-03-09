@@ -10,7 +10,7 @@ archive_write_files(archive, files)
 \item{archive}{The archive filename, extension will automatically determine
 the archive format and filters (if any).}
 
-\item{One}{or more files to add to the archive.}
+\item{files}{One or more files to add to the archive.}
 }
 \description{
 `archive_write_files()` adds one or more files to a new archive.

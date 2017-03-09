@@ -15,6 +15,8 @@ automatically determine the archive type and compression used.}
 
 \item{file}{The filename within the archive.}
 
+\item{dir}{The directory of files to add}
+
 \item{...}{additional paramters passed to `base::dir`}
 
 \item{recursive}{logical.  Should the listing recurse into directories?}

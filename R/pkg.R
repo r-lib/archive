@@ -93,7 +93,7 @@ file_write <- function(file, type) {
 #' `archive_write_dir()` adds all the file(s) in a directory to a new archive.
 #' @param archive The archive filename, extension will automatically determine
 #' the archive format and filters (if any).
-#' @param One or more files to add to the archive.
+#' @param files One or more files to add to the archive.
 #' @export
 archive_write_files <- function(archive, files) {
   if (!is.character(archive) || length(archive) != 1) {
@@ -110,6 +110,7 @@ archive_write_files <- function(archive, files) {
 
 #' @rdname archive_write
 #' @param ... additional paramters passed to `base::dir`
+#' @param dir The directory of files to add
 #' @inheritParams base::list.files
 archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = TRUE) {
   files <- dir(..., recursive = recursive, full.names = full.names)

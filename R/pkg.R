@@ -47,7 +47,7 @@ archive_read <- function(archive, file = 1L) {
   read_connection(attr(archive, "path"), file)
 }
 
-#' Construct a write only connection into an archive
+#' Construct a write only connection to a new archive
 #'
 #' @param archive The archive filename, the extension(s) given will
 #' automatically determine the archive type and compression used.
@@ -64,8 +64,41 @@ archive_write <- function(archive, file) {
   write_connection(archive, file)
 }
 
+#' Construct a write only connection to a (possibly compressed) file.
+#'
+#' This works similar to R's builtin [connections]. However it supports one on
+#' or more of.
+#'
+#' - uuencode
+#' - gzip compression
+#' - bzip2 compression
+#' - compress/LZW compression
+#' - lzma, lzip, and xz compression
+#' - lz4 compression
+#' - lzop compression
+#' @inheritParams archive_write
+#' @export
+file_write <- function(file, type) {
+  if (!is.character(file) || length(file) != 1) {
+    stop("`file` must be a length one character vector", call. = FALSE)
+  }
+
+  write_file_connection(file, type)
+}
+
+#' Add files to a new archive
+#'
+#' `archive_write_files()` adds one or more files to a new archive.
+#' `archive_write_dir()` adds all the file(s) in a directory to a new archive.
 #' @export
 archive_write_files <- function(archive, files) {
+  if (!is.character(archive) || length(archive) != 1) {
+    stop("`archive` must be a length one character vector", call. = FALSE)
+  }
+
+  if (!is.character(file) || length(file) != 1) {
+    stop("`file` must be a length one character vector", call. = FALSE)
+  }
   write_files(archive, files)
 
   invisible(archive)

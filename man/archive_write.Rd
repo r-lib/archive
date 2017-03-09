@@ -3,11 +3,11 @@
 \name{archive_write}
 \alias{archive_write}
 \alias{archive_write_dir}
-\title{Construct a write only connection into an archive}
+\title{Construct a write only connection to a new archive}
 \usage{
 archive_write(archive, file)
 
-archive_write_dir(archive, dir, ..., recursive = TRUE, include.dirs = TRUE)
+archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = TRUE)
 }
 \arguments{
 \item{archive}{The archive filename, the extension(s) given will
@@ -19,9 +19,10 @@ automatically determine the archive type and compression used.}
 
 \item{recursive}{logical.  Should the listing recurse into directories?}
 
-\item{include.dirs}{logical.  Should subdirectory names be included in
-    recursive listings?  (They always are in non-recursive ones).}
+\item{full.names}{a logical value.  If \code{TRUE}, the directory
+    path is prepended to the file names to give a relative file path.
+    If \code{FALSE}, the file names (rather than paths) are returned.}
 }
 \description{
-Construct a write only connection into an archive
+Construct a write only connection to a new archive
 }

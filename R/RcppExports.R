@@ -9,11 +9,15 @@ read_connection <- function(archive_filename, filename, sz = 16384L) {
     .Call('archive_read_connection', PACKAGE = 'archive', archive_filename, filename, sz)
 }
 
-write_connection <- function(archive_filename, filename, sz = 16384L) {
-    .Call('archive_write_connection', PACKAGE = 'archive', archive_filename, filename, sz)
+write_file_connection <- function(filename, filters) {
+    .Call('archive_write_file_connection', PACKAGE = 'archive', filename, filters)
 }
 
 write_files <- function(archive_filename, files, sz = 16384L) {
     .Call('archive_write_files', PACKAGE = 'archive', archive_filename, files, sz)
+}
+
+write_connection <- function(archive_filename, filename, sz = 16384L) {
+    .Call('archive_write_connection', PACKAGE = 'archive', archive_filename, filename, sz)
 }
 

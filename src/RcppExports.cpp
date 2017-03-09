@@ -29,16 +29,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// write_connection
-SEXP write_connection(const std::string& archive_filename, const std::string& filename, size_t sz);
-RcppExport SEXP archive_write_connection(SEXP archive_filenameSEXP, SEXP filenameSEXP, SEXP szSEXP) {
+// write_file_connection
+SEXP write_file_connection(const std::string& filename, SEXP filters);
+RcppExport SEXP archive_write_file_connection(SEXP filenameSEXP, SEXP filtersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string& >::type archive_filename(archive_filenameSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type filename(filenameSEXP);
-    Rcpp::traits::input_parameter< size_t >::type sz(szSEXP);
-    rcpp_result_gen = Rcpp::wrap(write_connection(archive_filename, filename, sz));
+    Rcpp::traits::input_parameter< SEXP >::type filters(filtersSEXP);
+    rcpp_result_gen = Rcpp::wrap(write_file_connection(filename, filters));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -52,6 +51,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type files(filesSEXP);
     Rcpp::traits::input_parameter< size_t >::type sz(szSEXP);
     rcpp_result_gen = Rcpp::wrap(write_files(archive_filename, files, sz));
+    return rcpp_result_gen;
+END_RCPP
+}
+// write_connection
+SEXP write_connection(const std::string& archive_filename, const std::string& filename, size_t sz);
+RcppExport SEXP archive_write_connection(SEXP archive_filenameSEXP, SEXP filenameSEXP, SEXP szSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type archive_filename(archive_filenameSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< size_t >::type sz(szSEXP);
+    rcpp_result_gen = Rcpp::wrap(write_connection(archive_filename, filename, sz));
     return rcpp_result_gen;
 END_RCPP
 }

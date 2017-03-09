@@ -16,12 +16,6 @@
 extern "C" {
 #endif
 
-#if defined(R_VERSION) && R_VERSION >= R_Version(3, 3, 0)
-static Rconnection get_connection(SEXP con) {
-  return R_GetConnection(con);
-}
-#endif
-
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
 typedef struct {

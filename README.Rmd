@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
 dir <- tempfile()
 dir.create(dir)
 knitr::opts_knit$set(root.dir = dir)
+options(tibble.print_min = 4L)
 library(archive)
 ```
 
@@ -38,18 +39,20 @@ devtools::install_github("jimhester/archive")
 ### Single file archives
 
 ```{r}
+library(readr) # read_csv(), write_csv(), cols()
+
 # Write a single dataset to zip
-readr::write_csv(mtcars, archive_write("mtcars.zip", "mtcars.csv"))
+write_csv(mtcars, archive_write("mtcars.zip", "mtcars.csv"))
 
 # Read the data back, by default the first file is read from the archive.
-readr::read_csv(archive_read("mtcars.zip"))
+read_csv(archive_read("mtcars.zip"), col_types = cols())
 
 # Also supports archiving and compression together
 # Write a single dataset to zip
-readr::write_csv(mtcars, archive_write("mtcars.tar.gz", "mtcars.csv"))
+write_csv(mtcars, archive_write("mtcars.tar.gz", "mtcars.csv"))
 
 # Read the data back
-readr::read_csv(archive_read("mtcars.tar.gz"))
+read_csv(archive_read("mtcars.tar.gz"), col_types = cols())
 
 # Archive file sizes
 file.size(c("mtcars.zip", "mtcars.tar.gz"))
@@ -59,9 +62,9 @@ file.size(c("mtcars.zip", "mtcars.tar.gz"))
 
 ```{r}
 # Write a few files to the temp directory
-readr::write_csv(iris, "iris.csv")
-readr::write_csv(mtcars, "mtcars.csv")
-readr::write_csv(airquality, "airquality.csv")
+write_csv(iris, "iris.csv")
+write_csv(mtcars, "mtcars.csv")
+write_csv(airquality, "airquality.csv")
 
 # Add them to a new archive
 archive_write_files("data.tar.xz", c("iris.csv", "mtcars.csv", "airquality.csv"))
@@ -71,7 +74,7 @@ a <- archive("data.tar.xz")
 a
 
 # Read a specific file from the archive
-readr::read_csv(archive_read(a, "mtcars.csv"))
+read_csv(archive_read(a, "mtcars.csv"), col_types = cols())
 ```
 
 ### Regular files (with compression)
@@ -79,5 +82,5 @@ readr::read_csv(archive_read(a, "mtcars.csv"))
 
 ```{r}
 # Write bzip2, base 64 encoded data
-readr::write_csv(mtcars, file_write("mtcars.bz2", c("b64encode", "bzip2")))
+write_csv(mtcars, file_write("mtcars.bz2", c("b64encode", "bzip2")))
 ```

@@ -23,74 +23,36 @@ Example
 ### Single file archives
 
 ``` r
+library(readr) # read_csv(), write_csv(), cols()
+
 # Write a single dataset to zip
-readr::write_csv(mtcars, archive_write("mtcars.zip", "mtcars.csv"))
+write_csv(mtcars, archive_write("mtcars.zip", "mtcars.csv"))
 
 # Read the data back, by default the first file is read from the archive.
-readr::read_csv(archive_read("mtcars.zip"))
-#> Parsed with column specification:
-#> cols(
-#>   mpg = col_double(),
-#>   cyl = col_integer(),
-#>   disp = col_double(),
-#>   hp = col_integer(),
-#>   drat = col_double(),
-#>   wt = col_double(),
-#>   qsec = col_double(),
-#>   vs = col_integer(),
-#>   am = col_integer(),
-#>   gear = col_integer(),
-#>   carb = col_integer()
-#> )
+read_csv(archive_read("mtcars.zip"), col_types = cols())
 #> # A tibble: 32 × 11
-#>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>    <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
-#> 1   21.0     6 160.0   110  3.90 2.620 16.46     0     1     4     4
-#> 2   21.0     6 160.0   110  3.90 2.875 17.02     0     1     4     4
-#> 3   22.8     4 108.0    93  3.85 2.320 18.61     1     1     4     1
-#> 4   21.4     6 258.0   110  3.08 3.215 19.44     1     0     3     1
-#> 5   18.7     8 360.0   175  3.15 3.440 17.02     0     0     3     2
-#> 6   18.1     6 225.0   105  2.76 3.460 20.22     1     0     3     1
-#> 7   14.3     8 360.0   245  3.21 3.570 15.84     0     0     3     4
-#> 8   24.4     4 146.7    62  3.69 3.190 20.00     1     0     4     2
-#> 9   22.8     4 140.8    95  3.92 3.150 22.90     1     0     4     2
-#> 10  19.2     6 167.6   123  3.92 3.440 18.30     1     0     4     4
-#> # ... with 22 more rows
+#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+#>   <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
+#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
+#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
+#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
+#> 4  21.4     6   258   110  3.08 3.215 19.44     1     0     3     1
+#> # ... with 28 more rows
 
 # Also supports archiving and compression together
 # Write a single dataset to zip
-readr::write_csv(mtcars, archive_write("mtcars.tar.gz", "mtcars.csv"))
+write_csv(mtcars, archive_write("mtcars.tar.gz", "mtcars.csv"))
 
 # Read the data back
-readr::read_csv(archive_read("mtcars.tar.gz"))
-#> Parsed with column specification:
-#> cols(
-#>   mpg = col_double(),
-#>   cyl = col_integer(),
-#>   disp = col_double(),
-#>   hp = col_integer(),
-#>   drat = col_double(),
-#>   wt = col_double(),
-#>   qsec = col_double(),
-#>   vs = col_integer(),
-#>   am = col_integer(),
-#>   gear = col_integer(),
-#>   carb = col_integer()
-#> )
+read_csv(archive_read("mtcars.tar.gz"), col_types = cols())
 #> # A tibble: 32 × 11
-#>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>    <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
-#> 1   21.0     6 160.0   110  3.90 2.620 16.46     0     1     4     4
-#> 2   21.0     6 160.0   110  3.90 2.875 17.02     0     1     4     4
-#> 3   22.8     4 108.0    93  3.85 2.320 18.61     1     1     4     1
-#> 4   21.4     6 258.0   110  3.08 3.215 19.44     1     0     3     1
-#> 5   18.7     8 360.0   175  3.15 3.440 17.02     0     0     3     2
-#> 6   18.1     6 225.0   105  2.76 3.460 20.22     1     0     3     1
-#> 7   14.3     8 360.0   245  3.21 3.570 15.84     0     0     3     4
-#> 8   24.4     4 146.7    62  3.69 3.190 20.00     1     0     4     2
-#> 9   22.8     4 140.8    95  3.92 3.150 22.90     1     0     4     2
-#> 10  19.2     6 167.6   123  3.92 3.440 18.30     1     0     4     4
-#> # ... with 22 more rows
+#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+#>   <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
+#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
+#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
+#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
+#> 4  21.4     6   258   110  3.08 3.215 19.44     1     0     3     1
+#> # ... with 28 more rows
 
 # Archive file sizes
 file.size(c("mtcars.zip", "mtcars.tar.gz"))
@@ -101,9 +63,9 @@ file.size(c("mtcars.zip", "mtcars.tar.gz"))
 
 ``` r
 # Write a few files to the temp directory
-readr::write_csv(iris, "iris.csv")
-readr::write_csv(mtcars, "mtcars.csv")
-readr::write_csv(airquality, "airquality.csv")
+write_csv(iris, "iris.csv")
+write_csv(mtcars, "mtcars.csv")
+write_csv(airquality, "airquality.csv")
 
 # Add them to a new archive
 archive_write_files("data.tar.xz", c("iris.csv", "mtcars.csv", "airquality.csv"))
@@ -114,40 +76,20 @@ a
 #> # A tibble: 3 × 3
 #>             path  size                date
 #>            <chr> <dbl>              <dttm>
-#> 1       iris.csv  3716 2017-03-09 17:35:42
-#> 2     mtcars.csv  1281 2017-03-09 17:35:42
-#> 3 airquality.csv  2890 2017-03-09 17:35:42
+#> 1       iris.csv  3716 2017-03-09 18:01:22
+#> 2     mtcars.csv  1281 2017-03-09 18:01:22
+#> 3 airquality.csv  2890 2017-03-09 18:01:22
 
 # Read a specific file from the archive
-readr::read_csv(archive_read(a, "mtcars.csv"))
-#> Parsed with column specification:
-#> cols(
-#>   mpg = col_double(),
-#>   cyl = col_integer(),
-#>   disp = col_double(),
-#>   hp = col_integer(),
-#>   drat = col_double(),
-#>   wt = col_double(),
-#>   qsec = col_double(),
-#>   vs = col_integer(),
-#>   am = col_integer(),
-#>   gear = col_integer(),
-#>   carb = col_integer()
-#> )
+read_csv(archive_read(a, "mtcars.csv"), col_types = cols())
 #> # A tibble: 32 × 11
-#>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>    <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
-#> 1   21.0     6 160.0   110  3.90 2.620 16.46     0     1     4     4
-#> 2   21.0     6 160.0   110  3.90 2.875 17.02     0     1     4     4
-#> 3   22.8     4 108.0    93  3.85 2.320 18.61     1     1     4     1
-#> 4   21.4     6 258.0   110  3.08 3.215 19.44     1     0     3     1
-#> 5   18.7     8 360.0   175  3.15 3.440 17.02     0     0     3     2
-#> 6   18.1     6 225.0   105  2.76 3.460 20.22     1     0     3     1
-#> 7   14.3     8 360.0   245  3.21 3.570 15.84     0     0     3     4
-#> 8   24.4     4 146.7    62  3.69 3.190 20.00     1     0     4     2
-#> 9   22.8     4 140.8    95  3.92 3.150 22.90     1     0     4     2
-#> 10  19.2     6 167.6   123  3.92 3.440 18.30     1     0     4     4
-#> # ... with 22 more rows
+#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+#>   <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
+#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
+#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
+#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
+#> 4  21.4     6   258   110  3.08 3.215 19.44     1     0     3     1
+#> # ... with 28 more rows
 ```
 
 ### Regular files (with compression)
@@ -156,5 +98,5 @@ readr::read_csv(archive_read(a, "mtcars.csv"))
 
 ``` r
 # Write bzip2, base 64 encoded data
-readr::write_csv(mtcars, file_write("mtcars.bz2", c("b64encode", "bzip2")))
+write_csv(mtcars, file_write("mtcars.bz2", c("b64encode", "bzip2")))
 ```

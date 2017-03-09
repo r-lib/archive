@@ -2,7 +2,7 @@
 #include <Rcpp.h>
 #include <fcntl.h>
 
-char * basename (const char * filename)
+const char * my_basename (const char * filename)
 {
   char *p = strrchr (filename, '/');
   return p ? p + 1 : (char *) filename;
@@ -21,7 +21,7 @@ static size_t rchive_write_data(const void *contents, size_t sz, size_t n, Rconn
 
 std::string scratch_file(const char* filename) {
   static Rcpp::Function tempdir("tempdir", R_BaseEnv);
-  std::string out = std::string(CHAR(STRING_ELT(tempdir(), 0))) + '/' + basename(filename);
+  std::string out = std::string(CHAR(STRING_ELT(tempdir(), 0))) + '/' + my_basename(filename);
   return out;
 }
 

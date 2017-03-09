@@ -26,10 +26,7 @@ ARFLAGS=$(ARFLAGS) \
 --disable-bsdtar \
 --disable-bsdcat \
 --disable-bsdcpio \
---disable-maintainer-mode \
---without-nettle \
---without-xml2 \
---without-expat)
+--disable-maintainer-mode)
 
 libarchive: libarchive-3.3.1/Makefile
 	(cd libarchive-3.3.1 && \

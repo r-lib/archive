@@ -87,6 +87,14 @@ file_write <- function(file, type) {
   write_file_connection(file, type)
 }
 
+file_read <- function(file) {
+  if (!is.character(file) || length(file) != 1) {
+    stop("`file` must be a length one character vector", call. = FALSE)
+  }
+
+  read_file_connection(file)
+}
+
 #' Add files to a new archive
 #'
 #' `archive_write_files()` adds one or more files to a new archive.

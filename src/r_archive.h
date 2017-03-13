@@ -31,6 +31,11 @@ typedef struct {
   size_t size;
 } rchive;
 
+size_t pop(void *target, size_t max, rchive *r);
+
+void copy_data(rchive *r);
+
 #ifdef __cplusplus
 }
 #endif
+

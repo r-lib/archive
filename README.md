@@ -76,9 +76,9 @@ a
 #> # A tibble: 3 × 3
 #>             path  size                date
 #>            <chr> <dbl>              <dttm>
-#> 1       iris.csv  3716 2017-03-09 18:01:22
-#> 2     mtcars.csv  1281 2017-03-09 18:01:22
-#> 3 airquality.csv  2890 2017-03-09 18:01:22
+#> 1       iris.csv  3716 2017-03-14 10:20:02
+#> 2     mtcars.csv  1281 2017-03-14 10:20:02
+#> 3 airquality.csv  2890 2017-03-14 10:20:02
 
 # Read a specific file from the archive
 read_csv(archive_read(a, "mtcars.csv"), col_types = cols())
@@ -94,9 +94,20 @@ read_csv(archive_read(a, "mtcars.csv"), col_types = cols())
 
 ### Regular files (with compression)
 
-`file_write()` returns a connection to filtered by one or more compressions or encodings.
+`file_write()` returns a connection to filtered by one or more compressions or encodings. `file_read()` reads a compressed file, automatically detecting the compression used.
 
 ``` r
 # Write bzip2, base 64 encoded data
 write_csv(mtcars, file_write("mtcars.bz2", c("b64encode", "bzip2")))
+
+# Read it back
+read_csv(file_read("mtcars.bz2"), col_types = cols())
+#> # A tibble: 32 × 11
+#>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+#>   <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
+#> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
+#> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
+#> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
+#> 4  21.4     6   258   110  3.08 3.215 19.44     1     0     3     1
+#> # ... with 28 more rows
 ```

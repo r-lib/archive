@@ -10,7 +10,7 @@ static Rboolean file_read_open(Rconnection con) {
   archive_read_support_filter_all(r->ar);
   archive_read_support_format_raw(r->ar);
 
-  response = archive_read_open_filename(r->ar, r->filename, 16384);
+  response = archive_read_open_filename(r->ar, r->filename, r->limit);
   if (response != ARCHIVE_OK) {
     Rcpp::stop(archive_error_string(r->ar));
   }
@@ -18,6 +18,10 @@ static Rboolean file_read_open(Rconnection con) {
   if (response != ARCHIVE_OK) {
     Rcpp::stop(archive_error_string(r->ar));
   }
+
+  r->size = archive_entry_size(r->entry);
+  r->cur = r->buf;
+  r->has_more = 1;
   copy_data(r);
 
   con->isopen = TRUE;
@@ -44,7 +48,6 @@ static size_t file_read_data(void *target, size_t sz, size_t ni, Rconnection con
 void file_read_close(Rconnection con) {
   rchive *r = (rchive *) con->private_ptr;
 
-  archive_entry_free(r->entry);
   archive_read_free(r->ar);
   con->isopen = FALSE;
 }
@@ -60,12 +63,15 @@ void file_read_destroy(Rconnection con) {
 // Get a connection to a single non-archive file, optionally with one or more
 // filters.
 // [[Rcpp::export]]
-SEXP read_file_connection(const std::string & filename) {
+SEXP read_file_connection(const std::string & filename, size_t sz = 16384) {
   Rconnection con;
   SEXP rc = PROTECT(R_new_custom_connection("file_input", "wb", "archive", &con));
 
   /* Setup archive */
   rchive *r = (rchive *) malloc(sizeof(rchive *));
+
+  r->limit = sz;
+  r->buf = (char *) malloc(r->limit);
 
   r->filename = (char *) malloc(strlen(filename.c_str()) + 1);
   strcpy(r->filename, filename.c_str());
@@ -73,9 +79,9 @@ SEXP read_file_connection(const std::string & filename) {
   /* set connection properties */
   con->incomplete = TRUE;
   con->private_ptr = r;
-  con->canread = FALSE;
+  con->canread = TRUE;
   con->canseek = FALSE;
-  con->canwrite = TRUE;
+  con->canwrite = FALSE;
   con->isopen = FALSE;
   con->blocking = TRUE;
   con->text = FALSE;

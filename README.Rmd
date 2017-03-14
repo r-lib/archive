@@ -78,9 +78,14 @@ read_csv(archive_read(a, "mtcars.csv"), col_types = cols())
 ```
 
 ### Regular files (with compression)
-`file_write()` returns a connection to filtered by one or more compressions or encodings.
+`file_write()` returns a connection to filtered by one or more compressions or
+encodings. `file_read()` reads a compressed file, automatically detecting the
+compression used.
 
 ```{r}
 # Write bzip2, base 64 encoded data
 write_csv(mtcars, file_write("mtcars.bz2", c("b64encode", "bzip2")))
+
+# Read it back
+read_csv(file_read("mtcars.bz2"), col_types = cols())
 ```

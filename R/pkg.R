@@ -64,10 +64,11 @@ archive_write <- function(archive, file) {
   write_connection(archive, file)
 }
 
-#' Construct a write only connection to a (possibly compressed) file.
+#' Construct a file connections for (possibly compressed) files.
 #'
-#' This works similar to R's builtin [connections]. However it supports one on
-#' or more of.
+#' This works similar to R's builtin [connections] for files. However it supports one on
+#' or more of. `file_write()` returns an writable output connection,
+#' `file_read()` returns a readable input connection.
 #'
 #' - uuencode
 #' - gzip compression
@@ -78,6 +79,7 @@ archive_write <- function(archive, file) {
 #' - lzop compression
 #' @inheritParams archive_write
 #' @param type The type of filters to use for the file.
+#' @name file_connections
 #' @export
 file_write <- function(file, type) {
   if (!is.character(file) || length(file) != 1) {
@@ -87,6 +89,8 @@ file_write <- function(file, type) {
   write_file_connection(file, type)
 }
 
+#' @rdname file_connections
+#' @export
 file_read <- function(file) {
   if (!is.character(file) || length(file) != 1) {
     stop("`file` must be a length one character vector", call. = FALSE)

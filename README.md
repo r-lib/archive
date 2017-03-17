@@ -3,7 +3,7 @@
 archive
 =======
 
-[![Travis-CI Build Status](https://travis-ci.org/jimhester/archive.svg?branch=master)](https://travis-ci.org/jimhester/archive)
+[![Travis-CI Build Status](https://travis-ci.org/jimhester/archive.svg?branch=master)](https://travis-ci.org/jimhester/archive) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jimhester/archive?branch=master&svg=true)](https://ci.appveyor.com/project/jimhester/archive)
 
 R bindings to libarchive <http://www.libarchive.org>, providing support for many file archives, including tar, ZIP, 7-zip, RAR, CAB including those compressed by gzip, bzip2, compress, lzma, xz, and others.
 
@@ -76,9 +76,9 @@ a
 #> # A tibble: 3 × 3
 #>             path  size                date
 #>            <chr> <dbl>              <dttm>
-#> 1       iris.csv  3716 2017-03-17 16:29:13
-#> 2     mtcars.csv  1281 2017-03-17 16:29:13
-#> 3 airquality.csv  2890 2017-03-17 16:29:13
+#> 1       iris.csv  3716 2017-03-17 17:42:34
+#> 2     mtcars.csv  1281 2017-03-17 17:42:34
+#> 3 airquality.csv  2890 2017-03-17 17:42:34
 
 # Read a specific file from the archive
 read_csv(archive_read(a, "mtcars.csv"), col_types = cols())

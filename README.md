@@ -56,7 +56,7 @@ read_csv(archive_read("mtcars.tar.gz"), col_types = cols())
 
 # Archive file sizes
 file.size(c("mtcars.zip", "mtcars.tar.gz"))
-#> [1] 738 640
+#> [1] 860 711
 ```
 
 ### Multi file archives
@@ -76,9 +76,9 @@ a
 #> # A tibble: 3 × 3
 #>             path  size                date
 #>            <chr> <dbl>              <dttm>
-#> 1       iris.csv  3716 2017-03-14 10:20:02
-#> 2     mtcars.csv  1281 2017-03-14 10:20:02
-#> 3 airquality.csv  2890 2017-03-14 10:20:02
+#> 1       iris.csv  3716 2017-03-17 16:29:13
+#> 2     mtcars.csv  1281 2017-03-17 16:29:13
+#> 3 airquality.csv  2890 2017-03-17 16:29:13
 
 # Read a specific file from the archive
 read_csv(archive_read(a, "mtcars.csv"), col_types = cols())

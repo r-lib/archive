@@ -4,18 +4,17 @@
 
 static Rboolean file_read_open(Rconnection con) {
   rchive *r = (rchive *) con->private_ptr;
-  int response;
 
   r->ar = archive_read_new();
   archive_read_support_filter_all(r->ar);
   archive_read_support_format_raw(r->ar);
 
-  response = archive_read_open_filename(r->ar, r->filename, r->limit);
-  if (response != ARCHIVE_OK) {
+  r->last_response = archive_read_open_filename(r->ar, r->filename, r->limit);
+  if (r->last_response != ARCHIVE_OK) {
     Rcpp::stop(archive_error_string(r->ar));
   }
-  response = archive_read_next_header(r->ar, &r->entry);
-  if (response != ARCHIVE_OK) {
+  r->last_response = archive_read_next_header(r->ar, &r->entry);
+  if (r->last_response != ARCHIVE_OK) {
     Rcpp::stop(archive_error_string(r->ar));
   }
 
@@ -68,7 +67,7 @@ SEXP read_file_connection(const std::string & filename, size_t sz = 16384) {
   SEXP rc = PROTECT(R_new_custom_connection("file_input", "wb", "archive", &con));
 
   /* Setup archive */
-  rchive *r = (rchive *) malloc(sizeof(rchive *));
+  rchive *r = (rchive *) malloc(sizeof(rchive));
 
   r->limit = sz;
   r->buf = (char *) malloc(r->limit);

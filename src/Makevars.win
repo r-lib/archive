@@ -1,0 +1,21 @@
+CXX_STD = CXX11
+
+PKG_CPPFLAGS= \
+  -I../windows/libarchive-3.2.2/include -I.
+
+PKG_LIBS = \
+  -L../windows/libarchive-3.2.2/lib${R_ARCH} \
+  -larchive -lcrypto -lnettle -lregex -lexpat -llzo2 -llzma -llz4 -lbz2 -lz
+
+
+# Originally from https://github.com/cran/curl/blob/3897ba5203dee940e2ce40ac23a0d1106da93df6/src/Makevars.win
+
+all: winlibs $(OBJECTS) $(SHLIB)
+
+clean:
+	rm -f $(OBJECTS) $(SHLIB)
+
+winlibs:
+	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
+
+.PHONY: all winlibs clean

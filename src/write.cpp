@@ -48,6 +48,7 @@ void rchive_write_close(Rconnection con) {
   char buf[8192];
   size_t bytes_read;
   rchive *r = (rchive *) con->private_ptr;
+  int response;
 
   /* Close scratch file */
   archive_write_finish_entry(r->ar);
@@ -60,15 +61,19 @@ void rchive_write_close(Rconnection con) {
   struct archive *out;
   struct archive_entry *entry;
   in = archive_read_disk_new();
+  archive_read_disk_set_standard_lookup(in);
   entry = archive_entry_new();
 
   std::string scratch = scratch_file(r->filename);
   int fd = open(scratch.c_str(), O_RDONLY);
   if (fd < 0) {
-    Rcpp::stop("Could not open scratch file");
+    Rf_error("Could not open scratch file");
   }
-  archive_read_disk_entry_from_file(in, entry, fd, NULL);
-  archive_entry_set_pathname(entry, r->filename);
+  archive_entry_copy_pathname(entry, scratch.c_str());
+  response = archive_read_disk_entry_from_file(in, entry, fd, NULL);
+  if (response != ARCHIVE_OK) {
+    Rf_error(archive_error_string(in));
+  }
 
   out = archive_write_new();
   /* Set archive format and filter according to output file extension.
@@ -78,15 +83,24 @@ void rchive_write_close(Rconnection con) {
     archive_write_add_filter_gzip(out);
     archive_write_set_format_ustar(out);
   }
-  archive_write_open_filename(out, r->archive_filename);
-  archive_write_header(out, entry);
+  response = archive_write_open_filename(out, r->archive_filename);
+  if (response != ARCHIVE_OK) {
+    Rf_error(archive_error_string(out));
+  }
+  response = archive_write_header(out, entry);
+  if (response != ARCHIVE_OK) {
+    Rf_error(archive_error_string(out));
+  }
 
   while ((bytes_read = read(fd, buf, sizeof(buf))) > 0) {
-    archive_write_data(out, buf, bytes_read);
+    int bytes_out = archive_write_data(out, buf, bytes_read);
+    if (bytes_out < 0) {
+      Rf_error("Error writing to '%s'", r->archive_filename);
+    }
   }
   close(fd);
-  archive_write_free(out);
   archive_entry_free(entry);
+  archive_write_free(out);
   archive_read_free(in);
 
   unlink(scratch.c_str());

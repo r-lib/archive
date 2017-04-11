@@ -5,6 +5,10 @@ archive_metadata <- function(path) {
     .Call('archive_archive_metadata', PACKAGE = 'archive', path)
 }
 
+archive_extract_ <- function(archive_filename, sz = 16384L) {
+    invisible(.Call('archive_archive_extract_', PACKAGE = 'archive', archive_filename, sz))
+}
+
 read_file_connection <- function(filename, sz = 16384L) {
     .Call('archive_read_file_connection', PACKAGE = 'archive', filename, sz)
 }

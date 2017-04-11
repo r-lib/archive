@@ -20,7 +20,32 @@ archive <- function(path) {
   res
 }
 
-#' Construct a read only connection into an archive
+#' Extract contents of an archive
+#'
+#' @param archive An archive object or file path to the archive location.
+#' @param dir Directory location to extract archive contents, will be created
+#' if it does not exist.
+#' @inheritParams
+#' @export
+archive_extract <- function(archive, dir = ".") {
+  if (is.character(archive) && length(archive) == 1) {
+    archive <- archive(archive)
+  }
+  if (!inherits(archive, "archive")) {
+    stop("`archive` must be a archive object or character", call. = FALSE)
+  }
+
+  if (!identical(dir, ".")) {
+    if (!dir.exists(dir)) {
+      dir.create(dir)
+    }
+    old <- setwd(dir)
+    on.exit(setwd(old))
+  }
+  archive_extract_(attr(archive, "path"))
+}
+
+#' Construct a read only connection into an archive file
 #'
 #' @param archive An archive object or character vector to the archive
 #' @param file The file to open the connection to. Can also be an numeric index

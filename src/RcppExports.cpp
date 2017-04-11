@@ -16,6 +16,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// archive_extract_
+void archive_extract_(const std::string& archive_filename, size_t sz);
+RcppExport SEXP archive_archive_extract_(SEXP archive_filenameSEXP, SEXP szSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type archive_filename(archive_filenameSEXP);
+    Rcpp::traits::input_parameter< size_t >::type sz(szSEXP);
+    archive_extract_(archive_filename, sz);
+    return R_NilValue;
+END_RCPP
+}
 // read_file_connection
 SEXP read_file_connection(const std::string& filename, size_t sz);
 RcppExport SEXP archive_read_file_connection(SEXP filenameSEXP, SEXP szSEXP) {

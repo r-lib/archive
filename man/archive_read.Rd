@@ -2,7 +2,7 @@
 % Please edit documentation in R/pkg.R
 \name{archive_read}
 \alias{archive_read}
-\title{Construct a read only connection into an archive}
+\title{Construct a read only connection into an archive file}
 \usage{
 archive_read(archive, file = 1L)
 }
@@ -13,5 +13,5 @@ archive_read(archive, file = 1L)
 into the `archive()` data.frame.}
 }
 \description{
-Construct a read only connection into an archive
+Construct a read only connection into an archive file
 }

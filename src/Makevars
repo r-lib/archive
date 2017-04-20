@@ -7,11 +7,7 @@ all: $(OBJECTS) $(SHLIB)
   @echo $(PKG_CXXFLAGS)
   @echo $(PKG_LIBS)
 
-$(OBJECTS): info libarchive
-
-info: libarchive
-	@echo "# PKG_CXXFLAGS: '$(PKG_CXXFLAGS)'"
-	@echo "# PKG_LIBS: '$(PKG_LIBS)'"
+$(OBJECTS): libarchive.la libarchive_fe.la
 
 libarchive-3.3.1/Makefile:
 	(cd libarchive-3.3.1 && \
@@ -28,7 +24,7 @@ ARFLAGS=$(ARFLAGS) \
 --disable-bsdcpio \
 --disable-maintainer-mode)
 
-libarchive: libarchive-3.3.1/Makefile
+libarchive.la libarchive_fe.la: libarchive-3.3.1/Makefile
 	(cd libarchive-3.3.1 && \
 make libarchive.la libarchive_fe.la && \
 make install-includeHEADERS install-libLTLIBRARIES install-pkgconfigDATA)
@@ -37,4 +33,4 @@ clean:
 	rm -f $(OBJECTS) $(SHLIB)
 	rm -rf include lib
 	(cd libarchive-3.3.1 && \
-make distclean)
+make clean)

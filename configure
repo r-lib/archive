@@ -36,6 +36,11 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     curl -sfL "https://jeroen.github.io/autobrew/default" > autobrew
     source autobrew
   fi
+  if [ ! $(command -v pkg-config) ]; then
+    # Install pkgconfig and use it to set cflags and libs
+    BREW="$BREWDIR/bin/brew"
+    $BREW install pkgconfig
+  fi
   PKG_CFLAGS=$(PKG_CONFIG_PATH="$BREWDIR/opt/$PKG_BREW_NAME/lib/pkgconfig" pkg-config $PKG_BREW_NAME --cflags)
   PKG_LIBS=$(PKG_CONFIG_PATH="$BREWDIR/opt/$PKG_BREW_NAME/lib/pkgconfig" pkg-config $PKG_BREW_NAME --libs --static)
 fi

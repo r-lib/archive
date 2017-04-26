@@ -5,6 +5,14 @@ archive_metadata <- function(path) {
     .Call('archive_archive_metadata', PACKAGE = 'archive', path)
 }
 
+archive_filters <- function() {
+    .Call('archive_archive_filters', PACKAGE = 'archive')
+}
+
+archive_formats <- function() {
+    .Call('archive_archive_formats', PACKAGE = 'archive')
+}
+
 archive_extract_ <- function(archive_filename, sz = 16384L) {
     invisible(.Call('archive_archive_extract_', PACKAGE = 'archive', archive_filename, sz))
 }
@@ -21,11 +29,11 @@ write_file_connection <- function(filename, filters) {
     .Call('archive_write_file_connection', PACKAGE = 'archive', filename, filters)
 }
 
-write_files <- function(archive_filename, files, sz = 16384L) {
-    .Call('archive_write_files', PACKAGE = 'archive', archive_filename, files, sz)
+write_files <- function(archive_filename, files, format, filter, sz = 16384L) {
+    .Call('archive_write_files', PACKAGE = 'archive', archive_filename, files, format, filter, sz)
 }
 
-write_connection <- function(archive_filename, filename, sz = 16384L) {
-    .Call('archive_write_connection', PACKAGE = 'archive', archive_filename, filename, sz)
+write_connection <- function(archive_filename, filename, format, filter, sz = 16384L) {
+    .Call('archive_write_connection', PACKAGE = 'archive', archive_filename, filename, format, filter, sz)
 }
 

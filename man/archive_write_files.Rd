@@ -4,13 +4,17 @@
 \alias{archive_write_files}
 \title{Add files to a new archive}
 \usage{
-archive_write_files(archive, files)
+archive_write_files(archive, files, format = NULL, filter = NULL)
 }
 \arguments{
-\item{archive}{The archive filename, extension will automatically determine
-the archive format and filters (if any).}
+\item{archive}{The archive filename, if filter and format are both `NULL` the file extension will
+be used to determine the archive format and filters, if any.}
 
 \item{files}{One or more files to add to the archive.}
+
+\item{format}{`character(1)` default: `NULL` The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
+
+\item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 }
 \description{
 `archive_write_files()` adds one or more files to a new archive.

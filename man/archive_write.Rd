@@ -5,15 +5,19 @@
 \alias{archive_write_dir}
 \title{Construct a write only connection to a new archive}
 \usage{
-archive_write(archive, file)
+archive_write(archive, file, format = NULL, filter = NULL)
 
 archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = TRUE)
 }
 \arguments{
-\item{archive}{The archive filename, the extension(s) given will
-automatically determine the archive type and compression used.}
+\item{archive}{The archive filename, if filter and format are both `NULL` the file extension will
+be used to determine the archive format and filters, if any.}
 
 \item{file}{The filename within the archive.}
+
+\item{format}{`character(1)` default: `NULL` The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
+
+\item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 
 \item{dir}{The directory of files to add}
 

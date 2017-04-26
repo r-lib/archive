@@ -20,6 +20,9 @@ extern "C" {
 
 typedef struct {
   char* archive_filename;
+  int format;
+  int filter[5];
+  size_t num_filters;
   char* filename;
   char* buf;
   char* cur;

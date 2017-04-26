@@ -100,21 +100,27 @@ SEXP write_file_connection(const std::string & filename, SEXP filters) {
 
 // Write files already on disk to a new archive
 // [[Rcpp::export]]
-SEXP write_files(const std::string & archive_filename, Rcpp::CharacterVector files, size_t sz = 16384) {
+SEXP write_files(const std::string & archive_filename, Rcpp::CharacterVector files, int format, Rcpp::NumericVector filter, size_t sz = 16384) {
   struct archive *a;
   struct archive_entry *entry;
   struct stat st;
   char buff[8192];
   int len;
   int fd;
+  int response;
 
   a = archive_write_new();
-  /* Set archive format and filter according to output file extension.
-   * If it fails, set default format. Platform depended function.
-   * See supported formats in archive_write_set_format_filter_by_ext.c */
-  if (archive_write_set_format_filter_by_ext(a, archive_filename.c_str()) != ARCHIVE_OK)  {
-    archive_write_add_filter_gzip(a);
-    archive_write_set_format_ustar(a);
+
+  response = archive_write_set_format(a, format);
+  if (response != ARCHIVE_OK) {
+    Rf_error(archive_error_string(a));
+  }
+
+  for (int i = 0;i < filter.length();++i) {
+    response = archive_write_add_filter(a, filter[i]);
+    if (response != ARCHIVE_OK) {
+      Rf_error(archive_error_string(a));
+    }
   }
 
   archive_write_open_filename(a, archive_filename.c_str());

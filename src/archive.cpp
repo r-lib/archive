@@ -42,3 +42,40 @@ Rcpp::List archive_metadata(const std::string & path) {
 
   return out;
 }
+
+// [[Rcpp::export]]
+Rcpp::IntegerVector archive_filters() {
+  Rcpp::IntegerVector out = Rcpp::IntegerVector::create(
+      Rcpp::_["none"] = ARCHIVE_FILTER_NONE,
+      Rcpp::_["gzip"] = ARCHIVE_FILTER_GZIP,
+      Rcpp::_["bzip2"] = ARCHIVE_FILTER_BZIP2,
+      Rcpp::_["compress"] = ARCHIVE_FILTER_COMPRESS,
+      Rcpp::_["lzma"] = ARCHIVE_FILTER_LZMA,
+      Rcpp::_["xz"] = ARCHIVE_FILTER_XZ,
+      Rcpp::_["uuencoded"] = ARCHIVE_FILTER_RPM,
+      Rcpp::_["lzip"] = ARCHIVE_FILTER_LZIP,
+      Rcpp::_["lrzip"] = ARCHIVE_FILTER_LRZIP,
+      Rcpp::_["lzop"] = ARCHIVE_FILTER_LZOP,
+      Rcpp::_["grzip"] = ARCHIVE_FILTER_GRZIP,
+      Rcpp::_["lz4"] = ARCHIVE_FILTER_LZ4
+      );
+  return out;
+}
+
+// [[Rcpp::export]]
+Rcpp::IntegerVector archive_formats() {
+  Rcpp::IntegerVector out = Rcpp::IntegerVector::create(
+      Rcpp::_["7zip"] = ARCHIVE_FORMAT_7ZIP,
+      Rcpp::_["ar"] = ARCHIVE_FORMAT_AR,
+      Rcpp::_["cab"] = ARCHIVE_FORMAT_CAB,
+      Rcpp::_["cpio"] = ARCHIVE_FORMAT_CPIO,
+      Rcpp::_["iso9660"] = ARCHIVE_FORMAT_ISO9660,
+      Rcpp::_["lha"] = ARCHIVE_FORMAT_LHA,
+      Rcpp::_["mtree"] = ARCHIVE_FORMAT_MTREE,
+      Rcpp::_["rar"] = ARCHIVE_FORMAT_RAR,
+      Rcpp::_["tar"] = ARCHIVE_FORMAT_TAR,
+      Rcpp::_["xar"] = ARCHIVE_FORMAT_XAR,
+      Rcpp::_["zip"] = ARCHIVE_FORMAT_ZIP
+      );
+  return out;
+}

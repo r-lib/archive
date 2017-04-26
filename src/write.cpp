@@ -76,13 +76,19 @@ void rchive_write_close(Rconnection con) {
   }
 
   out = archive_write_new();
-  /* Set archive format and filter according to output file extension.
-   * If it fails, set default format. Platform depended function.
-   * See supported formats in archive_write_set_format_filter_by_ext.c */
-  if (archive_write_set_format_filter_by_ext(out, r->archive_filename) != ARCHIVE_OK)  {
-    archive_write_add_filter_gzip(out);
-    archive_write_set_format_ustar(out);
+
+  response = archive_write_set_format(out, r->format);
+  if (response != ARCHIVE_OK) {
+    Rf_error(archive_error_string(out));
   }
+
+  for (int i = 0;i < r->num_filters;++i) {
+    response = archive_write_add_filter(out, r->filter[i]);
+    if (response != ARCHIVE_OK) {
+      Rf_error(archive_error_string(out));
+    }
+  }
+
   response = archive_write_open_filename(out, r->archive_filename);
   if (response != ARCHIVE_OK) {
     Rf_error(archive_error_string(out));
@@ -121,7 +127,7 @@ void rchive_write_destroy(Rconnection con) {
 // to be written before the data is added, and we do not know the size of the
 // data until it has been written.
 // [[Rcpp::export]]
-SEXP write_connection(const std::string & archive_filename, const std::string & filename, size_t sz = 16384) {
+SEXP write_connection(const std::string & archive_filename, const std::string & filename, int format, Rcpp::NumericVector filter, size_t sz = 16384) {
   Rconnection con;
   SEXP rc = PROTECT(R_new_custom_connection("input", "wb", "archive", &con));
 
@@ -134,6 +140,17 @@ SEXP write_connection(const std::string & archive_filename, const std::string & 
 
   r->archive_filename = (char *) malloc(strlen(archive_filename.c_str()) + 1);
   strcpy(r->archive_filename, archive_filename.c_str());
+
+  r->format = format;
+
+  r->num_filters = filter.length();
+
+  if (r->num_filters >= 5) {
+    Rcpp::stop("Can only have up to 5 filters");
+  }
+  for (int i = 0; i < r->num_filters;++i) {
+    r->filter[i] = filter[i];
+  }
 
   r->filename = (char *) malloc(strlen(filename.c_str()) + 1);
   strcpy(r->filename, filename.c_str());

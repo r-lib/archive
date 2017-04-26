@@ -4,7 +4,7 @@
 // [[Rcpp::export]]
 Rcpp::List archive_metadata(const std::string & path) {
   std::vector<std::string> paths;
-  std::vector<la_int64_t> sizes;
+  std::vector<__LA_INT64_T> sizes;
   std::vector<time_t> dates;
 
   struct archive *a;

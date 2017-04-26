@@ -16,16 +16,18 @@ file_read(file)
 \item{type}{The type of filters to use for the file.}
 }
 \description{
-This works similar to R's builtin [connections] for files. However it supports one on
-or more of. `file_write()` returns an writable output connection,
-`file_read()` returns a readable input connection.
+This works similar to R's builtin [connections] for files. However it
+supports one on or more of the following
 }
 \details{
-- uuencode
+- uuencoded
 - gzip compression
 - bzip2 compression
 - compress/LZW compression
 - lzma, lzip, and xz compression
 - lz4 compression
 - lzop compression
+
+`file_write()` returns an writable output connection,
+`file_read()` returns a readable input connection.
 }

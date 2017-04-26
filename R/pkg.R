@@ -91,17 +91,19 @@ archive_write <- function(archive, file) {
 
 #' Construct a file connections for (possibly compressed) files.
 #'
-#' This works similar to R's builtin [connections] for files. However it supports one on
-#' or more of. `file_write()` returns an writable output connection,
-#' `file_read()` returns a readable input connection.
+#' This works similar to R's builtin [connections] for files. However it
+#' supports one on or more of the following
 #'
-#' - uuencode
+#' - uuencoded
 #' - gzip compression
 #' - bzip2 compression
 #' - compress/LZW compression
 #' - lzma, lzip, and xz compression
 #' - lz4 compression
 #' - lzop compression
+#'
+#' `file_write()` returns an writable output connection,
+#' `file_read()` returns a readable input connection.
 #' @inheritParams archive_write
 #' @param type The type of filters to use for the file.
 #' @name file_connections

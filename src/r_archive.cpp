@@ -10,7 +10,7 @@ size_t pop(void *target, size_t max, rchive *r) {
 
 void copy_data(rchive *r) {
   R_CheckUserInterrupt();
-  la_int64_t offset;
+  __LA_INT64_T offset;
   if(r->last_response != ARCHIVE_EOF) {
 
     /* move existing data to front of buffer (if any) */

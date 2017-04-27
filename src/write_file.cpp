@@ -2,6 +2,7 @@
 #include <Rcpp.h>
 #include <fcntl.h>
 
+#if ARCHIVE_VERSION_NUMBER >= 3001000
 typedef struct {
   archive *ar;
   archive_entry *entry;
@@ -26,10 +27,11 @@ static Rboolean file_write_open(Rconnection con) {
 
   SEXP filters = r->filters;
   for (int i = 0; i < Rf_length(filters); ++i) {
-    const char * filter = CHAR(STRING_ELT(filters, i));
-    int ret = archive_write_add_filter_by_name(r->ar, filter);
+    int filter = INTEGER(filters)[i];
+    int ret = archive_write_add_filter(r->ar, filter);
     if (ret == ARCHIVE_FATAL)  {
-      Rcpp::stop(archive_error_string(r->ar));
+      Rf_error("%i", filter);
+      Rf_error(archive_error_string(r->ar));
     }
   }
   archive_write_set_format_raw(r->ar);
@@ -64,11 +66,15 @@ void file_write_destroy(Rconnection con) {
   free(r->filename);
   free(r);
 }
+#endif
 
 // Get a connection to a single non-archive file, optionally with one or more
 // filters.
 // [[Rcpp::export]]
 SEXP write_file_connection(const std::string & filename, SEXP filters) {
+#if ARCHIVE_VERSION_NUMBER < 3001000
+  Rcpp::stop("This functionality is only available with libarchive >= 3.1.0");
+#else
   Rconnection con;
   SEXP rc = PROTECT(R_new_custom_connection("file_output", "wb", "archive", &con));
 
@@ -96,11 +102,16 @@ SEXP write_file_connection(const std::string & filename, SEXP filters) {
 
   UNPROTECT(1);
   return rc;
+#endif
 }
 
 // Write files already on disk to a new archive
 // [[Rcpp::export]]
 SEXP write_files(const std::string & archive_filename, Rcpp::CharacterVector files, int format, Rcpp::NumericVector filter, size_t sz = 16384) {
+
+#if ARCHIVE_VERSION_NUMBER < 3001000
+  Rcpp::stop("This functionality is only available with libarchive >= 3.1.0");
+#else
   struct archive *a;
   struct archive_entry *entry;
   struct stat st;
@@ -143,4 +154,5 @@ SEXP write_files(const std::string & archive_filename, Rcpp::CharacterVector fil
   archive_write_free(a);
 
   return R_NilValue;
+#endif
 }

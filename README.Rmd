@@ -85,7 +85,7 @@ compression used.
 
 ```{r}
 # Write bzip2, base 64 encoded data
-write_csv(mtcars, file_write("mtcars.bz2", c("b64encode", "bzip2")))
+write_csv(mtcars, file_write("mtcars.bz2", c("uuencode", "bzip2")))
 
 # Read it back
 read_csv(file_read("mtcars.bz2"), col_types = cols())

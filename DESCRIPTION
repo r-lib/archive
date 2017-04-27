@@ -5,7 +5,7 @@ Description: R bindings to libarchive <http://www.libarchive.org>, providing
   those compressed by gzip, bzip2, compress, lzma, xz, and others.
 Version: 0.0.0.9000
 Authors@R: person("Jim", "Hester", email = "james.f.hester@gmail.com", role = c("aut", "cre"))
-Depends: R (>= 3.3.0)
+Depends: R (>= 3.0.0)
 Imports: Rcpp
 License: MIT + file LICENSE
 Encoding: UTF-8

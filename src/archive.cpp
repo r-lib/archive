@@ -52,7 +52,7 @@ Rcpp::IntegerVector archive_filters() {
       Rcpp::_["compress"] = ARCHIVE_FILTER_COMPRESS,
       Rcpp::_["lzma"] = ARCHIVE_FILTER_LZMA,
       Rcpp::_["xz"] = ARCHIVE_FILTER_XZ,
-      Rcpp::_["uuencoded"] = ARCHIVE_FILTER_RPM,
+      Rcpp::_["uuencode"] = ARCHIVE_FILTER_UU,
       Rcpp::_["lzip"] = ARCHIVE_FILTER_LZIP
 #if ARCHIVE_VERSION_NUMBER >= 3001000
       , Rcpp::_["lrzip"] = ARCHIVE_FILTER_LRZIP

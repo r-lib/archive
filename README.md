@@ -56,7 +56,7 @@ read_csv(archive_read("mtcars.tar.gz"), col_types = cols())
 
 # Archive file sizes
 file.size(c("mtcars.zip", "mtcars.tar.gz"))
-#> [1] 860 710
+#> [1] 860 709
 ```
 
 ### Multi file archives
@@ -76,9 +76,9 @@ a
 #> # A tibble: 3 × 3
 #>             path  size                date
 #>            <chr> <dbl>              <dttm>
-#> 1       iris.csv  3716 2017-04-26 16:49:21
-#> 2     mtcars.csv  1281 2017-04-26 16:49:21
-#> 3 airquality.csv  2890 2017-04-26 16:49:21
+#> 1       iris.csv  3716 2017-04-27 09:28:55
+#> 2     mtcars.csv  1281 2017-04-27 09:28:55
+#> 3 airquality.csv  2890 2017-04-27 09:28:55
 
 # Read a specific file from the archive
 read_csv(archive_read(a, "mtcars.csv"), col_types = cols())
@@ -98,7 +98,7 @@ read_csv(archive_read(a, "mtcars.csv"), col_types = cols())
 
 ``` r
 # Write bzip2, base 64 encoded data
-write_csv(mtcars, file_write("mtcars.bz2", c("b64encode", "bzip2")))
+write_csv(mtcars, file_write("mtcars.bz2", c("uuencode", "bzip2")))
 
 # Read it back
 read_csv(file_read("mtcars.bz2"), col_types = cols())

@@ -38,7 +38,10 @@ size_t pop(void *target, size_t max, rchive *r);
 
 void copy_data(rchive *r);
 
+#if ARCHIVE_VERSION_NUMBER < 3001000
+int archive_write_add_filter(struct archive *a, int code);
+#endif
+
 #ifdef __cplusplus
 }
 #endif
-

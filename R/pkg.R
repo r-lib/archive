@@ -100,26 +100,17 @@ archive_write <- function(archive, file, format = NULL, filter = NULL) {
 #' This works similar to R's builtin [connections] for files. However it
 #' supports one on or more of the following
 #'
-#' - uuencoded
-#' - gzip compression
-#' - bzip2 compression
-#' - compress/LZW compression
-#' - lzma, lzip, and xz compression
-#' - lz4 compression
-#' - lzop compression
-#'
 #' `file_write()` returns an writable output connection,
 #' `file_read()` returns a readable input connection.
 #' @inheritParams archive_write
-#' @param type The type of filters to use for the file.
 #' @name file_connections
 #' @export
-file_write <- function(file, type) {
+file_write <- function(file, filter = NULL) {
   if (!is.character(file) || length(file) != 1) {
     stop("`file` must be a length one character vector", call. = FALSE)
   }
 
-  write_file_connection(file, type)
+  write_file_connection(file, archive_filters()[filter])
 }
 
 #' @rdname file_connections

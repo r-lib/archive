@@ -6,28 +6,20 @@
 \alias{file_read}
 \title{Construct a file connections for (possibly compressed) files.}
 \usage{
-file_write(file, type)
+file_write(file, filter = NULL)
 
 file_read(file)
 }
 \arguments{
 \item{file}{The filename within the archive.}
 
-\item{type}{The type of filters to use for the file.}
+\item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 }
 \description{
 This works similar to R's builtin [connections] for files. However it
 supports one on or more of the following
 }
 \details{
-- uuencoded
-- gzip compression
-- bzip2 compression
-- compress/LZW compression
-- lzma, lzip, and xz compression
-- lz4 compression
-- lzop compression
-
 `file_write()` returns an writable output connection,
 `file_read()` returns a readable input connection.
 }

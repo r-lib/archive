@@ -82,8 +82,8 @@ void rchive_write_close(Rconnection con) {
     Rf_error(archive_error_string(out));
   }
 
-  for (size_t i = 0;i < r->num_filters;++i) {
-    response = archive_write_add_filter(out, r->filter[i]);
+  for (size_t i = 0;i < Rf_length(r->filter);++i) {
+    response = archive_write_add_filter(out, INTEGER(r->filter)[i]);
     if (response != ARCHIVE_OK) {
       Rf_error(archive_error_string(out));
     }
@@ -127,7 +127,7 @@ void rchive_write_destroy(Rconnection con) {
 // to be written before the data is added, and we do not know the size of the
 // data until it has been written.
 // [[Rcpp::export]]
-SEXP write_connection(const std::string & archive_filename, const std::string & filename, int format, Rcpp::NumericVector filter, size_t sz = 16384) {
+SEXP write_connection(const std::string & archive_filename, const std::string & filename, int format, SEXP filter, size_t sz = 16384) {
   Rconnection con;
   SEXP rc = PROTECT(R_new_custom_connection("input", "wb", "archive", &con));
 
@@ -143,14 +143,7 @@ SEXP write_connection(const std::string & archive_filename, const std::string & 
 
   r->format = format;
 
-  r->num_filters = filter.length();
-
-  if (r->num_filters >= 5) {
-    Rcpp::stop("Can only have up to 5 filters");
-  }
-  for (size_t i = 0; i < r->num_filters;++i) {
-    r->filter[i] = filter[i];
-  }
+  r->filter = filter;
 
   r->filename = (char *) malloc(strlen(filename.c_str()) + 1);
   strcpy(r->filename, filename.c_str());

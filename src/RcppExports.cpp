@@ -100,7 +100,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // write_connection
-SEXP write_connection(const std::string& archive_filename, const std::string& filename, int format, Rcpp::NumericVector filter, size_t sz);
+SEXP write_connection(const std::string& archive_filename, const std::string& filename, int format, SEXP filter, size_t sz);
 RcppExport SEXP archive_write_connection(SEXP archive_filenameSEXP, SEXP filenameSEXP, SEXP formatSEXP, SEXP filterSEXP, SEXP szSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -108,7 +108,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::string& >::type archive_filename(archive_filenameSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type filename(filenameSEXP);
     Rcpp::traits::input_parameter< int >::type format(formatSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type filter(filterSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type filter(filterSEXP);
     Rcpp::traits::input_parameter< size_t >::type sz(szSEXP);
     rcpp_result_gen = Rcpp::wrap(write_connection(archive_filename, filename, format, filter, sz));
     return rcpp_result_gen;

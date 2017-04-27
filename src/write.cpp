@@ -5,6 +5,9 @@
 
 // Define archive_write_add_filter for older versions
 #if ARCHIVE_VERSION_NUMBER < 3001000
+
+#include <cerrno>
+
 /* A table that maps filter codes to functions. */
 static
 struct { int code; int (*setter)(struct archive *); } codes[] =

@@ -82,7 +82,7 @@ void rchive_write_close(Rconnection con) {
     Rf_error(archive_error_string(out));
   }
 
-  for (int i = 0;i < r->num_filters;++i) {
+  for (size_t i = 0;i < r->num_filters;++i) {
     response = archive_write_add_filter(out, r->filter[i]);
     if (response != ARCHIVE_OK) {
       Rf_error(archive_error_string(out));
@@ -148,7 +148,7 @@ SEXP write_connection(const std::string & archive_filename, const std::string & 
   if (r->num_filters >= 5) {
     Rcpp::stop("Can only have up to 5 filters");
   }
-  for (int i = 0; i < r->num_filters;++i) {
+  for (size_t i = 0; i < r->num_filters;++i) {
     r->filter[i] = filter[i];
   }
 

@@ -1,5 +1,5 @@
 #include "r_archive.h"
-#include <Rcpp.h>
+#include <R_ext/Boolean.h>
 
 /* Read archives
  *

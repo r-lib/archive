@@ -1,6 +1,4 @@
-#include <archive.h>
-#include <archive_entry.h>
-#include "Rcpp.h"
+#include <Rcpp.h>
 
 #define class class_name
 #define private private_ptr
@@ -12,9 +10,17 @@
 #error "Missing or unsupported connection API in R"
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+
+#undef Realloc
+// Also need to undefine the Free macro
+#undef Free
+
+#include <archive.h>
+#include <archive_entry.h>
+
+#undef TRUE
+#undef FALSE
+#include <R_ext/Boolean.h>
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
@@ -40,8 +46,4 @@ void copy_data(rchive *r);
 
 #if ARCHIVE_VERSION_NUMBER < 3001000
 int archive_write_add_filter(struct archive *a, int code);
-#endif
-
-#ifdef __cplusplus
-}
 #endif

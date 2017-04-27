@@ -1,3 +1,3 @@
 #!/bin/sh
 
-(cd src; make -f Makevars clean)
+rm -f src/Makevars

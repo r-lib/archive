@@ -53,11 +53,13 @@ Rcpp::IntegerVector archive_filters() {
       Rcpp::_["lzma"] = ARCHIVE_FILTER_LZMA,
       Rcpp::_["xz"] = ARCHIVE_FILTER_XZ,
       Rcpp::_["uuencoded"] = ARCHIVE_FILTER_RPM,
-      Rcpp::_["lzip"] = ARCHIVE_FILTER_LZIP,
-      Rcpp::_["lrzip"] = ARCHIVE_FILTER_LRZIP,
-      Rcpp::_["lzop"] = ARCHIVE_FILTER_LZOP,
-      Rcpp::_["grzip"] = ARCHIVE_FILTER_GRZIP,
-      Rcpp::_["lz4"] = ARCHIVE_FILTER_LZ4
+      Rcpp::_["lzip"] = ARCHIVE_FILTER_LZIP
+#if ARCHIVE_VERSION_NUMBER >= 3001000
+      , Rcpp::_["lrzip"] = ARCHIVE_FILTER_LRZIP
+      , Rcpp::_["lzop"] = ARCHIVE_FILTER_LZOP
+      , Rcpp::_["grzip"] = ARCHIVE_FILTER_GRZIP
+      , Rcpp::_["lz4"] = ARCHIVE_FILTER_LZ4
+#endif
       );
   return out;
 }

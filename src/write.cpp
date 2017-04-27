@@ -3,6 +3,35 @@
 #include <fcntl.h>
 #include <string.h>
 
+// Define archive_write_add_filter for older versions
+#if ARCHIVE_VERSION_NUMBER < 3001000
+/* A table that maps filter codes to functions. */
+static
+struct { int code; int (*setter)(struct archive *); } codes[] =
+{
+  {   ARCHIVE_FILTER_NONE,       archive_write_add_filter_none       },
+  {   ARCHIVE_FILTER_GZIP,       archive_write_add_filter_gzip       },
+  {   ARCHIVE_FILTER_BZIP2,      archive_write_add_filter_bzip2      },
+  {   ARCHIVE_FILTER_COMPRESS,   archive_write_add_filter_compress   },
+  {   ARCHIVE_FILTER_LZMA,       archive_write_add_filter_lzma       },
+  {   ARCHIVE_FILTER_XZ,         archive_write_add_filter_xz         },
+  {   ARCHIVE_FILTER_LZIP,       archive_write_add_filter_lzip       },
+  {   -1,                        NULL                                }
+};
+
+int archive_write_add_filter(struct archive *a, int code) {
+  int i;
+
+  for (i = 0; codes[i].code != -1; i++) {
+    if (code == codes[i].code)
+      return ((codes[i].setter)(a));
+  }
+
+  archive_set_error(a, EINVAL, "No such filter");
+  return (ARCHIVE_FATAL);
+}
+#endif
+
 std::string my_basename (std::string const & str) {
   std::size_t found = str.find_last_of("/\\");
   return str.substr(found + 1);

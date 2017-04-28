@@ -67,10 +67,21 @@ static size_t rchive_read(void *target, size_t sz, size_t ni, Rconnection con) {
   return total_size;
 }
 
+/* https://github.com/jeroen/curl/blob/102eb33288c853e0b3d4344fa1725388f606cecc/src/curl.c#L145 */
+/* naive implementation of readLines */
+static int rchive_fgetc(Rconnection con) {
+  int x = 0;
+#ifdef WORDS_BIGENDIAN
+  return rchive_read(&x, 1, 1, con) ? BSWAP_32(x) : R_EOF;
+#else
+  return rchive_read(&x, 1, 1, con) ? x : R_EOF;
+#endif
+}
+
 // [[Rcpp::export]]
 SEXP read_connection(const std::string & archive_filename, const std::string & filename, size_t sz = 16384) {
   Rconnection con;
-  SEXP rc = PROTECT(R_new_custom_connection("input", "rb", "archive", &con));
+  SEXP rc = PROTECT(R_new_custom_connection(archive_filename.c_str(), "rb", "archive_read", &con));
 
   /* Setup archive */
   rchive *r = (rchive *) malloc(sizeof(rchive));
@@ -100,6 +111,8 @@ SEXP read_connection(const std::string & archive_filename, const std::string & f
   con->close = rchive_read_close;
   con->destroy = rchive_read_destroy;
   con->read = rchive_read;
+  con->fgetc = rchive_fgetc;
+  con->fgetc_internal = rchive_fgetc;
 
   UNPROTECT(1);
   return rc;

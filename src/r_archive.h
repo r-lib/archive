@@ -24,6 +24,8 @@
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
+#define R_EOF -1
+
 typedef struct {
   char* archive_filename;
   int format;

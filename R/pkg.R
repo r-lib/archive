@@ -164,13 +164,13 @@ archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = 
 format_and_filter_by_extension <- function(path) {
   ext <- sub("^[^.]*[.]", "", path)
   switch(ext,
-    "7z" = list("7z", "none"),
+    "7z" = list("7zip", "none"),
     "zip" = list("zip", "none"),
     "jar" = list("zip", "none"),
     "cpio" = list("cpio", "none"),
     "iso" = list("iso9660", "none"),
     "a" = ,
-    "ar" = list("a", "none"),
+    "ar" = list("ar", "none"),
     "tar" = list("tar", "none"),
     "tgz" = ,
     "tar.gz" = list("tar", "gzip"),

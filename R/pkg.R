@@ -1,4 +1,4 @@
-#' @useDynLib archive
+#' @useDynLib archive, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 NULL
 

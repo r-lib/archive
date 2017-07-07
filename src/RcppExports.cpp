@@ -114,3 +114,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+
+static const R_CallMethodDef CallEntries[] = {
+    {"archive_archive_metadata", (DL_FUNC) &archive_archive_metadata, 1},
+    {"archive_archive_filters", (DL_FUNC) &archive_archive_filters, 0},
+    {"archive_archive_formats", (DL_FUNC) &archive_archive_formats, 0},
+    {"archive_archive_extract_", (DL_FUNC) &archive_archive_extract_, 2},
+    {"archive_read_file_connection", (DL_FUNC) &archive_read_file_connection, 2},
+    {"archive_read_connection", (DL_FUNC) &archive_read_connection, 4},
+    {"archive_write_file_connection", (DL_FUNC) &archive_write_file_connection, 2},
+    {"archive_write_files", (DL_FUNC) &archive_write_files, 5},
+    {"archive_write_connection", (DL_FUNC) &archive_write_connection, 5},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_archive(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
+}

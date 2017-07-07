@@ -60,15 +60,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // read_connection
-SEXP read_connection(const std::string& archive_filename, const std::string& filename, size_t sz);
-RcppExport SEXP archive_read_connection(SEXP archive_filenameSEXP, SEXP filenameSEXP, SEXP szSEXP) {
+SEXP read_connection(const std::string& archive_filename, const std::string& filename, const std::string& mode, size_t sz);
+RcppExport SEXP archive_read_connection(SEXP archive_filenameSEXP, SEXP filenameSEXP, SEXP modeSEXP, SEXP szSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string& >::type archive_filename(archive_filenameSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type mode(modeSEXP);
     Rcpp::traits::input_parameter< size_t >::type sz(szSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_connection(archive_filename, filename, sz));
+    rcpp_result_gen = Rcpp::wrap(read_connection(archive_filename, filename, mode, sz));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -84,9 +85,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// write_files
-SEXP write_files(const std::string& archive_filename, Rcpp::CharacterVector files, int format, Rcpp::NumericVector filter, size_t sz);
-RcppExport SEXP archive_write_files(SEXP archive_filenameSEXP, SEXP filesSEXP, SEXP formatSEXP, SEXP filterSEXP, SEXP szSEXP) {
+// write_files_
+SEXP write_files_(const std::string& archive_filename, Rcpp::CharacterVector files, int format, Rcpp::NumericVector filter, size_t sz);
+RcppExport SEXP archive_write_files_(SEXP archive_filenameSEXP, SEXP filesSEXP, SEXP formatSEXP, SEXP filterSEXP, SEXP szSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -95,7 +96,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type format(formatSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type filter(filterSEXP);
     Rcpp::traits::input_parameter< size_t >::type sz(szSEXP);
-    rcpp_result_gen = Rcpp::wrap(write_files(archive_filename, files, format, filter, sz));
+    rcpp_result_gen = Rcpp::wrap(write_files_(archive_filename, files, format, filter, sz));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -123,7 +124,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"archive_read_file_connection", (DL_FUNC) &archive_read_file_connection, 2},
     {"archive_read_connection", (DL_FUNC) &archive_read_connection, 4},
     {"archive_write_file_connection", (DL_FUNC) &archive_write_file_connection, 2},
-    {"archive_write_files", (DL_FUNC) &archive_write_files, 5},
+    {"archive_write_files_", (DL_FUNC) &archive_write_files_, 5},
     {"archive_write_connection", (DL_FUNC) &archive_write_connection, 5},
     {NULL, NULL, 0}
 };

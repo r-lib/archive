@@ -4,7 +4,7 @@
 \alias{archive_read}
 \title{Construct a read only connection into an archive file}
 \usage{
-archive_read(archive, file = 1L)
+archive_read(archive, mode = "r", file = 1L)
 }
 \arguments{
 \item{archive}{An archive object or character vector to the archive}

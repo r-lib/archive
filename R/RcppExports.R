@@ -2,38 +2,38 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 archive_metadata <- function(path) {
-    .Call('archive_archive_metadata', PACKAGE = 'archive', path)
+    .Call(archive_archive_metadata, path)
 }
 
 archive_filters <- function() {
-    .Call('archive_archive_filters', PACKAGE = 'archive')
+    .Call(archive_archive_filters)
 }
 
 archive_formats <- function() {
-    .Call('archive_archive_formats', PACKAGE = 'archive')
+    .Call(archive_archive_formats)
 }
 
 archive_extract_ <- function(archive_filename, sz = 16384L) {
-    invisible(.Call('archive_archive_extract_', PACKAGE = 'archive', archive_filename, sz))
+    invisible(.Call(archive_archive_extract_, archive_filename, sz))
 }
 
 read_file_connection <- function(filename, sz = 16384L) {
-    .Call('archive_read_file_connection', PACKAGE = 'archive', filename, sz)
+    .Call(archive_read_file_connection, filename, sz)
 }
 
-read_connection <- function(archive_filename, filename, sz = 16384L) {
-    .Call('archive_read_connection', PACKAGE = 'archive', archive_filename, filename, sz)
+read_connection <- function(archive_filename, filename, mode, sz = 16384L) {
+    .Call(archive_read_connection, archive_filename, filename, mode, sz)
 }
 
 write_file_connection <- function(filename, filters) {
-    .Call('archive_write_file_connection', PACKAGE = 'archive', filename, filters)
+    .Call(archive_write_file_connection, filename, filters)
 }
 
-write_files <- function(archive_filename, files, format, filter, sz = 16384L) {
-    .Call('archive_write_files', PACKAGE = 'archive', archive_filename, files, format, filter, sz)
+write_files_ <- function(archive_filename, files, format, filter, sz = 16384L) {
+    .Call(archive_write_files_, archive_filename, files, format, filter, sz)
 }
 
 write_connection <- function(archive_filename, filename, format, filter, sz = 16384L) {
-    .Call('archive_write_connection', PACKAGE = 'archive', archive_filename, filename, format, filter, sz)
+    .Call(archive_write_connection, archive_filename, filename, format, filter, sz)
 }
 

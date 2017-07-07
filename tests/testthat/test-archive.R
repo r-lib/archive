@@ -32,18 +32,19 @@ describe("archive_read", {
 
     s <- summary(con)
 
-    expect_equal(basename(s[["description"]]), "test.zip")
-    expect_equal(s[["mode"]], "rb")
-    expect_equal(s[["text"]], "binary")
+    expect_equal(basename(s[["description"]]), "test.zip[iris.csv]")
+    expect_equal(s[["mode"]], "r")
+    expect_equal(s[["text"]], "text")
     expect_equal(s[["opened"]], "closed")
     expect_equal(s[["can read"]], "yes")
     expect_equal(s[["can write"]], "no")
   })
   it("can be read from", {
     con <- archive_read("test.zip")
-    on.exit(close(con))
 
-    lines <- readLines(con)
-    expect_equal(length(lines), 7)
+    i <- iris
+    i$Species <- as.character(i$Species)
+
+    expect_equal(read.csv(con, stringsAsFactors = FALSE), head(i))
   })
 })

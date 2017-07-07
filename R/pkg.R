@@ -52,7 +52,7 @@ archive_extract <- function(archive, dir = ".") {
 #' @param file The file to open the connection to. Can also be an numeric index
 #' into the `archive()` data.frame.
 #' @export
-archive_read <- function(archive, file = 1L) {
+archive_read <- function(archive, mode = "r", file = 1L) {
   archive <- as_archive(archive)
   if (is.numeric(file) && length(file) == 1) {
     file <- archive$path[[file]]
@@ -65,7 +65,7 @@ archive_read <- function(archive, file = 1L) {
     stop("`file` ", encodeString(file, quote = "'"), " not found", call. = FALSE)
   }
 
-  read_connection(attr(archive, "path"), file)
+  read_connection(attr(archive, "path"), mode = mode, file)
 }
 
 #' Construct a write only connection to a new archive
@@ -147,7 +147,7 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
     format <- res[[1]]
     filter <- res[[2]]
   }
-  write_files(archive, files, archive_formats()[format], archive_filters()[filter])
+  archive_write_files_(archive, files, archive_formats()[format], archive_filters()[filter])
 
   invisible(archive)
 }

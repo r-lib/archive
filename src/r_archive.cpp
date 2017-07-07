@@ -22,7 +22,7 @@ void copy_data(rchive *r) {
       return;
     }
     if (r->last_response != ARCHIVE_OK) {
-      Rcpp::stop(archive_error_string(r->ar));
+      Rf_error(archive_error_string(r->ar));
     }
     r->cur = r->buf;
   }

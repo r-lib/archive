@@ -1,5 +1,6 @@
 #' @useDynLib archive, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
+#' @importFrom tibble as_tibble
 NULL
 
 #' Construct a new archive

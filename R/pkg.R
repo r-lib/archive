@@ -52,6 +52,7 @@ archive_extract <- function(archive, dir = ".") {
 #' @param archive An archive object or character vector to the archive
 #' @param file The file to open the connection to. Can also be an numeric index
 #' into the `archive()` data.frame.
+#' @param mode The mode to  open the file in.
 #' @export
 archive_read <- function(archive, mode = "r", file = 1L) {
   archive <- as_archive(archive)

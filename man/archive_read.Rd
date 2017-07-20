@@ -9,6 +9,8 @@ archive_read(archive, mode = "r", file = 1L)
 \arguments{
 \item{archive}{An archive object or character vector to the archive}
 
+\item{mode}{The mode to  open the file in.}
+
 \item{file}{The file to open the connection to. Can also be an numeric index
 into the `archive()` data.frame.}
 }

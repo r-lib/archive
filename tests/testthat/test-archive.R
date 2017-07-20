@@ -48,3 +48,22 @@ describe("archive_read", {
     expect_equal(read.csv(con, stringsAsFactors = FALSE), head(i))
   })
 })
+
+describe("archive_write", {
+  it("creates a writable connection", {
+    out_con <- archive_write("mtcars.zip", "mtcars.csv")
+    on.exit({
+      unlink("mtcars.zip")
+    })
+
+    expect_is(out_con, "connection")
+    expect_is(out_con, "archive_write")
+
+    write.csv(file = out_con, mtcars)
+
+    in_con <- unz("mtcars.zip", "mtcars.csv")
+    in_data <- read.csv(in_con, row.names = 1)
+
+    expect_equal(in_data, mtcars)
+  })
+})

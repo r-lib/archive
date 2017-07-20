@@ -71,7 +71,7 @@ void rchive_write_close(Rconnection con) {
   if (fd < 0) {
     Rf_error("Could not open scratch file");
   }
-  archive_entry_copy_pathname(entry, scratch.c_str());
+  archive_entry_copy_pathname(entry, r->filename);
   response = archive_read_disk_entry_from_file(in, entry, fd, NULL);
   if (response != ARCHIVE_OK) {
     Rf_error(archive_error_string(in));
@@ -136,7 +136,8 @@ SEXP write_connection(
     SEXP filter,
     size_t sz = 16384) {
   Rconnection con;
-  SEXP rc = PROTECT(R_new_custom_connection("input", "wb", "archive", &con));
+  SEXP rc =
+      PROTECT(R_new_custom_connection("input", "wb", "archive_write", &con));
 
   /* Setup archive */
   rchive* r = (rchive*)malloc(sizeof(rchive));

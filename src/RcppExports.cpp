@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // archive_metadata
 Rcpp::List archive_metadata(const std::string& path);
-RcppExport SEXP archive_archive_metadata(SEXP pathSEXP) {
+RcppExport SEXP _archive_archive_metadata(SEXP pathSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -18,7 +18,7 @@ END_RCPP
 }
 // archive_filters
 Rcpp::IntegerVector archive_filters();
-RcppExport SEXP archive_archive_filters() {
+RcppExport SEXP _archive_archive_filters() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -28,7 +28,7 @@ END_RCPP
 }
 // archive_formats
 Rcpp::IntegerVector archive_formats();
-RcppExport SEXP archive_archive_formats() {
+RcppExport SEXP _archive_archive_formats() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -38,7 +38,7 @@ END_RCPP
 }
 // archive_extract_
 void archive_extract_(const std::string& archive_filename, size_t sz);
-RcppExport SEXP archive_archive_extract_(SEXP archive_filenameSEXP, SEXP szSEXP) {
+RcppExport SEXP _archive_archive_extract_(SEXP archive_filenameSEXP, SEXP szSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string& >::type archive_filename(archive_filenameSEXP);
@@ -48,20 +48,21 @@ BEGIN_RCPP
 END_RCPP
 }
 // read_file_connection
-SEXP read_file_connection(const std::string& filename, size_t sz);
-RcppExport SEXP archive_read_file_connection(SEXP filenameSEXP, SEXP szSEXP) {
+SEXP read_file_connection(const std::string& filename, const std::string& mode, size_t sz);
+RcppExport SEXP _archive_read_file_connection(SEXP filenameSEXP, SEXP modeSEXP, SEXP szSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string& >::type filename(filenameSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type mode(modeSEXP);
     Rcpp::traits::input_parameter< size_t >::type sz(szSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_file_connection(filename, sz));
+    rcpp_result_gen = Rcpp::wrap(read_file_connection(filename, mode, sz));
     return rcpp_result_gen;
 END_RCPP
 }
 // read_connection
 SEXP read_connection(const std::string& archive_filename, const std::string& filename, const std::string& mode, size_t sz);
-RcppExport SEXP archive_read_connection(SEXP archive_filenameSEXP, SEXP filenameSEXP, SEXP modeSEXP, SEXP szSEXP) {
+RcppExport SEXP _archive_read_connection(SEXP archive_filenameSEXP, SEXP filenameSEXP, SEXP modeSEXP, SEXP szSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -75,7 +76,7 @@ END_RCPP
 }
 // write_file_connection
 SEXP write_file_connection(const std::string& filename, SEXP filters);
-RcppExport SEXP archive_write_file_connection(SEXP filenameSEXP, SEXP filtersSEXP) {
+RcppExport SEXP _archive_write_file_connection(SEXP filenameSEXP, SEXP filtersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -87,7 +88,7 @@ END_RCPP
 }
 // write_files_
 SEXP write_files_(const std::string& archive_filename, Rcpp::CharacterVector files, int format, Rcpp::NumericVector filter, size_t sz);
-RcppExport SEXP archive_write_files_(SEXP archive_filenameSEXP, SEXP filesSEXP, SEXP formatSEXP, SEXP filterSEXP, SEXP szSEXP) {
+RcppExport SEXP _archive_write_files_(SEXP archive_filenameSEXP, SEXP filesSEXP, SEXP formatSEXP, SEXP filterSEXP, SEXP szSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -102,7 +103,7 @@ END_RCPP
 }
 // write_connection
 SEXP write_connection(const std::string& archive_filename, const std::string& filename, int format, SEXP filter, size_t sz);
-RcppExport SEXP archive_write_connection(SEXP archive_filenameSEXP, SEXP filenameSEXP, SEXP formatSEXP, SEXP filterSEXP, SEXP szSEXP) {
+RcppExport SEXP _archive_write_connection(SEXP archive_filenameSEXP, SEXP filenameSEXP, SEXP formatSEXP, SEXP filterSEXP, SEXP szSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -117,15 +118,15 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"archive_archive_metadata", (DL_FUNC) &archive_archive_metadata, 1},
-    {"archive_archive_filters", (DL_FUNC) &archive_archive_filters, 0},
-    {"archive_archive_formats", (DL_FUNC) &archive_archive_formats, 0},
-    {"archive_archive_extract_", (DL_FUNC) &archive_archive_extract_, 2},
-    {"archive_read_file_connection", (DL_FUNC) &archive_read_file_connection, 2},
-    {"archive_read_connection", (DL_FUNC) &archive_read_connection, 4},
-    {"archive_write_file_connection", (DL_FUNC) &archive_write_file_connection, 2},
-    {"archive_write_files_", (DL_FUNC) &archive_write_files_, 5},
-    {"archive_write_connection", (DL_FUNC) &archive_write_connection, 5},
+    {"_archive_archive_metadata", (DL_FUNC) &_archive_archive_metadata, 1},
+    {"_archive_archive_filters", (DL_FUNC) &_archive_archive_filters, 0},
+    {"_archive_archive_formats", (DL_FUNC) &_archive_archive_formats, 0},
+    {"_archive_archive_extract_", (DL_FUNC) &_archive_archive_extract_, 2},
+    {"_archive_read_file_connection", (DL_FUNC) &_archive_read_file_connection, 3},
+    {"_archive_read_connection", (DL_FUNC) &_archive_read_connection, 4},
+    {"_archive_write_file_connection", (DL_FUNC) &_archive_write_file_connection, 2},
+    {"_archive_write_files_", (DL_FUNC) &_archive_write_files_, 5},
+    {"_archive_write_connection", (DL_FUNC) &_archive_write_connection, 5},
     {NULL, NULL, 0}
 };
 

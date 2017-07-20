@@ -113,3 +113,20 @@ describe("file_read", {
       mtcars)
   })
 })
+
+describe("archive_write_files", {
+  files <- c(mtcars = "mtcars.csv", iris = "iris.csv")
+  write.csv(mtcars, files[["mtcars"]])
+  write.csv(iris, files[["iris"]])
+
+  archive_write_files("data.zip", files)
+  on.exit(unlink(c(files, "data.zip")))
+
+  expect_equal(
+    read.csv(unz("data.zip", files[["mtcars"]]), row.names = 1),
+    mtcars)
+
+  expect_equal(
+    read.csv(unz("data.zip", files[["iris"]]), row.names = 1),
+    iris)
+})

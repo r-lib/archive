@@ -163,20 +163,85 @@ archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = 
   archive_write_files(archive, files)
 }
 
+filter_by_extension <- function(path) {
+  ext <- sub("^[^.]*[.]", "", path)
+  switch(ext,
+    Z = "compress",
+    bz2 = "bzip2",
+    gz = "gzip",
+    grz = "grzip",
+    lrz = "lrzip",
+    lz = "lzip",
+    lz4 = "lz4",
+    lzo = "lzop",
+    lzma = "lzma",
+    uu = "uuencode",
+    xz = "xz",
+
+    NULL)
+}
+
+format_by_extension <- function(path) {
+  ext <- sub("^[^.]*[.]", "", path)
+  switch(ext,
+    "7z" = "7zip",
+    ar = "arbsd",
+    cpio = "cpio",
+    iso = "iso9960",
+    mtree = "mtree",
+    shar = "shar",
+    tar = "paxr",
+    warc = "warc",
+    xar = "xar",
+    zip = "zip",
+
+    NULL)
+}
+
 format_and_filter_by_extension <- function(path) {
   ext <- sub("^[^.]*[.]", "", path)
   switch(ext,
     "7z" = list("7zip", "none"),
-    "zip" = list("zip", "none"),
-    "jar" = list("zip", "none"),
-    "cpio" = list("cpio", "none"),
-    "iso" = list("iso9660", "none"),
+
     "a" = ,
-    "ar" = list("ar", "none"),
+    "ar" = list("arbsd", "none"),
+
+    "cpio" = list("cpio", "none"),
+
+    "iso" = list("iso9660", "none"),
+
+    "mtree" = list("mtree", "none"),
+
+    "shar" = list("shar", "none"),
+
     "tar" = list("tar", "none"),
+
     "tgz" = ,
+    "taz" = ,
     "tar.gz" = list("tar", "gzip"),
+
+    "tbz" = ,
+    "tbz2" = ,
+    "tz2" =,
     "tar.bz2" = list("tar", "bzip2"),
-    "tar.xz" = list("tar", "xz")
-    )
+
+    "tlz" = ,
+    "tar.lzma" = list("tar", "lzma"),
+
+    "txz" = ,
+    "tar.xz" = list("tar", "xz"),
+
+    "tzo" = list("tar", "lzop"),
+
+    "taZ" = list("tar", "compress"),
+    "tZ" = list("tar", "compress"),
+
+    "warc" = list("warc", "none"),
+
+    "xar" = list("xar", "none"),
+
+    "jar" = ,
+    "zip" = list("zip", "none"),
+
+    NULL)
 }

@@ -3,14 +3,15 @@
 #include <fcntl.h>
 #include <string.h>
 
-std::string my_basename (std::string const & str) {
+std::string my_basename(std::string const& str) {
   std::size_t found = str.find_last_of("/\\");
   return str.substr(found + 1);
 }
 
 /* callback function to store received data */
-static size_t rchive_write_data(const void *contents, size_t sz, size_t n, Rconnection ctx) {
-  rchive* r = (rchive*) ctx->private_ptr;
+static size_t
+rchive_write_data(const void* contents, size_t sz, size_t n, Rconnection ctx) {
+  rchive* r = (rchive*)ctx->private_ptr;
 
   size_t realsize = sz * n;
   archive_write_data(r->ar, contents, realsize);
@@ -21,12 +22,13 @@ static size_t rchive_write_data(const void *contents, size_t sz, size_t n, Rconn
 
 std::string scratch_file(const char* filename) {
   static Rcpp::Function tempdir("tempdir", R_BaseEnv);
-  std::string out = std::string(CHAR(STRING_ELT(tempdir(), 0))) + '/' + my_basename(filename);
+  std::string out =
+      std::string(CHAR(STRING_ELT(tempdir(), 0))) + '/' + my_basename(filename);
   return out;
 }
 
 static Rboolean rchive_write_open(Rconnection con) {
-  rchive *r = (rchive *) con->private_ptr;
+  rchive* r = (rchive*)con->private_ptr;
 
   r->ar = archive_write_disk_new();
 
@@ -47,7 +49,7 @@ static Rboolean rchive_write_open(Rconnection con) {
 void rchive_write_close(Rconnection con) {
   char buf[8192];
   size_t bytes_read;
-  rchive *r = (rchive *) con->private_ptr;
+  rchive* r = (rchive*)con->private_ptr;
   int response;
 
   /* Close scratch file */
@@ -57,9 +59,9 @@ void rchive_write_close(Rconnection con) {
   archive_entry_free(r->entry);
 
   /* Write scratch file to archive */
-  struct archive *in;
-  struct archive *out;
-  struct archive_entry *entry;
+  struct archive* in;
+  struct archive* out;
+  struct archive_entry* entry;
   in = archive_read_disk_new();
   archive_read_disk_set_standard_lookup(in);
   entry = archive_entry_new();
@@ -82,7 +84,7 @@ void rchive_write_close(Rconnection con) {
     Rf_error(archive_error_string(out));
   }
 
-  for (size_t i = 0;i < Rf_length(r->filter);++i) {
+  for (size_t i = 0; i < Rf_length(r->filter); ++i) {
     response = archive_write_add_filter(out, INTEGER(r->filter)[i]);
     if (response != ARCHIVE_OK) {
       Rf_error(archive_error_string(out));
@@ -114,7 +116,7 @@ void rchive_write_close(Rconnection con) {
 }
 
 void rchive_write_destroy(Rconnection con) {
-  rchive *r = (rchive *) con->private_ptr;
+  rchive* r = (rchive*)con->private_ptr;
 
   /* free the handle connection */
   free(r->archive_filename);
@@ -127,25 +129,30 @@ void rchive_write_destroy(Rconnection con) {
 // to be written before the data is added, and we do not know the size of the
 // data until it has been written.
 // [[Rcpp::export]]
-SEXP write_connection(const std::string & archive_filename, const std::string & filename, int format, SEXP filter, size_t sz = 16384) {
+SEXP write_connection(
+    const std::string& archive_filename,
+    const std::string& filename,
+    int format,
+    SEXP filter,
+    size_t sz = 16384) {
   Rconnection con;
   SEXP rc = PROTECT(R_new_custom_connection("input", "wb", "archive", &con));
 
   /* Setup archive */
-  rchive *r = (rchive *) malloc(sizeof(rchive));
-  //r->limit = sz;
-  //r->buf = (char *) malloc(r->limit);
-  //r->cur = r->buf;
-  //r->size = 0;
+  rchive* r = (rchive*)malloc(sizeof(rchive));
+  // r->limit = sz;
+  // r->buf = (char *) malloc(r->limit);
+  // r->cur = r->buf;
+  // r->size = 0;
 
-  r->archive_filename = (char *) malloc(strlen(archive_filename.c_str()) + 1);
+  r->archive_filename = (char*)malloc(strlen(archive_filename.c_str()) + 1);
   strcpy(r->archive_filename, archive_filename.c_str());
 
   r->format = format;
 
   r->filter = filter;
 
-  r->filename = (char *) malloc(strlen(filename.c_str()) + 1);
+  r->filename = (char*)malloc(strlen(filename.c_str()) + 1);
   strcpy(r->filename, filename.c_str());
 
   /* set connection properties */

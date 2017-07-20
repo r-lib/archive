@@ -1,10 +1,9 @@
-#include <Rcpp.h>
 #include "r_archive.h"
+#include <Rcpp.h>
 
-static int
-copy_data(struct archive *ar, struct archive *aw) {
+static int copy_data(struct archive* ar, struct archive* aw) {
   int r;
-  const void *buff;
+  const void* buff;
   size_t size;
   int64_t offset;
 
@@ -16,18 +15,17 @@ copy_data(struct archive *ar, struct archive *aw) {
       return (r);
     r = archive_write_data_block(aw, buff, size, offset);
     if (r != ARCHIVE_OK) {
-      Rcpp::stop("archive_write_data_block(): %s",
-          archive_error_string(aw));
+      Rcpp::stop("archive_write_data_block(): %s", archive_error_string(aw));
       return (r);
     }
   }
 }
 
 // [[Rcpp::export]]
-void archive_extract_(const std::string & archive_filename, size_t sz = 16384) {
-  struct archive *a;
-  struct archive *ext;
-  struct archive_entry *entry;
+void archive_extract_(const std::string& archive_filename, size_t sz = 16384) {
+  struct archive* a;
+  struct archive* ext;
+  struct archive_entry* entry;
   int flags;
   int r;
 
@@ -51,20 +49,17 @@ void archive_extract_(const std::string & archive_filename, size_t sz = 16384) {
     if (r == ARCHIVE_EOF)
       break;
     if (r != ARCHIVE_OK) {
-      Rcpp::stop("archive_read_next_header(): %s",
-          archive_error_string(a));
+      Rcpp::stop("archive_read_next_header(): %s", archive_error_string(a));
     }
     r = archive_write_header(ext, entry);
     if (r != ARCHIVE_OK) {
-      Rcpp::stop("archive_write_header(): %s",
-          archive_error_string(ext));
-    }
-    else {
+      Rcpp::stop("archive_write_header(): %s", archive_error_string(ext));
+    } else {
       copy_data(a, ext);
       r = archive_write_finish_entry(ext);
       if (r != ARCHIVE_OK) {
-        Rcpp::stop("archive_write_finish_entry(): %s",
-            archive_error_string(ext));
+        Rcpp::stop(
+            "archive_write_finish_entry(): %s", archive_error_string(ext));
       }
     }
   }

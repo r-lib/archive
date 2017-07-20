@@ -2,13 +2,13 @@
 #include <Rcpp.h>
 
 // [[Rcpp::export]]
-Rcpp::List archive_metadata(const std::string & path) {
+Rcpp::List archive_metadata(const std::string& path) {
   std::vector<std::string> paths;
   std::vector<__LA_INT64_T> sizes;
   std::vector<time_t> dates;
 
-  struct archive *a;
-  struct archive_entry *entry;
+  struct archive* a;
+  struct archive_entry* entry;
   int r;
 
   a = archive_read_new();
@@ -16,7 +16,7 @@ Rcpp::List archive_metadata(const std::string & path) {
   archive_read_support_format_all(a);
   r = archive_read_open_filename(a, path.c_str(), 10240);
   if (r != ARCHIVE_OK) {
-      Rcpp::stop(archive_error_string(a));
+    Rcpp::stop(archive_error_string(a));
   }
   while (archive_read_next_header(a, &entry) == ARCHIVE_OK) {
     paths.push_back(archive_entry_pathname(entry));
@@ -29,14 +29,13 @@ Rcpp::List archive_metadata(const std::string & path) {
     Rcpp::stop(archive_error_string(a));
   }
 
-  static Rcpp::Function as_tibble("as_tibble", Rcpp::Environment::namespace_env("tibble"));
+  static Rcpp::Function as_tibble(
+      "as_tibble", Rcpp::Environment::namespace_env("tibble"));
   Rcpp::NumericVector d = Rcpp::wrap(dates);
   d.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
 
   Rcpp::List out = as_tibble(Rcpp::List::create(
-      Rcpp::_["path"] = paths,
-      Rcpp::_["size"] = sizes,
-      Rcpp::_["date"] = d));
+      Rcpp::_["path"] = paths, Rcpp::_["size"] = sizes, Rcpp::_["date"] = d));
 
   out.attr("path") = path;
 
@@ -55,10 +54,11 @@ Rcpp::IntegerVector archive_filters() {
       Rcpp::_["uuencode"] = ARCHIVE_FILTER_UU,
       Rcpp::_["lzip"] = ARCHIVE_FILTER_LZIP
 #if ARCHIVE_VERSION_NUMBER >= 3001000
-      , Rcpp::_["lrzip"] = ARCHIVE_FILTER_LRZIP
-      , Rcpp::_["lzop"] = ARCHIVE_FILTER_LZOP
-      , Rcpp::_["grzip"] = ARCHIVE_FILTER_GRZIP
-      , Rcpp::_["lz4"] = ARCHIVE_FILTER_LZ4
+      ,
+      Rcpp::_["lrzip"] = ARCHIVE_FILTER_LRZIP,
+      Rcpp::_["lzop"] = ARCHIVE_FILTER_LZOP,
+      Rcpp::_["grzip"] = ARCHIVE_FILTER_GRZIP,
+      Rcpp::_["lz4"] = ARCHIVE_FILTER_LZ4
 #endif
       );
   return out;
@@ -77,7 +77,6 @@ Rcpp::IntegerVector archive_formats() {
       Rcpp::_["rar"] = ARCHIVE_FORMAT_RAR,
       Rcpp::_["tar"] = ARCHIVE_FORMAT_TAR,
       Rcpp::_["xar"] = ARCHIVE_FORMAT_XAR,
-      Rcpp::_["zip"] = ARCHIVE_FORMAT_ZIP
-      );
+      Rcpp::_["zip"] = ARCHIVE_FORMAT_ZIP);
   return out;
 }

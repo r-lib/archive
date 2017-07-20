@@ -3,7 +3,7 @@
 #include <fcntl.h>
 
 static Rboolean file_read_open(Rconnection con) {
-  rchive *r = (rchive *) con->private_ptr;
+  rchive* r = (rchive*)con->private_ptr;
 
   r->ar = archive_read_new();
   archive_read_support_filter_all(r->ar);
@@ -27,17 +27,18 @@ static Rboolean file_read_open(Rconnection con) {
   return TRUE;
 }
 
-static size_t file_read_data(void *target, size_t sz, size_t ni, Rconnection con) {
-  rchive *r = (rchive *) con->private_ptr;
+static size_t
+file_read_data(void* target, size_t sz, size_t ni, Rconnection con) {
+  rchive* r = (rchive*)con->private_ptr;
   size_t size = sz * ni;
 
   /* append data to the target buffer */
   size_t total_size = pop(target, size, r);
-  while((size > total_size) && r->has_more) {
+  while ((size > total_size) && r->has_more) {
     copy_data(r);
-    total_size += pop((char*)target + total_size, (size-total_size), r);
+    total_size += pop((char*)target + total_size, (size - total_size), r);
   }
-  con->incomplete = (Rboolean) r->has_more;
+  con->incomplete = (Rboolean)r->has_more;
   return total_size;
 }
 
@@ -45,14 +46,14 @@ static size_t file_read_data(void *target, size_t sz, size_t ni, Rconnection con
  * archive file based on the archive filename given and then unlinks the
  * scratch archive */
 void file_read_close(Rconnection con) {
-  rchive *r = (rchive *) con->private_ptr;
+  rchive* r = (rchive*)con->private_ptr;
 
   archive_read_free(r->ar);
   con->isopen = FALSE;
 }
 
 void file_read_destroy(Rconnection con) {
-  rchive *r = (rchive *) con->private_ptr;
+  rchive* r = (rchive*)con->private_ptr;
 
   /* free the handle connection */
   free(r->filename);
@@ -62,17 +63,18 @@ void file_read_destroy(Rconnection con) {
 // Get a connection to a single non-archive file, optionally with one or more
 // filters.
 // [[Rcpp::export]]
-SEXP read_file_connection(const std::string & filename, size_t sz = 16384) {
+SEXP read_file_connection(const std::string& filename, size_t sz = 16384) {
   Rconnection con;
-  SEXP rc = PROTECT(R_new_custom_connection("file_input", "wb", "archive", &con));
+  SEXP rc =
+      PROTECT(R_new_custom_connection("file_input", "wb", "archive", &con));
 
   /* Setup archive */
-  rchive *r = (rchive *) malloc(sizeof(rchive));
+  rchive* r = (rchive*)malloc(sizeof(rchive));
 
   r->limit = sz;
-  r->buf = (char *) malloc(r->limit);
+  r->buf = (char*)malloc(r->limit);
 
-  r->filename = (char *) malloc(strlen(filename.c_str()) + 1);
+  r->filename = (char*)malloc(strlen(filename.c_str()) + 1);
   strcpy(r->filename, filename.c_str());
 
   /* set connection properties */

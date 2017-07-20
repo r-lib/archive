@@ -68,15 +68,17 @@ Rcpp::IntegerVector archive_filters() {
 Rcpp::IntegerVector archive_formats() {
   Rcpp::IntegerVector out = Rcpp::IntegerVector::create(
       Rcpp::_["7zip"] = ARCHIVE_FORMAT_7ZIP,
-      Rcpp::_["ar"] = ARCHIVE_FORMAT_AR,
+      Rcpp::_["arbsd"] = ARCHIVE_FORMAT_AR,
       Rcpp::_["cab"] = ARCHIVE_FORMAT_CAB,
       Rcpp::_["cpio"] = ARCHIVE_FORMAT_CPIO,
       Rcpp::_["iso9660"] = ARCHIVE_FORMAT_ISO9660,
       Rcpp::_["lha"] = ARCHIVE_FORMAT_LHA,
       Rcpp::_["mtree"] = ARCHIVE_FORMAT_MTREE,
+      Rcpp::_["shar"] = ARCHIVE_FORMAT_SHAR,
       Rcpp::_["rar"] = ARCHIVE_FORMAT_RAR,
       Rcpp::_["tar"] = ARCHIVE_FORMAT_TAR,
       Rcpp::_["xar"] = ARCHIVE_FORMAT_XAR,
+      Rcpp::_["warc"] = ARCHIVE_FORMAT_WARC,
       Rcpp::_["zip"] = ARCHIVE_FORMAT_ZIP);
   return out;
 }

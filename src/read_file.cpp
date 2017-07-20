@@ -11,11 +11,11 @@ static Rboolean file_read_open(Rconnection con) {
 
   r->last_response = archive_read_open_filename(r->ar, r->filename, r->limit);
   if (r->last_response != ARCHIVE_OK) {
-    Rcpp::stop(archive_error_string(r->ar));
+    Rf_error(archive_error_string(r->ar));
   }
   r->last_response = archive_read_next_header(r->ar, &r->entry);
   if (r->last_response != ARCHIVE_OK) {
-    Rcpp::stop(archive_error_string(r->ar));
+    Rf_error(archive_error_string(r->ar));
   }
 
   r->size = archive_entry_size(r->entry);
@@ -60,13 +60,24 @@ void file_read_destroy(Rconnection con) {
   free(r);
 }
 
+/* naive implementation of readLines */
+static int file_read_getc(Rconnection con) {
+  int x = 0;
+#ifdef WORDS_BIGENDIAN
+  return file_read_data(&x, 1, 1, con) ? BSWAP_32(x) : R_EOF;
+#else
+  return file_read_data(&x, 1, 1, con) ? x : R_EOF;
+#endif
+}
+
 // Get a connection to a single non-archive file, optionally with one or more
 // filters.
 // [[Rcpp::export]]
-SEXP read_file_connection(const std::string& filename, size_t sz = 16384) {
+SEXP read_file_connection(
+    const std::string& filename, const std::string& mode, size_t sz = 16384) {
   Rconnection con;
-  SEXP rc =
-      PROTECT(R_new_custom_connection("file_input", "wb", "archive", &con));
+  SEXP rc = PROTECT(
+      R_new_custom_connection("file_input", mode.c_str(), "archive", &con));
 
   /* Setup archive */
   rchive* r = (rchive*)malloc(sizeof(rchive));
@@ -85,11 +96,13 @@ SEXP read_file_connection(const std::string& filename, size_t sz = 16384) {
   con->canwrite = FALSE;
   con->isopen = FALSE;
   con->blocking = TRUE;
-  con->text = FALSE;
+  con->text = strchr(con->mode, 'b') ? FALSE : TRUE;
   con->open = file_read_open;
   con->close = file_read_close;
   con->destroy = file_read_destroy;
   con->read = file_read_data;
+  con->fgetc = file_read_getc;
+  con->fgetc_internal = file_read_getc;
 
   UNPROTECT(1);
   return rc;

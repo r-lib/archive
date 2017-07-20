@@ -8,12 +8,14 @@
 \usage{
 file_write(file, filter = NULL)
 
-file_read(file)
+file_read(file, mode = "r")
 }
 \arguments{
 \item{file}{The filename within the archive.}
 
 \item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
+
+\item{mode}{The mode to open the file in.}
 }
 \description{
 This works similar to R's builtin [connections] for files. However it

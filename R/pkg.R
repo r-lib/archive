@@ -52,7 +52,7 @@ archive_extract <- function(archive, dir = ".") {
 #' @param archive An archive object or character vector to the archive
 #' @param file The file to open the connection to. Can also be an numeric index
 #' into the `archive()` data.frame.
-#' @param mode The mode to  open the file in.
+#' @param mode The mode to open the file in.
 #' @export
 archive_read <- function(archive, mode = "r", file = 1L) {
   archive <- as_archive(archive)
@@ -111,18 +111,26 @@ file_write <- function(file, filter = NULL) {
   if (!is.character(file) || length(file) != 1) {
     stop("`file` must be a length one character vector", call. = FALSE)
   }
+  if (is.null(filter)) {
+    res <- filter_by_extension(file)
+    if (is.null(res)) {
+      stop("Could not automatically determine the `filter`", call. = FALSE)
+    }
+    filter <- res
+  }
 
   write_file_connection(file, archive_filters()[filter])
 }
 
 #' @rdname file_connections
+#' @inheritParams archive_read
 #' @export
-file_read <- function(file) {
+file_read <- function(file, mode = "r") {
   if (!is.character(file) || length(file) != 1) {
     stop("`file` must be a length one character vector", call. = FALSE)
   }
 
-  read_file_connection(file)
+  read_file_connection(file, mode)
 }
 
 #' Add files to a new archive

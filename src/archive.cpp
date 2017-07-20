@@ -78,7 +78,12 @@ Rcpp::IntegerVector archive_formats() {
       Rcpp::_["rar"] = ARCHIVE_FORMAT_RAR,
       Rcpp::_["tar"] = ARCHIVE_FORMAT_TAR,
       Rcpp::_["xar"] = ARCHIVE_FORMAT_XAR,
-      Rcpp::_["warc"] = ARCHIVE_FORMAT_WARC,
-      Rcpp::_["zip"] = ARCHIVE_FORMAT_ZIP);
+      Rcpp::_["zip"] = ARCHIVE_FORMAT_ZIP
+#if ARCHIVE_VERSION_NUMBER >= 3002000
+      ,
+
+      Rcpp::_["warc"] = ARCHIVE_FORMAT_WARC
+#endif
+      );
   return out;
 }

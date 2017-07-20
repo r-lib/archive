@@ -62,8 +62,30 @@ describe("archive_write", {
     write.csv(file = out_con, mtcars)
 
     in_con <- unz("mtcars.zip", "mtcars.csv")
-    in_data <- read.csv(in_con, row.names = 1)
+    data <- read.csv(in_con, row.names = 1)
 
-    expect_equal(in_data, mtcars)
+    expect_equal(data, mtcars)
+  })
+})
+
+describe("file_write", {
+  it("can write a gzip file", {
+    write.csv(mtcars,
+      file_write("test.gz"))
+    on.exit(unlink("test.gz"))
+
+    expect_equal(
+      read.csv(gzfile("test.gz"), row.names = 1),
+      mtcars)
+  })
+
+  it("can write a xz file", {
+    write.csv(mtcars,
+      file_write("test.xz"))
+    on.exit(unlink("test.xz"))
+
+    expect_equal(
+      read.csv(gzfile("test.xz"), row.names = 1),
+      mtcars)
   })
 })

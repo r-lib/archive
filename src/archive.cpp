@@ -87,3 +87,6 @@ Rcpp::IntegerVector archive_formats() {
       );
   return out;
 }
+
+// [[Rcpp::export]]
+std::string libarchive_version() { return ARCHIVE_VERSION_ONLY_STRING; }

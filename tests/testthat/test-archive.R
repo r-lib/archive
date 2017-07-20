@@ -68,28 +68,6 @@ describe("archive_write", {
   })
 })
 
-describe("file_write", {
-  it("can write a gzip file", {
-    write.csv(mtcars,
-      file_write("test.gz"))
-    on.exit(unlink("test.gz"))
-
-    expect_equal(
-      read.csv(gzfile("test.gz"), row.names = 1),
-      mtcars)
-  })
-
-  it("can write a xz file", {
-    write.csv(mtcars,
-      file_write("test.xz"))
-    on.exit(unlink("test.xz"))
-
-    expect_equal(
-      read.csv(xzfile("test.xz"), row.names = 1),
-      mtcars)
-  })
-})
-
 describe("file_read", {
   it("can read a gzip file", {
     write.csv(mtcars,
@@ -114,19 +92,43 @@ describe("file_read", {
   })
 })
 
-describe("archive_write_files", {
-  files <- c(mtcars = "mtcars.csv", iris = "iris.csv")
-  write.csv(mtcars, files[["mtcars"]])
-  write.csv(iris, files[["iris"]])
+if (libarchive_version() >= "3.1.0") {
+  describe("file_write", {
+    it("can write a gzip file", {
+      write.csv(mtcars,
+        file_write("test.gz"))
+      on.exit(unlink("test.gz"))
 
-  archive_write_files("data.zip", files)
-  on.exit(unlink(c(files, "data.zip")))
+      expect_equal(
+        read.csv(gzfile("test.gz"), row.names = 1),
+        mtcars)
+    })
 
-  expect_equal(
-    read.csv(unz("data.zip", files[["mtcars"]]), row.names = 1),
-    mtcars)
+    it("can write a xz file", {
+      write.csv(mtcars,
+        file_write("test.xz"))
+      on.exit(unlink("test.xz"))
 
-  expect_equal(
-    read.csv(unz("data.zip", files[["iris"]]), row.names = 1),
-    iris)
-})
+      expect_equal(
+        read.csv(xzfile("test.xz"), row.names = 1),
+        mtcars)
+    })
+  })
+
+  describe("archive_write_files", {
+    files <- c(mtcars = "mtcars.csv", iris = "iris.csv")
+    write.csv(mtcars, files[["mtcars"]])
+    write.csv(iris, files[["iris"]])
+
+    archive_write_files("data.zip", files)
+    on.exit(unlink(c(files, "data.zip")))
+
+    expect_equal(
+      read.csv(unz("data.zip", files[["mtcars"]]), row.names = 1),
+      mtcars)
+
+    expect_equal(
+      read.csv(unz("data.zip", files[["iris"]]), row.names = 1),
+      iris)
+  })
+}

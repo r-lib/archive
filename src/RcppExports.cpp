@@ -36,6 +36,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// libarchive_version
+std::string libarchive_version();
+RcppExport SEXP _archive_libarchive_version() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(libarchive_version());
+    return rcpp_result_gen;
+END_RCPP
+}
 // archive_extract_
 void archive_extract_(const std::string& archive_filename, size_t sz);
 RcppExport SEXP _archive_archive_extract_(SEXP archive_filenameSEXP, SEXP szSEXP) {
@@ -121,6 +131,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_archive_archive_metadata", (DL_FUNC) &_archive_archive_metadata, 1},
     {"_archive_archive_filters", (DL_FUNC) &_archive_archive_filters, 0},
     {"_archive_archive_formats", (DL_FUNC) &_archive_archive_formats, 0},
+    {"_archive_libarchive_version", (DL_FUNC) &_archive_libarchive_version, 0},
     {"_archive_archive_extract_", (DL_FUNC) &_archive_archive_extract_, 2},
     {"_archive_read_file_connection", (DL_FUNC) &_archive_read_file_connection, 3},
     {"_archive_read_connection", (DL_FUNC) &_archive_read_connection, 4},

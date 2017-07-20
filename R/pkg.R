@@ -149,7 +149,7 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
     format <- res[[1]]
     filter <- res[[2]]
   }
-  archive_write_files_(archive, files, archive_formats()[format], archive_filters()[filter])
+  write_files_(archive, files, archive_formats()[format], archive_filters()[filter])
 
   invisible(archive)
 }

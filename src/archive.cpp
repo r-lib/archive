@@ -89,4 +89,9 @@ Rcpp::IntegerVector archive_formats() {
 }
 
 // [[Rcpp::export]]
-std::string libarchive_version() { return ARCHIVE_VERSION_ONLY_STRING; }
+std::string libarchive_version() {
+  std::string str = archive_version_string();
+
+  // Remove 'libarchive '
+  return str.substr(str.find_last_of(' ') + 1);
+}

@@ -189,23 +189,6 @@ filter_by_extension <- function(path) {
     NULL)
 }
 
-format_by_extension <- function(path) {
-  ext <- sub("^[^.]*[.]", "", path)
-  switch(ext,
-    "7z" = "7zip",
-    ar = "arbsd",
-    cpio = "cpio",
-    iso = "iso9960",
-    mtree = "mtree",
-    shar = "shar",
-    tar = "paxr",
-    warc = "warc",
-    xar = "xar",
-    zip = "zip",
-
-    NULL)
-}
-
 format_and_filter_by_extension <- function(path) {
   ext <- sub("^[^.]*[.]", "", path)
   switch(ext,

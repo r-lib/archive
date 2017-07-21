@@ -57,10 +57,11 @@ Rcpp::IntegerVector archive_filters() {
       ,
       Rcpp::_["lrzip"] = ARCHIVE_FILTER_LRZIP,
       Rcpp::_["lzop"] = ARCHIVE_FILTER_LZOP,
-      Rcpp::_["grzip"] = ARCHIVE_FILTER_GRZIP,
+      Rcpp::_["grzip"] = ARCHIVE_FILTER_GRZIP
 #endif
 
 #if ARCHIVE_VERSION_NUMBER >= 3002000
+      ,
       Rcpp::_["lz4"] = ARCHIVE_FILTER_LZ4
 #endif
       );

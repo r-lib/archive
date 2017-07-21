@@ -14,6 +14,8 @@
 static Rboolean rchive_read_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
+  con->text = strchr(con->mode, 'b') ? FALSE : TRUE;
+
   r->last_response = archive_read_support_filter_all(r->ar);
   r->last_response = archive_read_support_format_all(r->ar);
 
@@ -122,7 +124,6 @@ SEXP read_connection(
   con->canwrite = FALSE;
   con->isopen = FALSE;
   con->blocking = TRUE;
-  con->text = strchr(con->mode, 'b') ? FALSE : TRUE;
   con->UTF8out = FALSE;
   con->open = rchive_read_open;
   con->close = rchive_read_close;

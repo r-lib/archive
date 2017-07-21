@@ -5,6 +5,8 @@
 static Rboolean file_read_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
+  con->text = strchr(con->mode, 'b') ? FALSE : TRUE;
+
   r->ar = archive_read_new();
   archive_read_support_filter_all(r->ar);
   archive_read_support_format_raw(r->ar);
@@ -96,7 +98,6 @@ SEXP read_file_connection(
   con->canwrite = FALSE;
   con->isopen = FALSE;
   con->blocking = TRUE;
-  con->text = strchr(con->mode, 'b') ? FALSE : TRUE;
   con->open = file_read_open;
   con->close = file_read_close;
   con->destroy = file_read_destroy;

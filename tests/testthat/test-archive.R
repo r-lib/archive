@@ -97,6 +97,7 @@ describe("archive_write", {
 
     test_extension <- function(ext) {
       filename <- paste0("mtcars", ".", ext)
+      str(filename)
       on.exit(unlink(filename))
 
       write.csv(mtcars, archive_write(filename, "mtcars.csv"))

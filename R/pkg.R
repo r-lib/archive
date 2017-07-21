@@ -220,19 +220,19 @@ format_and_filter_by_extension <- function(path) {
 
     "tar" = list("tar", "none"),
 
-    "tgz" = ,
-    "taz" = ,
+    "tgz" = list("tar", "gzip"),
+    "taz" = list("tar", "gzip"),
     "tar.gz" = list("tar", "gzip"),
 
-    "tbz" = ,
-    "tbz2" = ,
-    "tz2" =,
+    "tbz" = list("tar", "bzip2"),
+    "tbz2" = list("tar", "bzip2"),
+    "tz2" = list("tar", "bzip2"),
     "tar.bz2" = list("tar", "bzip2"),
 
-    "tlz" = ,
+    "tlz" = list("tar", "lzma"),
     "tar.lzma" = list("tar", "lzma"),
 
-    "txz" = ,
+    "txz" = list("tar", "xz"),
     "tar.xz" = list("tar", "xz"),
 
     "tzo" = list("tar", "lzop"),
@@ -244,7 +244,7 @@ format_and_filter_by_extension <- function(path) {
 
     "xar" = list("xar", "none"),
 
-    "jar" = ,
+    "jar" = list("zip", "none"),
     "zip" = list("zip", "none"),
 
     NULL)

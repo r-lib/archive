@@ -2,3 +2,4 @@
 .Rhistory
 .RData
 src/Makevars
+script.R

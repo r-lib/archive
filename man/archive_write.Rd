@@ -7,7 +7,7 @@
 \usage{
 archive_write(archive, file, format = NULL, filter = NULL)
 
-archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = TRUE)
+archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
 }
 \arguments{
 \item{archive}{The archive filename, if filter and format are both `NULL` the file extension will

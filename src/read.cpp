@@ -16,8 +16,17 @@ static Rboolean rchive_read_open(Rconnection con) {
 
   con->text = strchr(con->mode, 'b') ? FALSE : TRUE;
 
-  r->last_response = archive_read_support_filter_all(r->ar);
-  r->last_response = archive_read_support_format_all(r->ar);
+  for (size_t i = 0; i < 1; ++i) {
+    r->last_response = archive_read_append_filter(r->ar, r->filter);
+    if (r->last_response != ARCHIVE_OK) {
+      Rf_error(archive_error_string(r->ar));
+    }
+  }
+
+  r->last_response = archive_read_set_format(r->ar, r->format);
+  if (r->last_response != ARCHIVE_OK) {
+    Rf_error(archive_error_string(r->ar));
+  }
 
   if ((r->last_response = archive_read_open_filename(
            r->ar, r->archive_filename, 10240)) != ARCHIVE_OK) {
@@ -97,6 +106,8 @@ SEXP read_connection(
     const std::string& archive_filename,
     const std::string& filename,
     const std::string& mode,
+    int format,
+    int filter,
     size_t sz = 16384) {
   Rconnection con;
 
@@ -111,6 +122,9 @@ SEXP read_connection(
 
   r->archive_filename = (char*)malloc(strlen(archive_filename.c_str()) + 1);
   strcpy(r->archive_filename, archive_filename.c_str());
+
+  r->format = format;
+  r->filter = filter;
 
   r->filename = (char*)malloc(strlen(filename.c_str()) + 1);
   strcpy(r->filename, filename.c_str());

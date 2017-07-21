@@ -7,7 +7,7 @@ typedef struct {
   archive* ar;
   archive_entry* entry;
   char* filename;
-  SEXP filters;
+  int filters;
 } file;
 
 /* callback function to store received data */
@@ -26,15 +26,15 @@ static Rboolean file_write_open(Rconnection con) {
 
   r->ar = archive_write_new();
 
-  SEXP filters = r->filters;
-  for (int i = 0; i < Rf_length(filters); ++i) {
-    int filter = INTEGER(filters)[i];
-    int ret = archive_write_add_filter(r->ar, filter);
-    if (ret == ARCHIVE_FATAL) {
-      Rf_error("%i", filter);
-      Rf_error(archive_error_string(r->ar));
-    }
+  // SEXP filters = r->filters;
+  // for (int i = 0; i < Rf_length(filters); ++i) {
+  int filter = r->filters; // INTEGER(filters)[i];
+  int ret = archive_write_add_filter(r->ar, filter);
+  if (ret == ARCHIVE_FATAL) {
+    Rf_error("%i", filter);
+    Rf_error(archive_error_string(r->ar));
   }
+  //}
   archive_write_set_format_raw(r->ar);
   archive_write_open_filename(r->ar, r->filename);
 
@@ -72,7 +72,7 @@ void file_write_destroy(Rconnection con) {
 // Get a connection to a single non-archive file, optionally with one or more
 // filters.
 // [[Rcpp::export]]
-SEXP write_file_connection(const std::string& filename, SEXP filters) {
+SEXP write_file_connection(const std::string& filename, int filters) {
 #if ARCHIVE_VERSION_NUMBER < 3002000
   Rcpp::stop("This functionality is only available with libarchive >= 3.2.0");
 #else

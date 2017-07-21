@@ -28,7 +28,7 @@
 typedef struct {
   char* archive_filename;
   int format;
-  SEXP filter;
+  int filter;
   char* filename;
   char* buf;
   char* cur;

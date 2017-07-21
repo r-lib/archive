@@ -66,6 +66,46 @@ describe("archive_write", {
 
     expect_equal(data, mtcars)
   })
+
+  it("works with all supported formats", {
+    extensions <-
+      c("7z",
+#"a",
+#"ar",
+#"cpio",
+#"iso",
+#"mtree",
+#"shar",
+"tar",
+"tgz",
+"tar.gz",
+"tbz",
+"tbz2",
+"tz2",
+"tar.bz2",
+"tlz",
+"tar.lzma",
+"txz",
+"tar.xz",
+#"tzo",
+#"taZ",
+#"tZ",
+#"warc",
+#"xar",
+"jar",
+"zip")
+
+    test_extension <- function(ext) {
+      filename <- paste0("mtcars", ".", ext)
+      on.exit(unlink(filename))
+
+      write.csv(mtcars, archive_write(filename, "mtcars.csv"))
+      expect_equal(read.csv(archive_read(filename, "mtcars.csv"), row.names = 1), mtcars)
+    }
+    for (ext in sample(extensions)) {
+      test_extension(ext)
+    }
+  })
 })
 
 describe("file_read", {

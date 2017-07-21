@@ -4,7 +4,8 @@
 \alias{archive_read}
 \title{Construct a read only connection into an archive file}
 \usage{
-archive_read(archive, file = 1L, mode = "r")
+archive_read(archive, file = 1L, mode = "r", format = NULL,
+  filter = NULL)
 }
 \arguments{
 \item{archive}{An archive object or character vector to the archive}
@@ -13,6 +14,10 @@ archive_read(archive, file = 1L, mode = "r")
 into the `archive()` data.frame.}
 
 \item{mode}{The mode to open the file in.}
+
+\item{format}{`character(1)` default: `NULL` The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
+
+\item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 }
 \description{
 Construct a read only connection into an archive file

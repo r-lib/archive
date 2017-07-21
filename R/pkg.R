@@ -53,8 +53,9 @@ archive_extract <- function(archive, dir = ".") {
 #' @param file The file to open the connection to. Can also be an numeric index
 #' into the `archive()` data.frame.
 #' @param mode The mode to open the file in.
+#' @inheritParams archive_write
 #' @export
-archive_read <- function(archive, file = 1L, mode = "r") {
+archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter = NULL) {
   archive <- as_archive(archive)
   if (is.numeric(file) && length(file) == 1) {
     file <- archive$path[[file]]
@@ -67,7 +68,16 @@ archive_read <- function(archive, file = 1L, mode = "r") {
     stop("`file` ", encodeString(file, quote = "'"), " not found", call. = FALSE)
   }
 
-  read_connection(attr(archive, "path"), mode = mode, file)
+  if (is.null(format) && is.null(filter)) {
+    res <- format_and_filter_by_extension(attr(archive, "path"))
+    if (is.null(res)) {
+      stop("Could not automatically determine the `filter` and `format`", call. = FALSE)
+    }
+    format <- res[[1]]
+    filter <- res[[2]]
+  }
+
+  read_connection(attr(archive, "path"), mode = mode, file, archive_formats()[format], archive_filters()[filter])
 }
 
 #' Construct a write only connection to a new archive
@@ -175,7 +185,7 @@ archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = 
 }
 
 filter_by_extension <- function(path) {
-  ext <- sub("^[^.]*[.]", "", path)
+  ext <- sub("^[^.]*[.]", "", basename(path))
   switch(ext,
     Z = "compress",
     bz2 = "bzip2",
@@ -193,7 +203,7 @@ filter_by_extension <- function(path) {
 }
 
 format_and_filter_by_extension <- function(path) {
-  ext <- sub("^[^.]*[.]", "", path)
+  ext <- sub("^[^.]*[.]", "", basename(path))
   switch(ext,
     "7z" = list("7zip", "none"),
 

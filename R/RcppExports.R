@@ -25,8 +25,8 @@ read_file_connection <- function(filename, mode, sz = 16384L) {
     .Call(`_archive_read_file_connection`, filename, mode, sz)
 }
 
-read_connection <- function(archive_filename, filename, mode, sz = 16384L) {
-    .Call(`_archive_read_connection`, archive_filename, filename, mode, sz)
+read_connection <- function(archive_filename, filename, mode, format, filter, sz = 16384L) {
+    .Call(`_archive_read_connection`, archive_filename, filename, mode, format, filter, sz)
 }
 
 write_file_connection <- function(filename, filters) {

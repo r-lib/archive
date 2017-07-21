@@ -92,7 +92,7 @@ describe("file_read", {
   })
 })
 
-if (libarchive_version() >= "3.1.0") {
+if (libarchive_version() >= "3.2.0") {
   describe("file_write", {
     it("can write a gzip file", {
       write.csv(mtcars,

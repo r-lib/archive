@@ -54,7 +54,7 @@ archive_extract <- function(archive, dir = ".") {
 #' into the `archive()` data.frame.
 #' @param mode The mode to open the file in.
 #' @export
-archive_read <- function(archive, mode = "r", file = 1L) {
+archive_read <- function(archive, file = 1L, mode = "r") {
   archive <- as_archive(archive)
   if (is.numeric(file) && length(file) == 1) {
     file <- archive$path[[file]]

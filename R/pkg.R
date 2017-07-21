@@ -166,8 +166,11 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
 #' @param ... additional paramters passed to `base::dir`
 #' @param dir The directory of files to add
 #' @inheritParams base::list.files
-archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = TRUE) {
-  files <- dir(..., recursive = recursive, full.names = full.names)
+archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = FALSE) {
+  archive <- file.path(normalizePath(dirname(archive)), basename(archive))
+  old <- setwd(dir)
+  on.exit(setwd(old))
+  files <- dir(dir, ..., recursive = recursive, full.names = full.names)
   archive_write_files(archive, files)
 }
 

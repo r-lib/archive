@@ -73,8 +73,8 @@ void file_write_destroy(Rconnection con) {
 // filters.
 // [[Rcpp::export]]
 SEXP write_file_connection(const std::string& filename, SEXP filters) {
-#if ARCHIVE_VERSION_NUMBER < 3001000
-  Rcpp::stop("This functionality is only available with libarchive >= 3.1.0");
+#if ARCHIVE_VERSION_NUMBER < 3002000
+  Rcpp::stop("This functionality is only available with libarchive >= 3.2.0");
 #else
   Rconnection con;
   SEXP rc =
@@ -116,8 +116,8 @@ SEXP write_files_(
     Rcpp::NumericVector filter,
     size_t sz = 16384) {
 
-#if ARCHIVE_VERSION_NUMBER < 3001000
-  Rcpp::stop("This functionality is only available with libarchive >= 3.1.0");
+#if ARCHIVE_VERSION_NUMBER < 3002000
+  Rcpp::stop("This functionality is only available with libarchive >= 3.2.0");
 #else
   struct archive* a;
   struct archive_entry* entry;

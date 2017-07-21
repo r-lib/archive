@@ -30,9 +30,9 @@ write_csv(mtcars, archive_write("mtcars.zip", "mtcars.csv"))
 
 # Read the data back, by default the first file is read from the archive.
 read_csv(archive_read("mtcars.zip"), col_types = cols())
-#> # A tibble: 32 × 11
+#> # A tibble: 32 x 11
 #>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>   <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
+#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 #> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
 #> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
 #> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
@@ -45,9 +45,9 @@ write_csv(mtcars, archive_write("mtcars.tar.gz", "mtcars.csv"))
 
 # Read the data back
 read_csv(archive_read("mtcars.tar.gz"), col_types = cols())
-#> # A tibble: 32 × 11
+#> # A tibble: 32 x 11
 #>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>   <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
+#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 #> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
 #> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
 #> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
@@ -56,7 +56,7 @@ read_csv(archive_read("mtcars.tar.gz"), col_types = cols())
 
 # Archive file sizes
 file.size(c("mtcars.zip", "mtcars.tar.gz"))
-#> [1] 860 709
+#> [1] 738 652
 ```
 
 ### Multi file archives
@@ -73,18 +73,18 @@ archive_write_files("data.tar.xz", c("iris.csv", "mtcars.csv", "airquality.csv")
 # View archive contents
 a <- archive("data.tar.xz")
 a
-#> # A tibble: 3 × 3
+#> # A tibble: 3 x 3
 #>             path  size                date
 #>            <chr> <dbl>              <dttm>
-#> 1       iris.csv  3716 2017-04-27 14:17:21
-#> 2     mtcars.csv  1281 2017-04-27 14:17:21
-#> 3 airquality.csv  2890 2017-04-27 14:17:21
+#> 1       iris.csv  3716 2017-07-21 14:48:24
+#> 2     mtcars.csv  1281 2017-07-21 14:48:24
+#> 3 airquality.csv  2890 2017-07-21 14:48:24
 
 # Read a specific file from the archive
 read_csv(archive_read(a, "mtcars.csv"), col_types = cols())
-#> # A tibble: 32 × 11
+#> # A tibble: 32 x 11
 #>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>   <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
+#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 #> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
 #> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
 #> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1
@@ -102,9 +102,9 @@ write_csv(mtcars, file_write("mtcars.bz2", c("uuencode", "bzip2")))
 
 # Read it back
 read_csv(file_read("mtcars.bz2"), col_types = cols())
-#> # A tibble: 32 × 11
+#> # A tibble: 32 x 11
 #>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-#>   <dbl> <int> <dbl> <int> <dbl> <dbl> <dbl> <int> <int> <int> <int>
+#>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
 #> 1  21.0     6   160   110  3.90 2.620 16.46     0     1     4     4
 #> 2  21.0     6   160   110  3.90 2.875 17.02     0     1     4     4
 #> 3  22.8     4   108    93  3.85 2.320 18.61     1     1     4     1

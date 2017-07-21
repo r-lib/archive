@@ -2,7 +2,7 @@
 #include <Rcpp.h>
 #include <fcntl.h>
 
-#if ARCHIVE_VERSION_NUMBER >= 3001000
+#if ARCHIVE_VERSION_NUMBER >= 3002000
 typedef struct {
   archive* ar;
   archive_entry* entry;

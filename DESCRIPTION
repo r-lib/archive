@@ -12,4 +12,6 @@ Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp
 RoxygenNote: 6.0.1
-Suggests: testthat
+Suggests: testthat,
+    covr
+Remotes: jimhester/covr

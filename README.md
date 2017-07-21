@@ -3,7 +3,7 @@
 archive
 =======
 
-[![Travis-CI Build Status](https://travis-ci.org/jimhester/archive.svg?branch=master)](https://travis-ci.org/jimhester/archive) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jimhester/archive?branch=master&svg=true)](https://ci.appveyor.com/project/jimhester/archive)
+[![Coverage Status](https://img.shields.io/codecov/c/github/jimhester/archive/master.svg)](https://codecov.io/github/jimhester/archive?branch=master) [![Travis-CI Build Status](https://travis-ci.org/jimhester/archive.svg?branch=master)](https://travis-ci.org/jimhester/archive) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jimhester/archive?branch=master&svg=true)](https://ci.appveyor.com/project/jimhester/archive)
 
 R bindings to libarchive <http://www.libarchive.org>, providing support for many file archives, including tar, ZIP, 7-zip, RAR, CAB including those compressed by gzip, bzip2, compress, lzma, xz, and others.
 

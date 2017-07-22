@@ -84,8 +84,8 @@ void rchive_write_close(Rconnection con) {
     Rf_error(archive_error_string(out));
   }
 
-  for (size_t i = 0; i < 1; ++i) {
-    response = archive_write_add_filter(out, r->filter);
+  for (size_t i = 0; i < Rf_length(r->filter); ++i) {
+    response = archive_write_add_filter(out, INTEGER(r->filter)[i]);
     if (response != ARCHIVE_OK) {
       Rf_error(archive_error_string(out));
     }
@@ -133,7 +133,7 @@ SEXP write_connection(
     const std::string& archive_filename,
     const std::string& filename,
     int format,
-    int filter,
+    SEXP filter,
     size_t sz = 16384) {
   Rconnection con;
   SEXP rc =

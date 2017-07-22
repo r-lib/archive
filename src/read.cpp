@@ -20,8 +20,8 @@ static Rboolean rchive_read_open(Rconnection con) {
  * libarchive version 3.1.0
  */
 #if ARCHIVE_VERSION_NUMBER >= 3001000
-  for (size_t i = 0; i < 1; ++i) {
-    r->last_response = archive_read_append_filter(r->ar, r->filter);
+  for (size_t i = 0; i < Rf_length(r->filter); ++i) {
+    r->last_response = archive_read_append_filter(r->ar, INTEGER(r->filter)[i]);
     if (r->last_response != ARCHIVE_OK) {
       Rf_error(archive_error_string(r->ar));
     }
@@ -115,7 +115,7 @@ SEXP read_connection(
     const std::string& filename,
     const std::string& mode,
     int format,
-    int filter,
+    SEXP filter,
     size_t sz = 16384) {
   Rconnection con;
 

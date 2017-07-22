@@ -16,6 +16,10 @@ static Rboolean rchive_read_open(Rconnection con) {
 
   con->text = strchr(con->mode, 'b') ? FALSE : TRUE;
 
+/* explicit setting of the format and filters is not available until
+ * libarchive version 3.1.0
+ */
+#if ARCHIVE_VERSION_NUMBER >= 3001000
   for (size_t i = 0; i < 1; ++i) {
     r->last_response = archive_read_append_filter(r->ar, r->filter);
     if (r->last_response != ARCHIVE_OK) {
@@ -27,6 +31,10 @@ static Rboolean rchive_read_open(Rconnection con) {
   if (r->last_response != ARCHIVE_OK) {
     Rf_error(archive_error_string(r->ar));
   }
+#else
+  r->last_response = archive_read_support_filter_all(r->ar);
+  r->last_response = archive_read_support_format_all(r->ar);
+#endif
 
   if ((r->last_response = archive_read_open_filename(
            r->ar, r->archive_filename, 10240)) != ARCHIVE_OK) {

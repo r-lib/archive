@@ -22,3 +22,8 @@ into the `archive()` data.frame.}
 \description{
 Construct a read only connection into an archive file
 }
+\details{
+libarchive versions prior to 3.1.0 did not support explicit setting of the
+format and filter, instead relying on a bidding process to automatically
+determine the format of the archive.
+}

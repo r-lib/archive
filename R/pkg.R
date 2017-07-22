@@ -54,6 +54,10 @@ archive_extract <- function(archive, dir = ".") {
 #' into the `archive()` data.frame.
 #' @param mode The mode to open the file in.
 #' @inheritParams archive_write
+#' @details
+#' libarchive versions prior to 3.1.0 did not support explicit setting of the
+#' format and filter, instead relying on a bidding process to automatically
+#' determine the format of the archive.
 #' @export
 archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter = NULL) {
   archive <- as_archive(archive)

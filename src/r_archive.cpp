@@ -30,7 +30,7 @@ void copy_data(rchive* r) {
 }
 
 // Define archive_write_add_filter for older versions
-#if ARCHIVE_VERSION_NUMBER < 3001000
+#if ARCHIVE_VERSION_NUMBER < 3000004
 
 #include <cerrno>
 

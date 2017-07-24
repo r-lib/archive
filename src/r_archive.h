@@ -25,10 +25,11 @@
 
 #define R_EOF -1
 
+#define FILTER_MAX 8
+
 typedef struct {
   char* archive_filename;
   int format;
-  SEXP filter;
   char* filename;
   char* buf;
   char* cur;
@@ -38,12 +39,13 @@ typedef struct {
   int has_more;
   size_t limit;
   size_t size;
+  int filters[FILTER_MAX];
 } rchive;
 
 size_t pop(void* target, size_t max, rchive* r);
 
 void copy_data(rchive* r);
 
-#if ARCHIVE_VERSION_NUMBER < 3001000
+#if ARCHIVE_VERSION_NUMBER < 3000004
 int archive_write_add_filter(struct archive* a, int code);
 #endif

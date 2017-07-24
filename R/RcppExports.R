@@ -25,19 +25,19 @@ read_file_connection <- function(filename, mode, sz = 16384L) {
     .Call(`_archive_read_file_connection`, filename, mode, sz)
 }
 
-read_connection <- function(archive_filename, filename, mode, format, filter, sz = 16384L) {
-    .Call(`_archive_read_connection`, archive_filename, filename, mode, format, filter, sz)
+read_connection <- function(archive_filename, filename, mode, format, filters, sz = 16384L) {
+    .Call(`_archive_read_connection`, archive_filename, filename, mode, format, filters, sz)
 }
 
 write_file_connection <- function(filename, filters) {
     .Call(`_archive_write_file_connection`, filename, filters)
 }
 
-write_files_ <- function(archive_filename, files, format, filter, sz = 16384L) {
-    .Call(`_archive_write_files_`, archive_filename, files, format, filter, sz)
+write_files_ <- function(archive_filename, files, format, filters, sz = 16384L) {
+    .Call(`_archive_write_files_`, archive_filename, files, format, filters, sz)
 }
 
-write_connection <- function(archive_filename, filename, format, filter, sz = 16384L) {
-    .Call(`_archive_write_connection`, archive_filename, filename, format, filter, sz)
+write_connection <- function(archive_filename, filename, format, filters, sz = 16384L) {
+    .Call(`_archive_write_connection`, archive_filename, filename, format, filters, sz)
 }
 

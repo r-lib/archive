@@ -153,6 +153,13 @@ if (libarchive_version() >= "3.2.0") {
         read.csv(xzfile("test.xz"), row.names = 1),
         mtcars)
     })
+
+    it("works with multiple filters", {
+      filename <- "mtcars.bz2"
+      write.csv(mtcars, file_write("mtcars.tar.uu.bz2", filter = c("uuencode", "bzip2")))
+
+      expect_equal(read.csv(file_read("mtcars.tar.uu.bz2"), row.names = 1), mtcars)
+    })
   })
 
   describe("archive_write_files", {

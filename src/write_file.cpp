@@ -7,7 +7,7 @@ typedef struct {
   archive* ar;
   archive_entry* entry;
   char* filename;
-  SEXP filters;
+  int filters[FILTER_MAX];
 } file;
 
 /* callback function to store received data */
@@ -26,12 +26,10 @@ static Rboolean file_write_open(Rconnection con) {
 
   r->ar = archive_write_new();
 
-  SEXP filters = r->filters;
-  for (int i = 0; i < Rf_length(filters); ++i) {
-    int filter = INTEGER(filters)[i];
-    int ret = archive_write_add_filter(r->ar, filter);
+  for (int i = 0; i < FILTER_MAX && r->filters[i] != -1; ++i) {
+    int ret = archive_write_add_filter(r->ar, r->filters[i]);
     if (ret == ARCHIVE_FATAL) {
-      Rf_error("%i", filter);
+      Rf_error("%i", r->filters);
       Rf_error(archive_error_string(r->ar));
     }
   }
@@ -72,7 +70,8 @@ void file_write_destroy(Rconnection con) {
 // Get a connection to a single non-archive file, optionally with one or more
 // filters.
 // [[Rcpp::export]]
-SEXP write_file_connection(const std::string& filename, SEXP filters) {
+SEXP write_file_connection(
+    const std::string& filename, Rcpp::NumericVector filters) {
 #if ARCHIVE_VERSION_NUMBER < 3002000
   Rcpp::stop("This functionality is only available with libarchive >= 3.2.0");
 #else
@@ -86,7 +85,16 @@ SEXP write_file_connection(const std::string& filename, SEXP filters) {
   r->filename = (char*)malloc(strlen(filename.c_str()) + 1);
   strcpy(r->filename, filename.c_str());
 
-  r->filters = filters;
+  /* Initialize filters */
+  if (filters.size() > FILTER_MAX) {
+    Rcpp::stop("Cannot use more than %i filters", FILTER_MAX);
+  }
+  for (int i = 0; i < FILTER_MAX; ++i) {
+    r->filters[i] = -1;
+  }
+  for (int i = 0; i < filters.size(); ++i) {
+    r->filters[i] = filters[i];
+  }
 
   /* set connection properties */
   con->incomplete = TRUE;
@@ -113,7 +121,7 @@ SEXP write_files_(
     const std::string& archive_filename,
     Rcpp::CharacterVector files,
     int format,
-    Rcpp::NumericVector filter,
+    Rcpp::NumericVector filters,
     size_t sz = 16384) {
 
 #if ARCHIVE_VERSION_NUMBER < 3002000
@@ -134,8 +142,8 @@ SEXP write_files_(
     Rf_error(archive_error_string(a));
   }
 
-  for (int i = 0; i < filter.length(); ++i) {
-    response = archive_write_add_filter(a, filter[i]);
+  for (int i = 0; i < filters.length(); ++i) {
+    response = archive_write_add_filter(a, filters[i]);
     if (response != ARCHIVE_OK) {
       Rf_error(archive_error_string(a));
     }

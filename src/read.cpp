@@ -20,8 +20,8 @@ static Rboolean rchive_read_open(Rconnection con) {
  * libarchive version 3.1.0
  */
 #if ARCHIVE_VERSION_NUMBER >= 3001000
-  for (size_t i = 0; i < Rf_length(r->filter); ++i) {
-    r->last_response = archive_read_append_filter(r->ar, INTEGER(r->filter)[i]);
+  for (int i = 0; i < FILTER_MAX && r->filters[i] != -1; ++i) {
+    r->last_response = archive_read_append_filter(r->ar, r->filters[i]);
     if (r->last_response != ARCHIVE_OK) {
       Rf_error(archive_error_string(r->ar));
     }
@@ -115,7 +115,7 @@ SEXP read_connection(
     const std::string& filename,
     const std::string& mode,
     int format,
-    SEXP filter,
+    Rcpp::NumericVector filters,
     size_t sz = 16384) {
   Rconnection con;
 
@@ -132,7 +132,17 @@ SEXP read_connection(
   strcpy(r->archive_filename, archive_filename.c_str());
 
   r->format = format;
-  r->filter = filter;
+
+  /* Initialize filters */
+  if (filters.size() > FILTER_MAX) {
+    Rcpp::stop("Cannot use more than %i filters", FILTER_MAX);
+  }
+  for (int i = 0; i < FILTER_MAX; ++i) {
+    r->filters[i] = -1;
+  }
+  for (int i = 0; i < filters.size(); ++i) {
+    r->filters[i] = filters[i];
+  }
 
   r->filename = (char*)malloc(strlen(filename.c_str()) + 1);
   strcpy(r->filename, filename.c_str());

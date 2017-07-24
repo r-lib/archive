@@ -9,14 +9,15 @@ static int copy_data(struct archive* ar, struct archive* aw) {
 
   for (;;) {
     r = archive_read_data_block(ar, &buff, &size, &offset);
-    if (r == ARCHIVE_EOF)
+    if (r == ARCHIVE_EOF) {
       return (ARCHIVE_OK);
-    if (r != ARCHIVE_OK)
-      return (r);
+    }
+    if (r != ARCHIVE_OK) {
+      Rcpp::stop("archive_read_data_block(): %s", archive_error_string(ar));
+    }
     r = archive_write_data_block(aw, buff, size, offset);
     if (r != ARCHIVE_OK) {
       Rcpp::stop("archive_write_data_block(): %s", archive_error_string(aw));
-      return (r);
     }
   }
 }

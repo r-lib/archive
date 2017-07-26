@@ -57,7 +57,8 @@ archive_extract <- function(archive, dir = ".") {
 #' @details
 #' libarchive versions prior to 3.1.0 did not support explicit setting of the
 #' format and filter, instead relying on a bidding process to automatically
-#' determine the format of the archive.
+#' determine the format of the archive. This automatic detection is also used
+#' when `format` or `filter` is `NULL`.
 #' @export
 archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter = NULL) {
   archive <- as_archive(archive)
@@ -70,15 +71,6 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
 
   if (!file %in% archive$path) {
     stop("`file` ", encodeString(file, quote = "'"), " not found", call. = FALSE)
-  }
-
-  if (is.null(format) && is.null(filter)) {
-    res <- format_and_filter_by_extension(attr(archive, "path"))
-    if (is.null(res)) {
-      stop("Could not automatically determine the `filter` and `format`", call. = FALSE)
-    }
-    format <- res[[1]]
-    filter <- res[[2]]
   }
 
   read_connection(attr(archive, "path"), mode = mode, file, archive_formats()[format], archive_filters()[filter])
@@ -211,16 +203,11 @@ format_and_filter_by_extension <- function(path) {
   switch(ext,
     "7z" = list("7zip", "none"),
 
-    "a" = ,
-    "ar" = list("arbsd", "none"),
-
     "cpio" = list("cpio", "none"),
 
     "iso" = list("iso9660", "none"),
 
     "mtree" = list("mtree", "none"),
-
-    "shar" = list("shar", "none"),
 
     "tar" = list("tar", "none"),
 
@@ -245,8 +232,6 @@ format_and_filter_by_extension <- function(path) {
     "tZ" = list("tar", "compress"),
 
     "warc" = list("warc", "none"),
-
-    "xar" = list("xar", "none"),
 
     "jar" = list("zip", "none"),
     "zip" = list("zip", "none"),

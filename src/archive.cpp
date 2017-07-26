@@ -72,7 +72,6 @@ Rcpp::IntegerVector archive_filters() {
 Rcpp::IntegerVector archive_formats() {
   Rcpp::IntegerVector out = Rcpp::IntegerVector::create(
       Rcpp::_["7zip"] = ARCHIVE_FORMAT_7ZIP,
-      Rcpp::_["arbsd"] = ARCHIVE_FORMAT_AR,
       Rcpp::_["cab"] = ARCHIVE_FORMAT_CAB,
       Rcpp::_["cpio"] = ARCHIVE_FORMAT_CPIO,
       Rcpp::_["iso9660"] = ARCHIVE_FORMAT_ISO9660,

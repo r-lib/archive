@@ -20,24 +20,34 @@ static Rboolean rchive_read_open(Rconnection con) {
  * libarchive version 3.1.0
  */
 #if ARCHIVE_VERSION_NUMBER >= 3001000
-  for (int i = 0; i < FILTER_MAX && r->filters[i] != -1; ++i) {
-    r->last_response = archive_read_append_filter(r->ar, r->filters[i]);
-    if (r->last_response != ARCHIVE_OK) {
-      Rf_error(archive_error_string(r->ar));
+  if (r->filters[0] == -1) {
+    r->last_response = archive_read_support_filter_all(r->ar);
+  } else {
+    for (int i = 0; i < FILTER_MAX && r->filters[i] != -1; ++i) {
+      r->last_response = archive_read_append_filter(r->ar, r->filters[i]);
+      if (r->last_response != ARCHIVE_OK) {
+        Rf_error(archive_error_string(r->ar));
+      }
     }
   }
 
-  r->last_response = archive_read_set_format(r->ar, r->format);
-  if (r->last_response != ARCHIVE_OK) {
-    Rf_error(archive_error_string(r->ar));
+  if (r->format == -1) {
+    r->last_response = archive_read_support_format_all(r->ar);
+  } else {
+    r->last_response = archive_read_set_format(r->ar, r->format);
+    if (r->last_response != ARCHIVE_OK) {
+      Rf_error(archive_error_string(r->ar));
+    }
   }
 #else
   r->last_response = archive_read_support_filter_all(r->ar);
   r->last_response = archive_read_support_format_all(r->ar);
 #endif
 
-  if ((r->last_response = archive_read_open_filename(
-           r->ar, r->archive_filename, 10240)) != ARCHIVE_OK) {
+  r->last_response =
+      archive_read_open_filename(r->ar, r->archive_filename, r->size);
+
+  if (r->last_response != ARCHIVE_OK) {
     con->isopen = FALSE;
     con->incomplete = FALSE;
     Rf_error(archive_error_string(r->ar));
@@ -114,7 +124,7 @@ SEXP read_connection(
     const std::string& archive_filename,
     const std::string& filename,
     const std::string& mode,
-    int format,
+    Rcpp::NumericVector format,
     Rcpp::NumericVector filters,
     size_t sz = 16384) {
   Rconnection con;
@@ -131,7 +141,7 @@ SEXP read_connection(
   r->archive_filename = (char*)malloc(strlen(archive_filename.c_str()) + 1);
   strcpy(r->archive_filename, archive_filename.c_str());
 
-  r->format = format;
+  r->format = format.size() == 0 ? -1 : format[0];
 
   /* Initialize filters */
   if (filters.size() > FILTER_MAX) {

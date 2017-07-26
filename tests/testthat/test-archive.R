@@ -70,14 +70,12 @@ describe("archive_write", {
   it("works with all supported formats", {
     extensions <-
       c("7z",
-        #"a",
-        #"ar",
-        #"cpio",
-        #"iso",
-        #"mtree",
-        #"shar",
+        "cpio",
+        "iso",
+        #"mtree", mtree is a textual description of a file hierarchy, rather than a normal archive format.
         "tar",
         "tgz",
+        "taz",
         "tar.gz",
         "tbz",
         "tbz2",
@@ -87,11 +85,10 @@ describe("archive_write", {
         "tar.lzma",
         "txz",
         "tar.xz",
-        #"tzo",
-        #"taZ",
-        #"tZ",
-        #"warc",
-        #"xar",
+        "tzo",
+        "taZ",
+        "tZ",
+        "warc",
         "jar",
         "zip")
 

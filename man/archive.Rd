@@ -14,3 +14,7 @@ This function retrieves metadata about files in an archive, it can be passed
 to `archive_con()` to create a connection to read a specific file from the
 archive.
 }
+\examples{
+a <- archive(system.file(package = "archive", "extdata", "data.zip"))
+a
+}

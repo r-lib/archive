@@ -15,3 +15,11 @@ if it does not exist.}
 \description{
 Extract contents of an archive
 }
+\examples{
+a <- archive(system.file(package = "archive", "extdata", "data.zip"))
+d <- tempfile()
+dir.create(d)
+archive_extract(a, d)
+list.files(d)
+unlink(d)
+}

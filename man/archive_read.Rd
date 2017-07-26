@@ -28,3 +28,20 @@ format and filter, instead relying on a bidding process to automatically
 determine the format of the archive. This automatic detection is also used
 when `format` or `filter` is `NULL`.
 }
+\examples{
+a <- archive(system.file(package = "archive", "extdata", "data.zip"))
+# See files in archive
+a
+
+# By default reads the first file in the archive.
+read.csv(archive_read(a), nrows = 3)
+
+# Can also specify a filename directly
+read.csv(archive_read(a, "mtcars.csv"), nrows = 3)
+
+# Or by position
+read.csv(archive_read(a, 3), nrows = 3)
+
+# Explicitly specify the format and filter if automatic detection fails.
+read.csv(archive_read(a, format = "zip"), nrows = 3)
+}

@@ -10,6 +10,9 @@ NULL
 #' archive.
 #'
 #' @param path File path to the archive.
+#' @examples
+#' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
+#' a
 #' @export
 archive <- function(path) {
   stopifnot(is.character(path), length(path) == 1, file.exists(path))
@@ -33,6 +36,13 @@ as_archive <- function(x) {
 #' @param archive An archive object or file path to the archive location.
 #' @param dir Directory location to extract archive contents, will be created
 #' if it does not exist.
+#' @examples
+#' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
+#' d <- tempfile()
+#' dir.create(d)
+#' archive_extract(a, d)
+#' list.files(d)
+#' unlink(d)
 #' @export
 archive_extract <- function(archive, dir = ".") {
   archive <- as_archive(archive)
@@ -59,6 +69,22 @@ archive_extract <- function(archive, dir = ".") {
 #' format and filter, instead relying on a bidding process to automatically
 #' determine the format of the archive. This automatic detection is also used
 #' when `format` or `filter` is `NULL`.
+#' @examples
+#' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
+#' # See files in archive
+#' a
+#'
+#' # By default reads the first file in the archive.
+#' read.csv(archive_read(a), nrows = 3)
+#'
+#' # Can also specify a filename directly
+#' read.csv(archive_read(a, "mtcars.csv"), nrows = 3)
+#'
+#' # Or by position
+#' read.csv(archive_read(a, 3), nrows = 3)
+#'
+#' # Explicitly specify the format and filter if automatic detection fails.
+#' read.csv(archive_read(a, format = "zip"), nrows = 3)
 #' @export
 archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter = NULL) {
   archive <- as_archive(archive)

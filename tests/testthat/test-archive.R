@@ -85,10 +85,10 @@ describe("archive_write", {
         "tar.lzma",
         "txz",
         "tar.xz",
-        "tzo",
+        #"tzo",
         "taZ",
         "tZ",
-        "warc",
+        #"warc",
         "jar",
         "zip")
 
@@ -96,7 +96,7 @@ describe("archive_write", {
       filename <- paste0("mtcars", ".", ext)
       on.exit(unlink(filename))
 
-      write.csv(mtcars, archive_write(filename, "mtcars.csv"))
+      expect_error(write.csv(mtcars, archive_write(filename, "mtcars.csv")), NA, info = ext)
       expect_equal(read.csv(archive_read(filename, "mtcars.csv"), row.names = 1), mtcars)
     }
     for (ext in extensions) {
@@ -176,7 +176,7 @@ if (libarchive_version() >= "3.2.0") {
         filename <- paste0(f, ".", ext)
         on.exit(unlink(filename))
 
-        write.csv(mtcars, file_write(filename))
+        expect_error(write.csv(mtcars, file_write(filename)), NA, info = ext)
         expect_equal(read.csv(file_read(filename), row.names = 1), mtcars)
       }
       for (ext in extensions) {

@@ -7,11 +7,16 @@ Version: 0.0.0.9000
 Authors@R: person("Jim", "Hester", email = "james.f.hester@gmail.com", role = c("aut", "cre"))
 Depends: R (>= 3.0.0)
 Imports: Rcpp, tibble
+Suggests: testthat,
+    covr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp
 RoxygenNote: 6.0.1
-Suggests: testthat,
-    covr
+SystemRequirements: libarchive-dev (deb), libarchive-devel (rpm), libarchive
+  (homebrew), libarchive_dev (csw)
 Remotes: jimhester/covr
+URL: https://github.com/jimhester/archive
+ByteCompile: true
+BugReports: https://github.com/jimhester/archive/issues

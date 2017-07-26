@@ -1,8 +1,10 @@
 context("archive")
 
+data_file <- system.file(package = "archive", "extdata", "data.zip")
+
 describe("archive", {
   it("reads simple zip files", {
-    a <- archive("test.zip")
+    a <- archive(data_file)
     expect_equal(NROW(a), 3L)
     expect_equal(a[["path"]], c("iris.csv", "mtcars.csv", "airquality.csv"))
     expect_equal(a[["size"]], c(192, 274, 142))
@@ -11,7 +13,7 @@ describe("archive", {
 
 describe("archive_extract", {
   it("creates a read only connection", {
-    a <- archive("test.zip")
+    a <- archive(data_file)
     d <- tempfile()
     dir.create(d)
     on.exit(unlink(d, recursive = TRUE))
@@ -25,14 +27,14 @@ describe("archive_extract", {
 
 describe("archive_read", {
   it("creates a read only connection", {
-    con <- archive_read("test.zip")
+    con <- archive_read(data_file)
     on.exit(close(con))
     expect_is(con, "connection")
     expect_is(con, "archive_read")
 
     s <- summary(con)
 
-    expect_equal(basename(s[["description"]]), "test.zip[iris.csv]")
+    expect_equal(basename(s[["description"]]), "data.zip[iris.csv]")
     expect_equal(s[["mode"]], "r")
     expect_equal(s[["text"]], "text")
     expect_equal(s[["opened"]], "closed")
@@ -40,7 +42,7 @@ describe("archive_read", {
     expect_equal(s[["can write"]], "no")
   })
   it("can be read from", {
-    con <- archive_read("test.zip")
+    con <- archive_read(data_file)
 
     i <- iris
     i$Species <- as.character(i$Species)

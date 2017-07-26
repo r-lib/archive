@@ -152,10 +152,37 @@ if (libarchive_version() >= "3.2.0") {
     })
 
     it("works with multiple filters", {
-      filename <- "mtcars.bz2"
-      write.csv(mtcars, file_write("mtcars.tar.uu.bz2", filter = c("uuencode", "bzip2")))
+      filename <- "mtcars.bz2.uu"
+      write.csv(mtcars, file_write(filename))
 
-      expect_equal(read.csv(file_read("mtcars.tar.uu.bz2"), row.names = 1), mtcars)
+      expect_equal(read.csv(file_read(filename), row.names = 1), mtcars)
+    })
+
+    it("works with all supported formats", {
+
+      extensions <- c(
+        "Z",
+        "bz2",
+        "gz",
+        "lz",
+        "lz4",
+        "lzo",
+        "lzma",
+        "uu",
+        "xz")
+
+      f <- "mtcars.csv"
+      test_extension <- function(ext) {
+        filename <- paste0(f, ".", ext)
+        on.exit(unlink(filename))
+
+        write.csv(mtcars, file_write(filename))
+        expect_equal(read.csv(file_read(filename), row.names = 1), mtcars)
+      }
+      for (ext in extensions) {
+        test_extension(ext)
+      }
+
     })
   })
 

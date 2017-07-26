@@ -181,21 +181,30 @@ archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = 
 }
 
 filter_by_extension <- function(path) {
-  ext <- sub("^[^.]*[.]", "", basename(path))
-  switch(ext,
-    Z = "compress",
-    bz2 = "bzip2",
-    gz = "gzip",
-    grz = "grzip",
-    lrz = "lrzip",
-    lz = "lzip",
-    lz4 = "lz4",
-    lzo = "lzop",
-    lzma = "lzma",
-    uu = "uuencode",
-    xz = "xz",
 
-    NULL)
+  extension_to_filter <- function(ext) {
+    switch(ext,
+      Z = "compress",
+
+      # There is currently no base64enc constant in libarchive
+      # https://github.com/libarchive/libarchive/pull/907
+      # base64enc = "base64enc"
+
+      bz2 = "bzip2",
+      gz = "gzip",
+      lz = "lzip",
+      lz4 = "lz4",
+      lzo = "lzop",
+      lzma = "lzma",
+      uu = "uuencode",
+      xz = "xz",
+
+      NULL)
+  }
+
+  extensions <- sub("^[^.][.]", "", basename(path))
+
+  Reduce(`c`, Map(extension_to_filter, strsplit(extensions, "[.]")[[1]]))
 }
 
 format_and_filter_by_extension <- function(path) {

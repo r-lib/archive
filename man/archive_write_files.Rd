@@ -51,5 +51,7 @@ a
 # Add all files in a directory
 a <- archive_write_dir("data.zip", d)
 a
+
+unlink("data.zip")
 }
 }

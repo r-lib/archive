@@ -81,6 +81,7 @@ filter_by_extension <- function(path) {
 #'
 #' # Read it back
 #' read.csv(file_read("mtcars.bz2"), row.names = 1, nrows = 3)
+#' unlink("mtcars.bz2")
 #' }
 file_write <- function(file, filter = NULL) {
   assert("`file` must be a writable file path",

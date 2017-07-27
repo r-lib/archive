@@ -70,6 +70,8 @@ archive_extract <- function(archive, dir = ".", file = NULL) {
 #' # Add all files in a directory
 #' a <- archive_write_dir("data.zip", d)
 #' a
+#'
+#' unlink("data.zip")
 #' }
 #' @export
 archive_write_files <- function(archive, files, format = NULL, filter = NULL) {

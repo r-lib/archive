@@ -36,5 +36,6 @@ write.csv(mtcars, file_write("mtcars.bz2", c("uuencode", "bzip2")))
 
 # Read it back
 read.csv(file_read("mtcars.bz2"), row.names = 1, nrows = 3)
+unlink("mtcars.bz2")
 }
 }

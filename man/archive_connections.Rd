@@ -17,6 +17,10 @@ archive_write(archive, file, format = NULL, filter = NULL)
 \item{file}{\code{character(1) || integer(1)} The filename within the archive,
 specified either by filename or by position.}
 
+\item{mode}{\code{character(1)} A description of how to open the
+connection (if it should be opened initially).  See section
+‘Modes’ in \code{\link[base:connections]{base::connections()}} for possible values.}
+
 \item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
 
 \item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}

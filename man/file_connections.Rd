@@ -15,6 +15,10 @@ file_read(file, mode = "r")
 specified either by filename or by position.}
 
 \item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
+
+\item{mode}{\code{character(1)} A description of how to open the
+connection (if it should be opened initially).  See section
+‘Modes’ in \code{\link[base:connections]{base::connections()}} for possible values.}
 }
 \description{
 These work similar to R's built-in \link{connections} for files and differ from

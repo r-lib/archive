@@ -36,6 +36,9 @@ as_archive <- function(x) {
 }
 
 #' @rdname archive_connections
+#' @param mode `character(1)` A description of how to open the
+#'   connection (if it should be opened initially).  See section
+#'   ‘Modes’ in [base::connections()] for possible values.
 #' @examples
 #' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 #' # Show files in archive

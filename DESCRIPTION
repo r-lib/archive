@@ -1,9 +1,10 @@
 Package: archive
-Title: R bindings to libarchive
-Description: R bindings to libarchive <http://www.libarchive.org>, providing
-  support for many file archives, including tar, ZIP, 7-zip, RAR, CAB including
-  those compressed by gzip, bzip2, compress, lzma, xz, and others.
-Version: 0.0.0.9000
+Title: Multi-format Archive and Compression support for R Connections.
+Description: Bindings to libarchive <http://www.libarchive.org> the
+  Multi-format archive and compression library. Offers file connections for many
+  archive formats including 'tar', 'ZIP', '7-zip', 'RAR', 'CAB' and compressions
+  formats including 'gzip', 'bzip2', 'compress', 'lzma' and 'xz'.
+Version: 1.0.0
 Authors@R: person("Jim", "Hester", email = "james.f.hester@gmail.com", role = c("aut", "cre"))
 Depends: R (>= 3.0.0)
 Imports: Rcpp, tibble
@@ -15,9 +16,9 @@ LazyData: true
 LinkingTo: Rcpp
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
-SystemRequirements: libarchive-dev (deb), libarchive-devel (rpm), libarchive
+SystemRequirements: libarchive: libarchive-dev (deb), libarchive-devel (rpm), libarchive
   (homebrew), libarchive_dev (csw)
 Remotes: jimhester/covr
-URL: https://github.com/jimhester/archive#readme
+URL: https://jimhester.github.io/archive/, https://github.com/jimhester/archive#readme
 ByteCompile: true
 BugReports: https://github.com/jimhester/archive/issues

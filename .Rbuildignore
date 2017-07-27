@@ -15,3 +15,4 @@
 ^_pkgdown\.yml$
 ^man-roxygen$
 ^script.R$
+^cran-comments\.md$

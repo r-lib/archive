@@ -154,6 +154,8 @@ archive_extract <- function(archive, dir = ".", file = NULL) {
     on.exit(setwd(old))
   }
   archive_extract_(attr(archive, "path"), file)
+
+  invisible(archive)
 }
 
 #' Add files to a new archive
@@ -179,7 +181,7 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
   }
   write_files_(archive, files, archive_formats()[format], archive_filters()[filter])
 
-  invisible(archive)
+  invisible(as_archive(archive))
 }
 
 #' @rdname archive_write_files
@@ -195,6 +197,8 @@ archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = 
   on.exit(setwd(old))
   files <- dir(dir, ..., recursive = recursive, full.names = full.names)
   archive_write_files(archive, files)
+
+  invisible(as_archive(archive))
 }
 
 filter_by_extension <- function(path) {

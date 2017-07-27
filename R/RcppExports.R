@@ -13,8 +13,8 @@ archive_formats <- function() {
     .Call(`_archive_archive_formats`)
 }
 
-libarchive_version <- function() {
-    .Call(`_archive_libarchive_version`)
+libarchive_version_ <- function() {
+    .Call(`_archive_libarchive_version_`)
 }
 
 archive_extract_ <- function(archive_filename, filenames, sz = 16384L) {

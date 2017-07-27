@@ -36,13 +36,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// libarchive_version
-std::string libarchive_version();
-RcppExport SEXP _archive_libarchive_version() {
+// libarchive_version_
+std::string libarchive_version_();
+RcppExport SEXP _archive_libarchive_version_() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(libarchive_version());
+    rcpp_result_gen = Rcpp::wrap(libarchive_version_());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -134,7 +134,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_archive_archive_metadata", (DL_FUNC) &_archive_archive_metadata, 1},
     {"_archive_archive_filters", (DL_FUNC) &_archive_archive_filters, 0},
     {"_archive_archive_formats", (DL_FUNC) &_archive_archive_formats, 0},
-    {"_archive_libarchive_version", (DL_FUNC) &_archive_libarchive_version, 0},
+    {"_archive_libarchive_version_", (DL_FUNC) &_archive_libarchive_version_, 0},
     {"_archive_archive_extract_", (DL_FUNC) &_archive_archive_extract_, 3},
     {"_archive_read_file_connection", (DL_FUNC) &_archive_read_file_connection, 3},
     {"_archive_read_connection", (DL_FUNC) &_archive_read_connection, 6},

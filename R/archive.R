@@ -75,11 +75,13 @@ filter_by_extension <- function(path) {
 #' @name file_connections
 #' @export
 #' @examples
+#' if (archive:::libarchive_version() > "3.2.0") {
 #' # Write bzip2, base 64 encoded data
 #' write.csv(mtcars, file_write("mtcars.bz2", c("uuencode", "bzip2")))
 #'
 #' # Read it back
 #' read.csv(file_read("mtcars.bz2"), row.names = 1, nrows = 3)
+#' }
 file_write <- function(file, filter = NULL) {
   assert("`file` must be a writable file path",
     is_writable(dirname(file)))
@@ -143,4 +145,8 @@ format_and_filter_by_extension <- function(path) {
     "zip" = list("zip", "none"),
 
     NULL)
+}
+
+libarchive_version <- function() {
+  package_version(libarchive_version_())
 }

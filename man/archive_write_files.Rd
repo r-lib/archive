@@ -33,6 +33,7 @@ archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
 \code{archive_write_dir()} adds all the file(s) in a directory to a new archive.
 }
 \examples{
+if (archive:::libarchive_version() > "3.2.0") {
 # write some files to a directory
 d <- tempfile()
 dir.create(d)
@@ -50,4 +51,5 @@ a
 # Add all files in a directory
 a <- archive_write_dir("data.zip", d)
 a
+}
 }

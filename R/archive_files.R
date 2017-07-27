@@ -52,6 +52,7 @@ archive_extract <- function(archive, dir = ".", file = NULL) {
 #' @param files `character()` One or more files to add to the archive.
 #' @inheritParams archive_connections
 #' @examples
+#' if (archive:::libarchive_version() > "3.2.0") {
 #' # write some files to a directory
 #' d <- tempfile()
 #' dir.create(d)
@@ -69,6 +70,7 @@ archive_extract <- function(archive, dir = ".", file = NULL) {
 #' # Add all files in a directory
 #' a <- archive_write_dir("data.zip", d)
 #' a
+#' }
 #' @export
 archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
   assert("`archive` must be a writable file path",

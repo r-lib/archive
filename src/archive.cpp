@@ -92,7 +92,7 @@ Rcpp::IntegerVector archive_formats() {
 }
 
 // [[Rcpp::export]]
-std::string libarchive_version() {
+std::string libarchive_version_() {
   std::string str = archive_version_string();
 
   // Remove 'libarchive '

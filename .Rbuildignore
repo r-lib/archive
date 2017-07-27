@@ -11,4 +11,7 @@
 ^src/\.clang-format$
 ^src/\.ycm_extra_conf\.py$
 ^codecov\.yml$
+^docs$
+^_pkgdown\.yml$
 ^man-roxygen$
+^script.R$

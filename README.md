@@ -76,9 +76,9 @@ a
 #> # A tibble: 3 x 3
 #>             path  size                date
 #>            <chr> <dbl>              <dttm>
-#> 1       iris.csv  3716 2017-07-21 14:48:24
-#> 2     mtcars.csv  1281 2017-07-21 14:48:24
-#> 3 airquality.csv  2890 2017-07-21 14:48:24
+#> 1       iris.csv  3716 2017-07-27 15:07:46
+#> 2     mtcars.csv  1281 2017-07-27 15:07:46
+#> 3 airquality.csv  2890 2017-07-27 15:07:46
 
 # Read a specific file from the archive
 read_csv(archive_read(a, "mtcars.csv"), col_types = cols())

@@ -1,0 +1,25 @@
+reference:
+  - title: Read and write archives using R connections.
+    desc: These functions deal with archive formats such as zip, 7zip, rar and
+      tar and return connection objects which can be used by many R input /
+      output functions.
+    contents:
+      - archive
+      - archive_read
+      - archive_write
+
+  - title: Extract and write extract archives to and from files.
+    desc: These functions create archives from a set of existing files or
+      extract some or all files from an archive to disk.
+    contents:
+      - archive_extract
+      - archive_write_files
+      - archive_write_dir
+
+  - title: Read and Write files using R connections.
+    desc: These functions write or read a file filtered by one or more
+      compression algorithms such as gzip, bzip2 and xz or encodings like
+      uuencoding and return a R connection to that file.
+    contents:
+      - file_read
+      - file_write

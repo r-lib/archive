@@ -18,6 +18,6 @@ Roxygen: list(markdown = TRUE)
 SystemRequirements: libarchive-dev (deb), libarchive-devel (rpm), libarchive
   (homebrew), libarchive_dev (csw)
 Remotes: jimhester/covr
-URL: https://github.com/jimhester/archive
+URL: https://github.com/jimhester/archive#readme
 ByteCompile: true
 BugReports: https://github.com/jimhester/archive/issues

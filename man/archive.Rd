@@ -11,7 +11,7 @@ archive(path)
 }
 \description{
 This function retrieves metadata about files in an archive, it can be passed
-to `archive_con()` to create a connection to read a specific file from the
+to \code{archive_con()} to create a connection to read a specific file from the
 archive.
 }
 \examples{
@@ -19,7 +19,7 @@ a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 a
 }
 \seealso{
-[archive_read()], [archive_write()] to read and write archive files
-using R connections, [archive_extract()], [archive_write_files()],
-[archive_write_dir()] to add or extract files from an archive.
+\code{\link[=archive_read]{archive_read()}}, \code{\link[=archive_write]{archive_write()}} to read and write archive files
+using R connections, \code{\link[=archive_extract]{archive_extract()}}, \code{\link[=archive_write_files]{archive_write_files()}},
+\code{\link[=archive_write_dir]{archive_write_dir()}} to add or extract files from an archive.
 }

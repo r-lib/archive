@@ -11,16 +11,16 @@ file_write(file, filter = NULL)
 file_read(file, mode = "r")
 }
 \arguments{
-\item{file}{`character(1) || integer(1)` The filename within the archive, specified either by filename or by position.}
+\item{file}{\code{character(1) || integer(1)} The filename within the archive, specified either by filename or by position.}
 
-\item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
+\item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 }
 \description{
-These work similar to R's built-in [connections] for files and differ from
-[archive_read] and [archive_write] because they do not use an archive
+These work similar to R's built-in \link{connections} for files and differ from
+\link{archive_read} and \link{archive_write} because they do not use an archive
 format, just use one or more of the filters.
 }
 \details{
-`file_write()` returns an writable output connection,
-`file_read()` returns a readable input connection.
+\code{file_write()} returns an writable output connection,
+\code{file_read()} returns a readable input connection.
 }

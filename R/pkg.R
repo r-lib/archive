@@ -74,10 +74,9 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
 #' `archive_write()` returns an writable output connection to a new archive.
 #'
 #' @param archive `character(1)` The archive filename or an `archive` object.
-#' @param format `character(1)` default: `NULL` The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.
-#' @param filter `character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.
 #' @param file `character(1) || integer(1)` The filename within the archive, specified either by filename or by position.
 #' @name archive_connections
+#' @template archive
 #' @details
 #' If `format` and `filter` are `NULL`, they will be set automatically based on
 #' the file extension given in `file` for `archive_write()` or automatically
@@ -161,7 +160,7 @@ archive_extract <- function(archive, dir = ".", file = NULL) {
 #'
 #' `archive_write_files()` adds one or more files to a new archive.
 #' `archive_write_dir()` adds all the file(s) in a directory to a new archive.
-#' @param files `[character()]` One or more files to add to the archive.
+#' @param files `character()` One or more files to add to the archive.
 #' @inheritParams archive_connections
 #' @export
 archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
@@ -185,7 +184,7 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
 
 #' @rdname archive_write_files
 #' @param ... additional paramters passed to `base::dir`
-#' @param dir [character(1)] The directory of files to add.
+#' @param dir `character(1)` The directory of files to add.
 #' @inheritParams base::list.files
 archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = FALSE) {
   assert("`dir` is not readable",

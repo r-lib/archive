@@ -10,17 +10,17 @@ archive_write_files(archive, files, format = NULL, filter = NULL)
 archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
 }
 \arguments{
-\item{archive}{`character(1)` The archive filename or an `archive` object.}
+\item{archive}{\code{character(1)} The archive filename or an \code{archive} object.}
 
-\item{files}{`[character()]` One or more files to add to the archive.}
+\item{files}{\code{character()} One or more files to add to the archive.}
 
-\item{format}{`character(1)` default: `NULL` The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
+\item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
 
-\item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
+\item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 
-\item{dir}{[character(1)] The directory of files to add.}
+\item{dir}{\code{character(1)} The directory of files to add.}
 
-\item{...}{additional paramters passed to `base::dir`}
+\item{...}{additional paramters passed to \code{base::dir}}
 
 \item{recursive}{logical.  Should the listing recurse into directories?}
 
@@ -29,6 +29,6 @@ archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
     If \code{FALSE}, the file names (rather than paths) are returned.}
 }
 \description{
-`archive_write_files()` adds one or more files to a new archive.
-`archive_write_dir()` adds all the file(s) in a directory to a new archive.
+\code{archive_write_files()} adds one or more files to a new archive.
+\code{archive_write_dir()} adds all the file(s) in a directory to a new archive.
 }

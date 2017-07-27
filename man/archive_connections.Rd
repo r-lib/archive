@@ -12,24 +12,23 @@ archive_read(archive, file = 1L, mode = "r", format = NULL,
 archive_write(archive, file, format = NULL, filter = NULL)
 }
 \arguments{
-\item{archive}{`character(1)` The archive filename or an `archive` object.}
+\item{archive}{\code{character(1)} The archive filename or an \code{archive} object.}
 
-\item{file}{`character(1) || integer(1)` The filename within the archive, specified either by filename or by position.}
+\item{file}{\code{character(1) || integer(1)} The filename within the archive, specified either by filename or by position.}
 
-\item{format}{`character(1)` default: `NULL` The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
+\item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
 
-\item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
+\item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 }
 \description{
-`archive_read()` returns an readable input connection to an existing archive.
-`archive_write()` returns an writable output connection to a new archive.
+\code{archive_read()} returns an readable input connection to an existing archive.
+\code{archive_write()} returns an writable output connection to a new archive.
 }
 \details{
-If `format` and `filter` are `NULL`, they will be set automatically based on
-the file extension given in `file` for `archive_write()` or automatically
-detected using [Robust automatic format
-detection](https://github.com/libarchive/libarchive/wiki/FormatDetection)
-for `archive_read()`.
+If \code{format} and \code{filter} are \code{NULL}, they will be set automatically based on
+the file extension given in \code{file} for \code{archive_write()} or automatically
+detected using \href{https://github.com/libarchive/libarchive/wiki/FormatDetection}{Robust automatic formatdetection}
+for \code{archive_read()}.
 }
 \examples{
 a <- archive(system.file(package = "archive", "extdata", "data.zip"))

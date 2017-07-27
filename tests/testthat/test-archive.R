@@ -156,6 +156,7 @@ if (libarchive_version() >= "3.2.0") {
     it("works with multiple filters", {
       filename <- "mtcars.bz2.uu"
       write.csv(mtcars, file_write(filename))
+      on.exit(unlink(filename))
 
       expect_equal(read.csv(file_read(filename), row.names = 1), mtcars)
     })

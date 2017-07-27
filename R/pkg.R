@@ -10,6 +10,9 @@ NULL
 #' archive.
 #'
 #' @param path File path to the archive.
+#' @seealso [archive_read()], [archive_write()] to read and write archive files
+#' using R connections, [archive_extract()], [archive_write_files()],
+#' [archive_write_dir()] to add or extract files from an archive.
 #' @examples
 #' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 #' a
@@ -32,47 +35,10 @@ as_archive <- function(x) {
   archive(x)
 }
 
-#' Extract contents of an archive
-#'
-#' @param archive An archive object or file path to the archive location.
-#' @param dir Directory location to extract archive contents, will be created
-#' if it does not exist.
+#' @rdname archive_connections
 #' @examples
 #' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
-#' d <- tempfile()
-#' dir.create(d)
-#' archive_extract(a, d)
-#' list.files(d)
-#' unlink(d)
-#' @export
-archive_extract <- function(archive, dir = ".") {
-  archive <- as_archive(archive)
-
-  if (!identical(dir, ".")) {
-    if (!dir.exists(dir)) {
-      dir.create(dir)
-    }
-    old <- setwd(dir)
-    on.exit(setwd(old))
-  }
-  archive_extract_(attr(archive, "path"))
-}
-
-#' Construct a read or write connection into an archive file
-#'
-#' @param archive An archive object or character vector to the archive
-#' @param file The file to open the connection to. Can also be an numeric index
-#' into the `archive()` data.frame.
-#' @param mode The mode to open the file in.
-#' @inheritParams archive_write
-#' @details
-#' libarchive versions prior to 3.1.0 did not support explicit setting of the
-#' format and filter, instead relying on a bidding process to automatically
-#' determine the format of the archive. This automatic detection is also used
-#' when `format` or `filter` is `NULL`.
-#' @examples
-#' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
-#' # See files in archive
+#' # Show files in archive
 #' a
 #'
 #' # By default reads the first file in the archive.
@@ -102,7 +68,7 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
   read_connection(attr(archive, "path"), mode = mode, file, archive_formats()[format], archive_filters()[filter])
 }
 
-#' Construct a write only connection to a new archive
+#' Aquire a read or write connection to an archive file
 #'
 #' `archive_read()` returns an readable input connection to an existing archive.
 #' `archive_write()` returns an writable output connection to a new archive.
@@ -111,9 +77,13 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
 #' @param format `character(1)` default: `NULL` The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.
 #' @param filter `character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.
 #' @param file `character(1)` The filename within the archive.
+#' @name archive_connections
 #' @details
 #' If `format` and `filter` are `NULL`, they will be set automatically based on
-#' the file extension given in `file`.
+#' the file extension given in `file` for `archive_write()` or automatically
+#' detected using [Robust automatic format
+#' detection](https://github.com/libarchive/libarchive/wiki/FormatDetection)
+#' for `archive_read()`.
 #'
 #' @examples
 #' # Achive format and filters can be set automatically from the file extensions.
@@ -149,39 +119,30 @@ archive_write <- function(archive, file, format = NULL, filter = NULL) {
   write_connection(archive, file, archive_formats()[format], archive_filters()[filter])
 }
 
-#' Construct a connections for (possibly compressed) files.
+#' Extract contents of an archive
 #'
-#' These work similar to R's built-in [connections] for files and differ from
-#' [archive_read] and [archive_write] because they do not use an archive
-#' format, just use one or more of the filters.
-#'
-#' `file_write()` returns an writable output connection,
-#' `file_read()` returns a readable input connection.
-#' @inheritParams archive_write
-#' @name file_connections
+#' @param archive An archive object or file path to the archive location.
+#' @param dir Directory location to extract archive contents, will be created
+#' if it does not exist.
+#' @examples
+#' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
+#' d <- tempfile()
+#' dir.create(d)
+#' archive_extract(a, d)
+#' list.files(d)
+#' unlink(d)
 #' @export
-file_write <- function(file, filter = NULL) {
-  assert("`file` must be a writable file path",
-    is_writable(dirname(file)))
+archive_extract <- function(archive, dir = ".") {
+  archive <- as_archive(archive)
 
-  if (is.null(filter)) {
-    res <- filter_by_extension(file)
-    assert("Could not automatically determine the `filter`",
-      non_null(res))
-    filter <- res
+  if (!identical(dir, ".")) {
+    if (!dir.exists(dir)) {
+      dir.create(dir)
+    }
+    old <- setwd(dir)
+    on.exit(setwd(old))
   }
-
-  write_file_connection(file, archive_filters()[filter])
-}
-
-#' @rdname file_connections
-#' @inheritParams archive_read
-#' @export
-file_read <- function(file, mode = "r") {
-  assert("`file` must be a readable file path",
-    is_readable(file))
-
-  read_file_connection(file, mode)
+  archive_extract_(attr(archive, "path"))
 }
 
 #' Add files to a new archive
@@ -189,7 +150,7 @@ file_read <- function(file, mode = "r") {
 #' `archive_write_files()` adds one or more files to a new archive.
 #' `archive_write_dir()` adds all the file(s) in a directory to a new archive.
 #' @param files `[character()]` One or more files to add to the archive.
-#' @inheritParams archive_write
+#' @inheritParams archive_connections
 #' @export
 archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
   assert("`archive` must be a writable file path",
@@ -210,7 +171,7 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
   invisible(archive)
 }
 
-#' @rdname archive_write
+#' @rdname archive_write_files
 #' @param ... additional paramters passed to `base::dir`
 #' @param dir [character(1)] The directory of files to add.
 #' @inheritParams base::list.files
@@ -250,6 +211,41 @@ filter_by_extension <- function(path) {
   extensions <- sub("^[^.][.]", "", basename(path))
 
   Reduce(`c`, Map(extension_to_filter, strsplit(extensions, "[.]")[[1]]))
+}
+
+#' Construct a connections for (possibly compressed) files.
+#'
+#' These work similar to R's built-in [connections] for files and differ from
+#' [archive_read] and [archive_write] because they do not use an archive
+#' format, just use one or more of the filters.
+#'
+#' `file_write()` returns an writable output connection,
+#' `file_read()` returns a readable input connection.
+#' @inheritParams archive_connections
+#' @name file_connections
+#' @export
+file_write <- function(file, filter = NULL) {
+  assert("`file` must be a writable file path",
+    is_writable(dirname(file)))
+
+  if (is.null(filter)) {
+    res <- filter_by_extension(file)
+    assert("Could not automatically determine the `filter`",
+      non_null(res))
+    filter <- res
+  }
+
+  write_file_connection(file, archive_filters()[filter])
+}
+
+#' @rdname file_connections
+#' @inheritParams archive_read
+#' @export
+file_read <- function(file, mode = "r") {
+  assert("`file` must be a readable file path",
+    is_readable(file))
+
+  read_file_connection(file, mode)
 }
 
 format_and_filter_by_extension <- function(path) {

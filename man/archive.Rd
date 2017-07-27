@@ -18,3 +18,8 @@ archive.
 a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 a
 }
+\seealso{
+[archive_read()], [archive_write()] to read and write archive files
+using R connections, [archive_extract()], [archive_write_files()],
+[archive_write_dir()] to add or extract files from an archive.
+}

@@ -14,8 +14,6 @@ file_read(file, mode = "r")
 \item{file}{`character(1)` The filename within the archive.}
 
 \item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
-
-\item{mode}{The mode to open the file in.}
 }
 \description{
 These work similar to R's built-in [connections] for files and differ from

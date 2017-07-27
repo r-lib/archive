@@ -2,18 +2,31 @@
 % Please edit documentation in R/pkg.R
 \name{archive_write_files}
 \alias{archive_write_files}
+\alias{archive_write_dir}
 \title{Add files to a new archive}
 \usage{
 archive_write_files(archive, files, format = NULL, filter = NULL)
+
+archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
 }
 \arguments{
 \item{archive}{`character(1)` The archive filename.}
 
-\item{files}{One or more files to add to the archive.}
+\item{files}{`[character()]` One or more files to add to the archive.}
 
 \item{format}{`character(1)` default: `NULL` The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
 
 \item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
+
+\item{dir}{[character(1)] The directory of files to add.}
+
+\item{...}{additional paramters passed to `base::dir`}
+
+\item{recursive}{logical.  Should the listing recurse into directories?}
+
+\item{full.names}{a logical value.  If \code{TRUE}, the directory
+    path is prepended to the file names to give a relative file path.
+    If \code{FALSE}, the file names (rather than paths) are returned.}
 }
 \description{
 `archive_write_files()` adds one or more files to a new archive.

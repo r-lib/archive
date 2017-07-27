@@ -1,6 +1,6 @@
 Package: archive
 Title: Multi-format Archive and Compression support for R Connections.
-Description: Bindings to libarchive <http://www.libarchive.org> the
+Description: Bindings to 'libarchive' <http://www.libarchive.org> the
   Multi-format archive and compression library. Offers file connections for many
   archive formats including 'tar', 'ZIP', '7-zip', 'RAR', 'CAB' and compressions
   formats including 'gzip', 'bzip2', 'compress', 'lzma' and 'xz'.

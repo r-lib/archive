@@ -40,9 +40,12 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     # Install pkgconfig and use it to set cflags and libs
     BREW="$BREWDIR/bin/brew"
     $BREW install pkgconfig
+    PKG_CONFIG="$BREWDIR/bin/pkg-config"
+  else
+    PKG_CONFIG=$(which pkg-config)
   fi
-  PKG_CFLAGS=$(PKG_CONFIG_PATH="$BREWDIR/opt/$PKG_BREW_NAME/lib/pkgconfig" $BREWDIR/bin/pkg-config $PKG_BREW_NAME liblzma --cflags)
-  PKG_LIBS=$(PKG_CONFIG_PATH="$BREWDIR/opt/$PKG_BREW_NAME/lib/pkgconfig" $BREWDIR/bin/pkg-config $PKG_BREW_NAME liblzma --libs --static)
+  PKG_CFLAGS=$(PKG_CONFIG_PATH="$BREWDIR/opt/$PKG_BREW_NAME/lib/pkgconfig" $PKG_CONFIG $PKG_BREW_NAME liblzma --cflags)
+  PKG_LIBS=$(PKG_CONFIG_PATH="$BREWDIR/opt/$PKG_BREW_NAME/lib/pkgconfig" $PKG_CONFIG $PKG_BREW_NAME liblzma --libs --static)
 fi
 
 # Find compiler

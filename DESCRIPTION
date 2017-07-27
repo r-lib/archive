@@ -1,8 +1,8 @@
 Package: archive
-Title: Multi-format Archive and Compression support for R Connections.
+Title: Multi-Format Archive and Compression Support for R Connections
 Description: Bindings to 'libarchive' <http://www.libarchive.org> the
   Multi-format archive and compression library. Offers file connections for many
-  archive formats including 'tar', 'ZIP', '7-zip', 'RAR', 'CAB' and compressions
+  archive formats including 'tar', 'ZIP', '7-zip', 'RAR', 'CAB' and compression
   formats including 'gzip', 'bzip2', 'compress', 'lzma' and 'xz'.
 Version: 1.0.0
 Authors@R: person("Jim", "Hester", email = "james.f.hester@gmail.com", role = c("aut", "cre"))
@@ -18,7 +18,6 @@ RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
 SystemRequirements: libarchive: libarchive-dev (deb), libarchive-devel (rpm), libarchive
   (homebrew), libarchive_dev (csw)
-Remotes: jimhester/covr
 URL: https://jimhester.github.io/archive/, https://github.com/jimhester/archive#readme
 ByteCompile: true
 BugReports: https://github.com/jimhester/archive/issues

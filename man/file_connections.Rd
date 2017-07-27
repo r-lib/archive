@@ -4,22 +4,23 @@
 \alias{file_connections}
 \alias{file_write}
 \alias{file_read}
-\title{Construct a file connections for (possibly compressed) files.}
+\title{Construct a connections for (possibly compressed) files.}
 \usage{
 file_write(file, filter = NULL)
 
 file_read(file, mode = "r")
 }
 \arguments{
-\item{file}{The filename within the archive.}
+\item{file}{`character(1)` The filename within the archive.}
 
 \item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 
 \item{mode}{The mode to open the file in.}
 }
 \description{
-This works similar to R's builtin [connections] for files. However it
-supports one on or more of the following
+These work similar to R's built-in [connections] for files and differ from
+[archive_read] and [archive_write] because they do not use an archive
+format, just use one or more of the filters.
 }
 \details{
 `file_write()` returns an writable output connection,

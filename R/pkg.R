@@ -15,7 +15,8 @@ NULL
 #' a
 #' @export
 archive <- function(path) {
-  stopifnot(is.character(path), length(path) == 1, file.exists(path))
+  assert("`path` must be a readable file path",
+    is_readable(path))
 
   path <- normalizePath(path)
 
@@ -57,7 +58,7 @@ archive_extract <- function(archive, dir = ".") {
   archive_extract_(attr(archive, "path"))
 }
 
-#' Construct a read only connection into an archive file
+#' Construct a read or write connection into an archive file
 #'
 #' @param archive An archive object or character vector to the archive
 #' @param file The file to open the connection to. Can also be an numeric index
@@ -88,51 +89,71 @@ archive_extract <- function(archive, dir = ".") {
 #' @export
 archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter = NULL) {
   archive <- as_archive(archive)
-  if (is.numeric(file) && length(file) == 1) {
+  if (is_number(file)) {
     file <- archive$path[[file]]
   }
-  if (!is.character(file) || length(file) != 1) {
-    stop("`file` must be a length one character vector or numeric", call. = FALSE)
-  }
 
-  if (!file %in% archive$path) {
-    stop("`file` ", encodeString(file, quote = "'"), " not found", call. = FALSE)
-  }
+  assert("`file` must be a length one character vector or numeric",
+    length(file) == 1 && (is.character(file) || is.numeric(file)))
+
+  assert(paste0("`file` ", encodeString(file, quote = "'"), " not found"),
+    file %in% archive$path)
 
   read_connection(attr(archive, "path"), mode = mode, file, archive_formats()[format], archive_filters()[filter])
 }
 
 #' Construct a write only connection to a new archive
 #'
-#' @param archive The archive filename, if filter and format are both `NULL` the file extension will
-#' be used to determine the archive format and filters, if any.
+#' `archive_read()` returns an readable input connection to an existing archive.
+#' `archive_write()` returns an writable output connection to a new archive.
+#'
+#' @param archive `character(1)` The archive filename.
 #' @param format `character(1)` default: `NULL` The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.
 #' @param filter `character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.
-#' @param file The filename within the archive.
+#' @param file `character(1)` The filename within the archive.
+#' @details
+#' If `format` and `filter` are `NULL`, they will be set automatically based on
+#' the file extension given in `file`.
+#'
+#' @examples
+#' # Achive format and filters can be set automatically from the file extensions.
+#' f1 <- tempfile(fileext = ".tar.gz")
+#'
+#' write.csv(mtcars, archive_write(f1, "mtcars.csv"))
+#' archive(f1)
+#' unlink(f1)
+#'
+#' # They can also be specified explicitly
+#' f2 <- tempfile()
+#' write.csv(iris, archive_write(f2, "iris.csv", format = "tar", filter = "bzip2"))
+#' archive(f2)
+#' unlink(f2)
 #' @export
 archive_write <- function(archive, file, format = NULL, filter = NULL) {
   if (is.null(format) && is.null(filter)) {
     res <- format_and_filter_by_extension(archive)
-    if (is.null(res)) {
-      stop("Could not automatically determine the `filter` and `format`", call. = FALSE)
-    }
+
+    assert("Could not automatically determine the `filter` and `format`",
+      !is.null(res))
+
     format <- res[[1]]
     filter <- res[[2]]
   }
-  if (!is.character(archive) || length(archive) != 1) {
-    stop("`archive` must be a length one character vector", call. = FALSE)
-  }
 
-  if (!is.character(file) || length(file) != 1) {
-    stop("`file` must be a length one character vector", call. = FALSE)
-  }
+  assert("`archive` must be a writable file path",
+    is_writable(dirname(archive)))
+
+  assert("`file` must be a length one character vector",
+    is_string(file))
+
   write_connection(archive, file, archive_formats()[format], archive_filters()[filter])
 }
 
-#' Construct a file connections for (possibly compressed) files.
+#' Construct a connections for (possibly compressed) files.
 #'
-#' This works similar to R's builtin [connections] for files. However it
-#' supports one on or more of the following
+#' These work similar to R's built-in [connections] for files and differ from
+#' [archive_read] and [archive_write] because they do not use an archive
+#' format, just use one or more of the filters.
 #'
 #' `file_write()` returns an writable output connection,
 #' `file_read()` returns a readable input connection.
@@ -140,14 +161,13 @@ archive_write <- function(archive, file, format = NULL, filter = NULL) {
 #' @name file_connections
 #' @export
 file_write <- function(file, filter = NULL) {
-  if (!is.character(file) || length(file) != 1) {
-    stop("`file` must be a length one character vector", call. = FALSE)
-  }
+  assert("`file` must be a writable file path",
+    is_writable(dirname(file)))
+
   if (is.null(filter)) {
     res <- filter_by_extension(file)
-    if (is.null(res)) {
-      stop("Could not automatically determine the `filter`", call. = FALSE)
-    }
+    assert("Could not automatically determine the `filter`",
+      non_null(res))
     filter <- res
   }
 
@@ -158,9 +178,8 @@ file_write <- function(file, filter = NULL) {
 #' @inheritParams archive_read
 #' @export
 file_read <- function(file, mode = "r") {
-  if (!is.character(file) || length(file) != 1) {
-    stop("`file` must be a length one character vector", call. = FALSE)
-  }
+  assert("`file` must be a readable file path",
+    is_readable(file))
 
   read_file_connection(file, mode)
 }
@@ -169,23 +188,20 @@ file_read <- function(file, mode = "r") {
 #'
 #' `archive_write_files()` adds one or more files to a new archive.
 #' `archive_write_dir()` adds all the file(s) in a directory to a new archive.
-#' @param files One or more files to add to the archive.
+#' @param files `[character()]` One or more files to add to the archive.
 #' @inheritParams archive_write
 #' @export
 archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
-  if (!is.character(archive) || length(archive) != 1) {
-    stop("`archive` must be a length one character vector", call. = FALSE)
-  }
+  assert("`archive` must be a writable file path",
+    is_writable(dirname(archive)))
 
-  if (!is.character(files) || length(files) < 1) {
-    stop("`file` must be a length 1 or greater character vector", call. = FALSE)
-  }
+  assert("`files` must be one or more readable file paths",
+    lapply(files, is_readable))
 
   if (is.null(format) && is.null(filter)) {
     res <- format_and_filter_by_extension(archive)
-    if (is.null(res)) {
-      stop("Could not automatically determine the `filter` and `format`", call. = FALSE)
-    }
+    assert("Could not automatically determine the `filter` and `format`",
+      non_null(res))
     format <- res[[1]]
     filter <- res[[2]]
   }
@@ -196,9 +212,12 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
 
 #' @rdname archive_write
 #' @param ... additional paramters passed to `base::dir`
-#' @param dir The directory of files to add
+#' @param dir [character(1)] The directory of files to add.
 #' @inheritParams base::list.files
 archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = FALSE) {
+  assert("`dir` is not readable",
+    is_readable(dir))
+
   archive <- file.path(normalizePath(dirname(archive)), basename(archive))
   old <- setwd(dir)
   on.exit(setwd(old))

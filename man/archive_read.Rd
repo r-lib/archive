@@ -2,7 +2,7 @@
 % Please edit documentation in R/pkg.R
 \name{archive_read}
 \alias{archive_read}
-\title{Construct a read only connection into an archive file}
+\title{Construct a read or write connection into an archive file}
 \usage{
 archive_read(archive, file = 1L, mode = "r", format = NULL,
   filter = NULL)
@@ -20,7 +20,7 @@ into the `archive()` data.frame.}
 \item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 }
 \description{
-Construct a read only connection into an archive file
+Construct a read or write connection into an archive file
 }
 \details{
 libarchive versions prior to 3.1.0 did not support explicit setting of the

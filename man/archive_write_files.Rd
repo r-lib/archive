@@ -7,8 +7,7 @@
 archive_write_files(archive, files, format = NULL, filter = NULL)
 }
 \arguments{
-\item{archive}{The archive filename, if filter and format are both `NULL` the file extension will
-be used to determine the archive format and filters, if any.}
+\item{archive}{`character(1)` The archive filename.}
 
 \item{files}{One or more files to add to the archive.}
 

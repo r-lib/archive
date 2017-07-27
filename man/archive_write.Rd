@@ -10,10 +10,9 @@ archive_write(archive, file, format = NULL, filter = NULL)
 archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
 }
 \arguments{
-\item{archive}{The archive filename, if filter and format are both `NULL` the file extension will
-be used to determine the archive format and filters, if any.}
+\item{archive}{`character(1)` The archive filename.}
 
-\item{file}{The filename within the archive.}
+\item{file}{`character(1)` The filename within the archive.}
 
 \item{format}{`character(1)` default: `NULL` The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
 
@@ -30,5 +29,24 @@ be used to determine the archive format and filters, if any.}
     If \code{FALSE}, the file names (rather than paths) are returned.}
 }
 \description{
-Construct a write only connection to a new archive
+`archive_read()` returns an readable input connection to an existing archive.
+`archive_write()` returns an writable output connection to a new archive.
+}
+\details{
+If `format` and `filter` are `NULL`, they will be set automatically based on
+the file extension given in `file`.
+}
+\examples{
+# Achive format and filters can be set automatically from the file extensions.
+f1 <- tempfile(fileext = ".tar.gz")
+
+write.csv(mtcars, archive_write(f1, "mtcars.csv"))
+archive(f1)
+unlink(f1)
+
+# They can also be specified explicitly
+f2 <- tempfile()
+write.csv(iris, archive_write(f2, "iris.csv", format = "tar", filter = "bzip2"))
+archive(f2)
+unlink(f2)
 }

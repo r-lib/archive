@@ -11,7 +11,7 @@ file_write(file, filter = NULL)
 file_read(file, mode = "r")
 }
 \arguments{
-\item{file}{`character(1)` The filename within the archive.}
+\item{file}{`character(1) || integer(1)` The filename within the archive, specified either by filename or by position.}
 
 \item{filter}{`character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 }

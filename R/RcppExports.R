@@ -17,8 +17,8 @@ libarchive_version <- function() {
     .Call(`_archive_libarchive_version`)
 }
 
-archive_extract_ <- function(archive_filename, sz = 16384L) {
-    invisible(.Call(`_archive_archive_extract_`, archive_filename, sz))
+archive_extract_ <- function(archive_filename, filenames, sz = 16384L) {
+    invisible(.Call(`_archive_archive_extract_`, archive_filename, filenames, sz))
 }
 
 read_file_connection <- function(filename, mode, sz = 16384L) {

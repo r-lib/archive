@@ -73,10 +73,10 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
 #' `archive_read()` returns an readable input connection to an existing archive.
 #' `archive_write()` returns an writable output connection to a new archive.
 #'
-#' @param archive `character(1)` The archive filename.
+#' @param archive `character(1)` The archive filename or an `archive` object.
 #' @param format `character(1)` default: `NULL` The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.
 #' @param filter `character(1)` default: `NULL` The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.
-#' @param file `character(1)` The filename within the archive.
+#' @param file `character(1) || integer(1)` The filename within the archive, specified either by filename or by position.
 #' @name archive_connections
 #' @details
 #' If `format` and `filter` are `NULL`, they will be set automatically based on
@@ -121,9 +121,11 @@ archive_write <- function(archive, file, format = NULL, filter = NULL) {
 
 #' Extract contents of an archive
 #'
-#' @param archive An archive object or file path to the archive location.
-#' @param dir Directory location to extract archive contents, will be created
+#' @inheritParams archive_connections
+#' @param dir `character(1)` Directory location to extract archive contents, will be created
 #' if it does not exist.
+#' @details
+#' If `file` is `NULL` (the default) all files will be extracted.
 #' @examples
 #' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 #' d <- tempfile()
@@ -132,8 +134,18 @@ archive_write <- function(archive, file, format = NULL, filter = NULL) {
 #' list.files(d)
 #' unlink(d)
 #' @export
-archive_extract <- function(archive, dir = ".") {
+archive_extract <- function(archive, dir = ".", file = NULL) {
   archive <- as_archive(archive)
+  assert("`file` must be a character or numeric vector or `NULL`",
+    is.null(file) || is.numeric(file) || is.character(file))
+
+  if (is.numeric(file)) {
+    file <- archive$path[file]
+  }
+
+  if (is.null(file)) {
+    file <- character()
+  }
 
   if (!identical(dir, ".")) {
     if (!dir.exists(dir)) {
@@ -142,7 +154,7 @@ archive_extract <- function(archive, dir = ".") {
     old <- setwd(dir)
     on.exit(setwd(old))
   }
-  archive_extract_(attr(archive, "path"))
+  archive_extract_(attr(archive, "path"), file)
 }
 
 #' Add files to a new archive

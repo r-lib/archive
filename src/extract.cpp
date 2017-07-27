@@ -22,8 +22,20 @@ static int copy_data(struct archive* ar, struct archive* aw) {
   }
 }
 
+bool any_matches(const char* filename, Rcpp::CharacterVector filenames) {
+  for (int i = 0; i < filenames.size(); ++i) {
+    if (strcmp(filename, filenames[i]) == 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // [[Rcpp::export]]
-void archive_extract_(const std::string& archive_filename, size_t sz = 16384) {
+void archive_extract_(
+    const std::string& archive_filename,
+    Rcpp::CharacterVector filenames,
+    size_t sz = 16384) {
   struct archive* a;
   struct archive* ext;
   struct archive_entry* entry;
@@ -52,15 +64,18 @@ void archive_extract_(const std::string& archive_filename, size_t sz = 16384) {
     if (r != ARCHIVE_OK) {
       Rcpp::stop("archive_read_next_header(): %s", archive_error_string(a));
     }
-    r = archive_write_header(ext, entry);
-    if (r != ARCHIVE_OK) {
-      Rcpp::stop("archive_write_header(): %s", archive_error_string(ext));
-    } else {
-      copy_data(a, ext);
-      r = archive_write_finish_entry(ext);
+    const char* filename = archive_entry_pathname(entry);
+    if (filenames.length() == 0 || any_matches(filename, filenames)) {
+      r = archive_write_header(ext, entry);
       if (r != ARCHIVE_OK) {
-        Rcpp::stop(
-            "archive_write_finish_entry(): %s", archive_error_string(ext));
+        Rcpp::stop("archive_write_header(): %s", archive_error_string(ext));
+      } else {
+        copy_data(a, ext);
+        r = archive_write_finish_entry(ext);
+        if (r != ARCHIVE_OK) {
+          Rcpp::stop(
+              "archive_write_finish_entry(): %s", archive_error_string(ext));
+        }
       }
     }
   }

@@ -10,7 +10,7 @@ archive_write_files(archive, files, format = NULL, filter = NULL)
 archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
 }
 \arguments{
-\item{archive}{`character(1)` The archive filename.}
+\item{archive}{`character(1)` The archive filename or an `archive` object.}
 
 \item{files}{`[character()]` One or more files to add to the archive.}
 

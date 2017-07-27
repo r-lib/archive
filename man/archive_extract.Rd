@@ -4,16 +4,21 @@
 \alias{archive_extract}
 \title{Extract contents of an archive}
 \usage{
-archive_extract(archive, dir = ".")
+archive_extract(archive, dir = ".", file = NULL)
 }
 \arguments{
-\item{archive}{An archive object or file path to the archive location.}
+\item{archive}{`character(1)` The archive filename or an `archive` object.}
 
-\item{dir}{Directory location to extract archive contents, will be created
+\item{dir}{`character(1)` Directory location to extract archive contents, will be created
 if it does not exist.}
+
+\item{file}{`character(1) || integer(1)` The filename within the archive, specified either by filename or by position.}
 }
 \description{
 Extract contents of an archive
+}
+\details{
+If `file` is `NULL` (the default) all files will be extracted.
 }
 \examples{
 a <- archive(system.file(package = "archive", "extdata", "data.zip"))

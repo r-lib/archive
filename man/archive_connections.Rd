@@ -12,9 +12,9 @@ archive_read(archive, file = 1L, mode = "r", format = NULL,
 archive_write(archive, file, format = NULL, filter = NULL)
 }
 \arguments{
-\item{archive}{`character(1)` The archive filename.}
+\item{archive}{`character(1)` The archive filename or an `archive` object.}
 
-\item{file}{`character(1)` The filename within the archive.}
+\item{file}{`character(1) || integer(1)` The filename within the archive, specified either by filename or by position.}
 
 \item{format}{`character(1)` default: `NULL` The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
 

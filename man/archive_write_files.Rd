@@ -32,3 +32,22 @@ archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
 \code{archive_write_files()} adds one or more files to a new archive.
 \code{archive_write_dir()} adds all the file(s) in a directory to a new archive.
 }
+\examples{
+# write some files to a directory
+d <- tempfile()
+dir.create(d)
+old <- setwd(d)
+
+write.csv(iris, file.path(d, "iris.csv"))
+write.csv(mtcars, file.path(d, "mtcars.csv"))
+write.csv(airquality, file.path(d, "airquality.csv"))
+
+# Add some to a new archive
+a <- archive_write_files("data.tar.gz", c("iris.csv", "mtcars.csv"))
+setwd(old)
+a
+
+# Add all files in a directory
+a <- archive_write_dir("data.zip", d)
+a
+}

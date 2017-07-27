@@ -74,14 +74,15 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
 #' `archive_write()` returns an writable output connection to a new archive.
 #'
 #' @param archive `character(1)` The archive filename or an `archive` object.
-#' @param file `character(1) || integer(1)` The filename within the archive, specified either by filename or by position.
+#' @param file `character(1) || integer(1)` The filename within the archive,
+#'   specified either by filename or by position.
 #' @name archive_connections
 #' @template archive
 #' @details
 #' If `format` and `filter` are `NULL`, they will be set automatically based on
 #' the file extension given in `file` for `archive_write()` or automatically
-#' detected using [Robust automatic format
-#' detection](https://github.com/libarchive/libarchive/wiki/FormatDetection)
+#' detected using
+#' [Robust automatic format detection](https://github.com/libarchive/libarchive/wiki/FormatDetection)
 #' for `archive_read()`.
 #'
 #' @examples
@@ -128,8 +129,15 @@ archive_write <- function(archive, file, format = NULL, filter = NULL) {
 #' @examples
 #' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 #' d <- tempfile()
-#' dir.create(d)
+#'
+#' # When called with default arguments extracts all files in the archive.
 #' archive_extract(a, d)
+#' list.files(d)
+#' unlink(d)
+#'
+#' # Can also specify one or more files to extract
+#' d <- tempfile()
+#' archive_extract(a, d, c("iris.csv", "airquality.csv"))
 #' list.files(d)
 #' unlink(d)
 #' @export
@@ -164,6 +172,24 @@ archive_extract <- function(archive, dir = ".", file = NULL) {
 #' `archive_write_dir()` adds all the file(s) in a directory to a new archive.
 #' @param files `character()` One or more files to add to the archive.
 #' @inheritParams archive_connections
+#' @examples
+#' # write some files to a directory
+#' d <- tempfile()
+#' dir.create(d)
+#' old <- setwd(d)
+#'
+#' write.csv(iris, file.path(d, "iris.csv"))
+#' write.csv(mtcars, file.path(d, "mtcars.csv"))
+#' write.csv(airquality, file.path(d, "airquality.csv"))
+#'
+#' # Add some to a new archive
+#' a <- archive_write_files("data.tar.gz", c("iris.csv", "mtcars.csv"))
+#' setwd(old)
+#' a
+#'
+#' # Add all files in a directory
+#' a <- archive_write_dir("data.zip", d)
+#' a
 #' @export
 archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
   assert("`archive` must be a writable file path",
@@ -188,6 +214,7 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
 #' @param ... additional paramters passed to `base::dir`
 #' @param dir `character(1)` The directory of files to add.
 #' @inheritParams base::list.files
+#' @export
 archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = FALSE) {
   assert("`dir` is not readable",
     is_readable(dir))
@@ -239,6 +266,12 @@ filter_by_extension <- function(path) {
 #' @inheritParams archive_connections
 #' @name file_connections
 #' @export
+#' @examples
+#' # Write bzip2, base 64 encoded data
+#' write.csv(mtcars, file_write("mtcars.bz2", c("uuencode", "bzip2")))
+#'
+#' # Read it back
+#' read.csv(file_read("mtcars.bz2"), row.names = 1, nrows = 3)
 file_write <- function(file, filter = NULL) {
   assert("`file` must be a writable file path",
     is_writable(dirname(file)))

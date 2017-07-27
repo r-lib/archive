@@ -12,7 +12,8 @@ archive_extract(archive, dir = ".", file = NULL)
 \item{dir}{\code{character(1)} Directory location to extract archive contents, will be created
 if it does not exist.}
 
-\item{file}{\code{character(1) || integer(1)} The filename within the archive, specified either by filename or by position.}
+\item{file}{\code{character(1) || integer(1)} The filename within the archive,
+specified either by filename or by position.}
 }
 \description{
 Extract contents of an archive
@@ -23,8 +24,15 @@ If \code{file} is \code{NULL} (the default) all files will be extracted.
 \examples{
 a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 d <- tempfile()
-dir.create(d)
+
+# When called with default arguments extracts all files in the archive.
 archive_extract(a, d)
+list.files(d)
+unlink(d)
+
+# Can also specify one or more files to extract
+d <- tempfile()
+archive_extract(a, d, c("iris.csv", "airquality.csv"))
 list.files(d)
 unlink(d)
 }

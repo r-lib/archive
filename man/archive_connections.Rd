@@ -14,7 +14,8 @@ archive_write(archive, file, format = NULL, filter = NULL)
 \arguments{
 \item{archive}{\code{character(1)} The archive filename or an \code{archive} object.}
 
-\item{file}{\code{character(1) || integer(1)} The filename within the archive, specified either by filename or by position.}
+\item{file}{\code{character(1) || integer(1)} The filename within the archive,
+specified either by filename or by position.}
 
 \item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
 
@@ -27,7 +28,8 @@ archive_write(archive, file, format = NULL, filter = NULL)
 \details{
 If \code{format} and \code{filter} are \code{NULL}, they will be set automatically based on
 the file extension given in \code{file} for \code{archive_write()} or automatically
-detected using \href{https://github.com/libarchive/libarchive/wiki/FormatDetection}{Robust automatic formatdetection}
+detected using
+\href{https://github.com/libarchive/libarchive/wiki/FormatDetection}{Robust automatic format detection}
 for \code{archive_read()}.
 }
 \examples{

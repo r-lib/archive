@@ -11,7 +11,8 @@ file_write(file, filter = NULL)
 file_read(file, mode = "r")
 }
 \arguments{
-\item{file}{\code{character(1) || integer(1)} The filename within the archive, specified either by filename or by position.}
+\item{file}{\code{character(1) || integer(1)} The filename within the archive,
+specified either by filename or by position.}
 
 \item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 }
@@ -23,4 +24,11 @@ format, just use one or more of the filters.
 \details{
 \code{file_write()} returns an writable output connection,
 \code{file_read()} returns a readable input connection.
+}
+\examples{
+# Write bzip2, base 64 encoded data
+write.csv(mtcars, file_write("mtcars.bz2", c("uuencode", "bzip2")))
+
+# Read it back
+read.csv(file_read("mtcars.bz2"), row.names = 1, nrows = 3)
 }

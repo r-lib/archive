@@ -60,6 +60,9 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -85,7 +88,7 @@
 
     
     <p>These work similar to R's built-in connections for files and differ from
-<a href='archive_read.html'>archive_read</a> and <a href='archive_write.html'>archive_write</a> because they do not use an archive
+<a href='archive_connections.html'>archive_read</a> and <a href='archive_connections.html'>archive_write</a> because they do not use an archive
 format, just use one or more of the filters.</p>
     
 
@@ -121,14 +124,14 @@ connection (if it should be opened initially).  See section
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Write bzip2, base 64 encoded data</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='kw pkg'>archive</span><span class='kw ns'>:::</span><span class='fu'>libarchive_version</span>() <span class='kw'>&gt;</span> <span class='st'>"3.2.0"</span>) {
+<span class='co'># Write bzip2, base 64 encoded data</span>
 <span class='fu'>write.csv</span>(<span class='no'>mtcars</span>, <span class='fu'>file_write</span>(<span class='st'>"mtcars.bz2"</span>, <span class='fu'>c</span>(<span class='st'>"uuencode"</span>, <span class='st'>"bzip2"</span>)))
 
 <span class='co'># Read it back</span>
-<span class='fu'>read.csv</span>(<span class='fu'>file_read</span>(<span class='st'>"mtcars.bz2"</span>), <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;                mpg cyl disp  hp drat    wt  qsec vs am gear carb
-#&gt; Mazda RX4     21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
-#&gt; Mazda RX4 Wag 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
-#&gt; Datsun 710    22.8   4  108  93 3.85 2.320 18.61  1  1    4    1</div></pre>
+<span class='fu'>read.csv</span>(<span class='fu'>file_read</span>(<span class='st'>"mtcars.bz2"</span>), <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>3</span>)
+<span class='fu'>unlink</span>(<span class='st'>"mtcars.bz2"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>R bindings to libarchive • archive</title>
+<title>Multi-Format Archive and Compression Support for R Connections • archive</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -36,6 +36,9 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="news/index.html">News</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -83,10 +86,10 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr) <span class="co"># read_csv(), write_csv(), cols()</span>
 
 <span class="co"># Write a single dataset to zip</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/write_delim">write_csv</a></span>(mtcars, <span class="kw"><a href="reference/archive_write.html">archive_write</a></span>(<span class="st">"mtcars.zip"</span>, <span class="st">"mtcars.csv"</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/write_delim">write_csv</a></span>(mtcars, <span class="kw"><a href="reference/archive_connections.html">archive_write</a></span>(<span class="st">"mtcars.zip"</span>, <span class="st">"mtcars.csv"</span>))
 
 <span class="co"># Read the data back, by default the first file is read from the archive.</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="kw"><a href="reference/archive_read.html">archive_read</a></span>(<span class="st">"mtcars.zip"</span>), <span class="dt">col_types =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/cols">cols</a></span>())
+<span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="kw"><a href="reference/archive_connections.html">archive_read</a></span>(<span class="st">"mtcars.zip"</span>), <span class="dt">col_types =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/cols">cols</a></span>())
 <span class="co">#&gt; # A tibble: 32 x 11</span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
@@ -98,10 +101,10 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 
 <span class="co"># Also supports archiving and compression together</span>
 <span class="co"># Write a single dataset to zip</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/write_delim">write_csv</a></span>(mtcars, <span class="kw"><a href="reference/archive_write.html">archive_write</a></span>(<span class="st">"mtcars.tar.gz"</span>, <span class="st">"mtcars.csv"</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/write_delim">write_csv</a></span>(mtcars, <span class="kw"><a href="reference/archive_connections.html">archive_write</a></span>(<span class="st">"mtcars.tar.gz"</span>, <span class="st">"mtcars.csv"</span>))
 
 <span class="co"># Read the data back</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="kw"><a href="reference/archive_read.html">archive_read</a></span>(<span class="st">"mtcars.tar.gz"</span>), <span class="dt">col_types =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/cols">cols</a></span>())
+<span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="kw"><a href="reference/archive_connections.html">archive_read</a></span>(<span class="st">"mtcars.tar.gz"</span>), <span class="dt">col_types =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/cols">cols</a></span>())
 <span class="co">#&gt; # A tibble: 32 x 11</span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
@@ -132,12 +135,12 @@ a
 <span class="co">#&gt; # A tibble: 3 x 3</span>
 <span class="co">#&gt;             path  size                date</span>
 <span class="co">#&gt;            &lt;chr&gt; &lt;dbl&gt;              &lt;dttm&gt;</span>
-<span class="co">#&gt; 1       iris.csv  3716 2017-07-27 15:07:48</span>
-<span class="co">#&gt; 2     mtcars.csv  1281 2017-07-27 15:07:48</span>
-<span class="co">#&gt; 3 airquality.csv  2890 2017-07-27 15:07:48</span>
+<span class="co">#&gt; 1       iris.csv  3716 2017-07-27 17:08:48</span>
+<span class="co">#&gt; 2     mtcars.csv  1281 2017-07-27 17:08:48</span>
+<span class="co">#&gt; 3 airquality.csv  2890 2017-07-27 17:08:48</span>
 
 <span class="co"># Read a specific file from the archive</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="kw"><a href="reference/archive_read.html">archive_read</a></span>(a, <span class="st">"mtcars.csv"</span>), <span class="dt">col_types =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/cols">cols</a></span>())
+<span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="kw"><a href="reference/archive_connections.html">archive_read</a></span>(a, <span class="st">"mtcars.csv"</span>), <span class="dt">col_types =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/cols">cols</a></span>())
 <span class="co">#&gt; # A tibble: 32 x 11</span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
@@ -174,7 +177,7 @@ a
     <h2 class="hasAnchor">
 <a href="#sidebar" class="anchor"></a>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/jimhester/archive#readme">https://​github.com/​jimhester/​archive#readme</a>
+<li>Browse source code at <br><a href="https://jimhester.github.io/archive/">https://​jimhester.github.io/​archive/​</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/jimhester/archive/issues">https://​github.com/​jimhester/​archive/​issues</a>
 </li>

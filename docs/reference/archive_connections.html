@@ -60,6 +60,9 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -84,14 +87,14 @@
     </div>
 
     
-    <p><code><a href='archive_read.html'>archive_read()</a></code> returns an readable input connection to an existing archive.
-<code><a href='archive_write.html'>archive_write()</a></code> returns an writable output connection to a new archive.</p>
+    <p><code>archive_read()</code> returns an readable input connection to an existing archive.
+<code>archive_write()</code> returns an writable output connection to a new archive.</p>
     
 
-    <pre class="usage"><span class='fu'><a href='archive_read.html'>archive_read</a></span>(<span class='no'>archive</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"r"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>archive_read</span>(<span class='no'>archive</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"r"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'><a href='archive_write.html'>archive_write</a></span>(<span class='no'>archive</span>, <span class='no'>file</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>archive_write</span>(<span class='no'>archive</span>, <span class='no'>file</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -126,10 +129,10 @@ connection (if it should be opened initially).  See section
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>If <code>format</code> and <code>filter</code> are <code>NULL</code>, they will be set automatically based on
-the file extension given in <code>file</code> for <code><a href='archive_write.html'>archive_write()</a></code> or automatically
+the file extension given in <code>file</code> for <code>archive_write()</code> or automatically
 detected using
 <a href='https://github.com/libarchive/libarchive/wiki/FormatDetection'>Robust automatic format detection</a>
-for <code><a href='archive_read.html'>archive_read()</a></code>.</p>
+for <code>archive_read()</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -142,40 +145,40 @@ for <code><a href='archive_read.html'>archive_read()</a></code>.</p>
 #&gt; 2     mtcars.csv   274 2017-04-28 15:55:29
 #&gt; 3 airquality.csv   142 2017-04-28 15:55:29</div><div class='input'>
 <span class='co'># By default reads the first file in the archive.</span>
-<span class='fu'>read.csv</span>(<span class='fu'><a href='archive_read.html'>archive_read</a></span>(<span class='no'>a</span>), <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+<span class='fu'>read.csv</span>(<span class='fu'>archive_read</span>(<span class='no'>a</span>), <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 #&gt; 1          5.1         3.5          1.4         0.2  setosa
 #&gt; 2          4.9         3.0          1.4         0.2  setosa
 #&gt; 3          4.7         3.2          1.3         0.2  setosa</div><div class='input'>
 <span class='co'># Can also specify a filename directly</span>
-<span class='fu'>read.csv</span>(<span class='fu'><a href='archive_read.html'>archive_read</a></span>(<span class='no'>a</span>, <span class='st'>"mtcars.csv"</span>), <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+<span class='fu'>read.csv</span>(<span class='fu'>archive_read</span>(<span class='no'>a</span>, <span class='st'>"mtcars.csv"</span>), <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;    mpg cyl disp  hp drat    wt  qsec vs am gear carb
 #&gt; 1 21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
 #&gt; 2 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
 #&gt; 3 22.8   4  108  93 3.85 2.320 18.61  1  1    4    1</div><div class='input'>
 <span class='co'># Or by position</span>
-<span class='fu'>read.csv</span>(<span class='fu'><a href='archive_read.html'>archive_read</a></span>(<span class='no'>a</span>, <span class='fl'>3</span>), <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;   Ozone Solar.R Wind Temp Month Day
+<span class='fu'>read.csv</span>(<span class='fu'>archive_read</span>(<span class='no'>a</span>, <span class='fl'>3</span>), <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;   Ozone Solar.R Wind Temp Month Day
 #&gt; 1    41     190  7.4   67     5   1
 #&gt; 2    36     118  8.0   72     5   2
 #&gt; 3    12     149 12.6   74     5   3</div><div class='input'>
 <span class='co'># Explicitly specify the format and filter if automatic detection fails.</span>
-<span class='fu'>read.csv</span>(<span class='fu'><a href='archive_read.html'>archive_read</a></span>(<span class='no'>a</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"zip"</span>), <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+<span class='fu'>read.csv</span>(<span class='fu'>archive_read</span>(<span class='no'>a</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"zip"</span>), <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 #&gt; 1          5.1         3.5          1.4         0.2  setosa
 #&gt; 2          4.9         3.0          1.4         0.2  setosa
 #&gt; 3          4.7         3.2          1.3         0.2  setosa</div><div class='input'><span class='co'># Achive format and filters can be set automatically from the file extensions.</span>
 <span class='no'>f1</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".tar.gz"</span>)
 
-<span class='fu'>write.csv</span>(<span class='no'>mtcars</span>, <span class='fu'><a href='archive_write.html'>archive_write</a></span>(<span class='no'>f1</span>, <span class='st'>"mtcars.csv"</span>))
+<span class='fu'>write.csv</span>(<span class='no'>mtcars</span>, <span class='fu'>archive_write</span>(<span class='no'>f1</span>, <span class='st'>"mtcars.csv"</span>))
 <span class='fu'><a href='archive.html'>archive</a></span>(<span class='no'>f1</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
 #&gt;         path  size                date
 #&gt;        &lt;chr&gt; &lt;dbl&gt;              &lt;dttm&gt;
-#&gt; 1 mtcars.csv  1783 2017-07-27 15:07:52</div><div class='input'><span class='fu'>unlink</span>(<span class='no'>f1</span>)
+#&gt; 1 mtcars.csv  1783 2017-07-27 17:08:49</div><div class='input'><span class='fu'>unlink</span>(<span class='no'>f1</span>)
 
 <span class='co'># They can also be specified explicitly</span>
 <span class='no'>f2</span> <span class='kw'>&lt;-</span> <span class='fu'>tempfile</span>()
-<span class='fu'>write.csv</span>(<span class='no'>iris</span>, <span class='fu'><a href='archive_write.html'>archive_write</a></span>(<span class='no'>f2</span>, <span class='st'>"iris.csv"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"tar"</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='st'>"bzip2"</span>))
+<span class='fu'>write.csv</span>(<span class='no'>iris</span>, <span class='fu'>archive_write</span>(<span class='no'>f2</span>, <span class='st'>"iris.csv"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"tar"</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='st'>"bzip2"</span>))
 <span class='fu'><a href='archive.html'>archive</a></span>(<span class='no'>f2</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
 #&gt;       path  size                date
 #&gt;      &lt;chr&gt; &lt;dbl&gt;              &lt;dttm&gt;
-#&gt; 1 iris.csv  4821 2017-07-27 15:07:52</div><div class='input'><span class='fu'>unlink</span>(<span class='no'>f2</span>)</div></pre>
+#&gt; 1 iris.csv  4821 2017-07-27 17:08:50</div><div class='input'><span class='fu'>unlink</span>(<span class='no'>f2</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

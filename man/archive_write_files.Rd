@@ -20,7 +20,7 @@ archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
 
 \item{dir}{\code{character(1)} The directory of files to add.}
 
-\item{...}{additional paramters passed to \code{base::dir}}
+\item{...}{additional parameters passed to \code{base::dir}.}
 
 \item{recursive}{logical.  Should the listing recurse into directories?}
 

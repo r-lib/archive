@@ -4,7 +4,7 @@
 \alias{archive_read}
 \alias{archive_connections}
 \alias{archive_write}
-\title{Aquire a read or write connection to an archive file}
+\title{Acquire a read or write connection to an archive file}
 \usage{
 archive_read(archive, file = 1L, mode = "r", format = NULL,
   filter = NULL)

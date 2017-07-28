@@ -34,7 +34,7 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
   read_connection(attr(archive, "path"), mode = mode, file, archive_formats()[format], archive_filters()[filter])
 }
 
-#' Aquire a read or write connection to an archive file
+#' Acquire a read or write connection to an archive file
 #'
 #' `archive_read()` returns an readable input connection to an existing archive.
 #' `archive_write()` returns an writable output connection to a new archive.

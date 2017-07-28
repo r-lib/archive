@@ -94,7 +94,7 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
 }
 
 #' @rdname archive_write_files
-#' @param ... additional paramters passed to `base::dir`
+#' @param ... additional parameters passed to `base::dir`.
 #' @param dir `character(1)` The directory of files to add.
 #' @inheritParams base::list.files
 #' @export

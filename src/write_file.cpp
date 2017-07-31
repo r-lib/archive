@@ -77,7 +77,7 @@ SEXP write_file_connection(
 #else
   Rconnection con;
   SEXP rc =
-      PROTECT(R_new_custom_connection("file_output", "wb", "archive", &con));
+      PROTECT(R_new_custom_connection2("file_output", "wb", "archive", &con));
 
   /* Setup file */
   file* r = (file*)malloc(sizeof(file));

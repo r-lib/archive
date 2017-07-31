@@ -79,7 +79,7 @@ SEXP read_file_connection(
     const std::string& filename, const std::string& mode, size_t sz = 16384) {
   Rconnection con;
   SEXP rc = PROTECT(
-      R_new_custom_connection("file_input", mode.c_str(), "archive", &con));
+      R_new_custom_connection2("file_input", mode.c_str(), "archive", &con));
 
   /* Setup archive */
   rchive* r = (rchive*)malloc(sizeof(rchive));

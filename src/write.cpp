@@ -137,7 +137,7 @@ SEXP write_connection(
     size_t sz = 16384) {
   Rconnection con;
   SEXP rc =
-      PROTECT(R_new_custom_connection("input", "wb", "archive_write", &con));
+      PROTECT(R_new_custom_connection2("input", "wb", "archive_write", &con));
 
   /* Setup archive */
   rchive* r = (rchive*)malloc(sizeof(rchive));

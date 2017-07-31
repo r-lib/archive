@@ -1,3 +1,4 @@
+#pragma once
 #include <Rcpp.h>
 
 #define class class_name
@@ -14,6 +15,7 @@
 // Also need to undefine the Free macro
 #undef Free
 
+#include "rlibrary.h"
 #include <archive.h>
 #include <archive_entry.h>
 

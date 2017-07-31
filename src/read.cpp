@@ -130,7 +130,7 @@ SEXP read_connection(
   Rconnection con;
 
   std::string desc = archive_filename + '[' + filename + ']';
-  SEXP rc = PROTECT(R_new_custom_connection(
+  SEXP rc = PROTECT(R_new_custom_connection2(
       desc.c_str(), mode.c_str(), "archive_read", &con));
 
   /* Setup archive */

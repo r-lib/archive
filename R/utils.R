@@ -38,3 +38,7 @@ dir.exists <- function(paths) {
   x <- base::file.info(paths)$isdir
   !is.na(x) & x
 }
+
+file.size <- function(...) {
+  base::file.info(...)$size
+}

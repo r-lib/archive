@@ -3,9 +3,12 @@
 language: R
 sudo: false
 cache: packages
-dist:
-  - precise
-  - trusty
+addons:
+  apt:
+    packages:
+      libarchive-dev
+
+dist: trusty
 
 r:
   - 3.1
@@ -13,6 +16,11 @@ r:
   - oldrel
   - release
   - devel
+
+matrix:
+  include:
+    - r: release
+      dist: precise
 
 after_success:
   - Rscript -e 'covr::codecov()'

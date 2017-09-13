@@ -33,3 +33,8 @@ non_null <- function(x) {
 is_number <- function(x) {
   is.numeric(x) && length(x) == 1
 }
+
+dir.exists <- function(paths) {
+  x <- base::file.info(paths)$isdir
+  !is.na(x) & x
+}

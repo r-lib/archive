@@ -124,9 +124,6 @@ SEXP write_files_(
     Rcpp::NumericVector filters,
     size_t sz = 16384) {
 
-#if ARCHIVE_VERSION_NUMBER < 3002000
-  Rcpp::stop("This functionality is only available with libarchive >= 3.2.0");
-#else
   struct archive* a;
   struct archive_entry* entry;
   struct stat st;
@@ -169,5 +166,4 @@ SEXP write_files_(
   archive_write_free(a);
 
   return R_NilValue;
-#endif
 }

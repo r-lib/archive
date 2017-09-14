@@ -16,14 +16,18 @@ is_string <- function(x) {
 
 is_readable <- function(path) {
   is_string(path) &&
-    file.exists(path) &&
-    file.access(path, mode = 4)[[1]] == 0
+    file.exists(path)
+    # file.access fails on some NFS, such as shared folders on virtualbox
+    # https://stat.ethz.ch/pipermail/r-devel/2008-December/051461.html
+    # file.access(path, mode = 4)[[1]] == 0
 }
 
 is_writable <- function(path) {
   is_string(path) &&
-    file.exists(path) &&
-    file.access(path, mode = 2)[[1]] == 0
+    file.exists(path)
+    # file.access fails on some NFS, such as shared folders on virtualbox
+    # https://stat.ethz.ch/pipermail/r-devel/2008-December/051461.html
+    # file.access(path, mode = 2)[[1]] == 0
 }
 
 non_null <- function(x) {

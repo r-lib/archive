@@ -16,3 +16,5 @@
 ^man-roxygen$
 ^script.R$
 ^cran-comments\.md$
+^src-.*/$
+^windows/$

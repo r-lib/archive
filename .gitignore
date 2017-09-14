@@ -3,3 +3,5 @@
 .RData
 src/Makevars
 script.R
+src-*/
+windows/

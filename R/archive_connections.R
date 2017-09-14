@@ -28,7 +28,7 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
   assert("`file` must be a length one character vector or numeric",
     length(file) == 1 && (is.character(file) || is.numeric(file)))
 
-  assert(paste0("`file` ", encodeString(file, quote = "'"), " not found"),
+  assert(paste0("`file` {file} not found in `archive` {archive}"),
     file %in% archive$path)
 
   read_connection(attr(archive, "path"), mode = mode, file, archive_formats()[format], archive_filters()[filter])
@@ -69,14 +69,14 @@ archive_write <- function(archive, file, format = NULL, filter = NULL) {
   if (is.null(format) && is.null(filter)) {
     res <- format_and_filter_by_extension(archive)
 
-    assert("Could not automatically determine the `filter` and `format`",
+    assert("Could not automatically determine the `filter` and `format` from `archive` {archive}",
       !is.null(res))
 
     format <- res[[1]]
     filter <- res[[2]]
   }
 
-  assert("`archive` must be a writable file path",
+  assert("`archive` {archive} must be a writable file path",
     is_writable(dirname(archive)))
 
   assert("`file` must be a length one character vector",

@@ -75,7 +75,7 @@ archive_extract <- function(archive, dir = ".", file = NULL) {
 #' }
 #' @export
 archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
-  assert("`archive` must be a writable file path",
+  assert("`archive` {archive} must be a writable file path",
     is_writable(dirname(archive)))
 
   assert("`files` must be one or more readable file paths",
@@ -83,7 +83,7 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
 
   if (is.null(format) && is.null(filter)) {
     res <- format_and_filter_by_extension(archive)
-    assert("Could not automatically determine the `filter` and `format`",
+    assert("Could not automatically determine the `filter` and `format` from `archive` {archive}",
       non_null(res))
     format <- res[[1]]
     filter <- res[[2]]
@@ -99,7 +99,7 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
 #' @inheritParams base::list.files
 #' @export
 archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = FALSE) {
-  assert("`dir` is not readable",
+  assert("`dir` {dir} is not readable",
     is_readable(dir))
 
   archive <- file.path(normalizePath(dirname(archive)), basename(archive))

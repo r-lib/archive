@@ -18,7 +18,7 @@ NULL
 #' a
 #' @export
 archive <- function(path) {
-  assert("`path` must be a readable file path",
+  assert("{path} is not a readable file path",
     is_readable(path))
 
   path <- normalizePath(path)
@@ -84,12 +84,12 @@ filter_by_extension <- function(path) {
 #' unlink("mtcars.bz2")
 #' }
 file_write <- function(file, filter = NULL) {
-  assert("`file` must be a writable file path",
+  assert("{file} is not a writable file path",
     is_writable(dirname(file)))
 
   if (is.null(filter)) {
     res <- filter_by_extension(file)
-    assert("Could not automatically determine the `filter`",
+    assert("Could not automatically determine the `filter` for {file}",
       non_null(res))
     filter <- res
   }
@@ -101,7 +101,7 @@ file_write <- function(file, filter = NULL) {
 #' @inheritParams archive_read
 #' @export
 file_read <- function(file, mode = "r") {
-  assert("`file` must be a readable file path",
+  assert("{file} is not a readable file path",
     is_readable(file))
 
   read_file_connection(file, mode)

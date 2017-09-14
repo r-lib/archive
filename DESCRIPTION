@@ -7,7 +7,7 @@ Description: Bindings to 'libarchive' <http://www.libarchive.org> the
 Version: 1.0.0
 Authors@R: person("Jim", "Hester", email = "james.f.hester@gmail.com", role = c("aut", "cre"))
 Depends: R (>= 3.1.0)
-Imports: Rcpp, tibble
+Imports: Rcpp, tibble, glue
 Suggests: testthat,
     covr
 License: MIT + file LICENSE

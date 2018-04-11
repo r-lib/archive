@@ -10,7 +10,7 @@ collapse_quote_transformer <- function(code, envir) {
   should_quote <- !grepl(quote_re, code)
   code <- sub(collapse_re, "",
     sub(quote_re, "", code))
-  res <- evaluate(code, envir)
+  res <- eval(parse(text = code), envir)
   if (should_quote) {
     res <- single_quote(res)
   }

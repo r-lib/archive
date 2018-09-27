@@ -7,7 +7,8 @@
 \usage{
 archive_write_files(archive, files, format = NULL, filter = NULL)
 
-archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
+archive_write_dir(archive, dir, ..., recursive = TRUE,
+  full.names = FALSE)
 }
 \arguments{
 \item{archive}{\code{character(1)} The archive filename or an \code{archive} object.}

@@ -126,7 +126,6 @@ describe("archive_write", {
         "tgz",
         "taz",
         "tar.gz",
-        "tar.zst",
         "tbz",
         "tbz2",
         "tz2",

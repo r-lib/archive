@@ -217,7 +217,6 @@ if (libarchive_version() >= "3.2.0") {
         "gz",
         "lz",
         "lz4",
-        "zst",
         "lzo",
         "lzma",
         "uu",

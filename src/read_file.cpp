@@ -23,7 +23,7 @@ static Rboolean file_read_open(Rconnection con) {
   r->size = archive_entry_size(r->entry);
   r->cur = r->buf;
   r->has_more = 1;
-  copy_data(r);
+  push(r);
 
   con->isopen = TRUE;
   return TRUE;
@@ -37,7 +37,7 @@ file_read_data(void* target, size_t sz, size_t ni, Rconnection con) {
   /* append data to the target buffer */
   size_t total_size = pop(target, size, r);
   while ((size > total_size) && r->has_more) {
-    copy_data(r);
+    push(r);
     total_size += pop((char*)target + total_size, (size - total_size), r);
   }
   con->incomplete = (Rboolean)r->has_more;

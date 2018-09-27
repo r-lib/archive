@@ -5,28 +5,56 @@ size_t pop(void* target, size_t max, rchive* r) {
   memcpy(target, r->cur, copy_size);
   r->cur += copy_size;
   r->size -= copy_size;
+
+  /* clang-format off */
+  /* Rprintf("Requested %d bytes, popped %d bytes, new size %d bytes.\n", max, copy_size, r->size); */
+  /* clang-format on */
+
   return copy_size;
 }
 
-void copy_data(rchive* r) {
+size_t push(rchive* r) {
   R_CheckUserInterrupt();
+  const void* buf;
+  size_t size;
   __LA_INT64_T offset;
-  if (r->last_response != ARCHIVE_EOF) {
 
-    /* move existing data to front of buffer (if any) */
-    memcpy(r->buf, r->cur, r->size);
-
-    r->last_response = archive_read_data_block(
-        r->ar, (const void**)&r->buf, &r->size, &offset);
-    if (r->last_response == ARCHIVE_EOF) {
-      r->has_more = 0;
-      return;
-    }
-    if (r->last_response != ARCHIVE_OK) {
-      Rf_error(archive_error_string(r->ar));
-    }
-    r->cur = r->buf;
+  if (r->last_response == ARCHIVE_EOF) {
+    return 0;
   }
+
+  /* move existing data to front of buffer (if any) */
+  memmove(r->buf, r->cur, r->size);
+
+  /* read data from archive */
+  r->last_response = archive_read_data_block(r->ar, &buf, &size, &offset);
+  if (r->last_response == ARCHIVE_EOF) {
+    r->has_more = 0;
+    return 0;
+  }
+  if (r->last_response != ARCHIVE_OK) {
+    Rf_error(archive_error_string(r->ar));
+  }
+
+  /* allocate more space if required */
+  size_t newsize = r->size + size;
+  while (newsize > r->limit) {
+    size_t newlimit = 2 * r->limit;
+    Rprintf("Resizing buffer to %d.\n", newlimit);
+    char* newbuf = (char*)realloc(r->buf, newlimit);
+    if (!newbuf) {
+      Rf_error("Failure in realloc. Out of memory?");
+    }
+    r->buf = newbuf;
+    r->limit = newlimit;
+  }
+
+  /* append new data */
+  /* Rprintf("Pushed %d bytes, new size %d bytes.\n", size, newsize); */
+  memcpy(r->buf + r->size, buf, size);
+  r->size = newsize;
+  r->cur = r->buf;
+  return size;
 }
 
 #if ARCHIVE_VERSION_NUMBER < 3000004

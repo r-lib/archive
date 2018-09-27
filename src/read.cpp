@@ -44,8 +44,9 @@ static Rboolean rchive_read_open(Rconnection con) {
   r->last_response = archive_read_support_format_all(r->ar);
 #endif
 
-  r->last_response =
-      archive_read_open_filename(r->ar, r->archive_filename, r->size);
+  size_t size;
+  r->last_response = archive_read_open_filename(
+      r->ar, r->archive_filename, r->archive_filename_size);
 
   if (r->last_response != ARCHIVE_OK) {
     con->isopen = FALSE;
@@ -57,11 +58,9 @@ static Rboolean rchive_read_open(Rconnection con) {
   while (archive_read_next_header(r->ar, &r->entry) == ARCHIVE_OK) {
     const char* str = archive_entry_pathname(r->entry);
     if (strcmp(r->filename, str) == 0) {
-      r->size = archive_entry_size(r->entry);
-      r->cur = r->buf;
       r->has_more = 1;
       con->isopen = TRUE;
-      copy_data(r);
+      push(r);
       return TRUE;
     }
     archive_read_data_skip(r->ar);
@@ -76,12 +75,11 @@ void rchive_read_close(Rconnection con) {
   r->ar = archive_read_new();
 
   con->isopen = FALSE;
-  con->text = TRUE;
   con->incomplete = FALSE;
-  strcpy(con->mode, "r");
 }
 
 void rchive_read_destroy(Rconnection con) {
+  // Rprintf("Destroying connection.\n");
   rchive* r = (rchive*)con->private_ptr;
 
   /* free the handle connection */
@@ -100,7 +98,7 @@ static size_t rchive_read(void* target, size_t sz, size_t ni, Rconnection con) {
   /* append data to the target buffer */
   size_t total_size = pop(target, size, r);
   while ((size > total_size) && r->has_more) {
-    copy_data(r);
+    push(r);
     total_size += pop((char*)target + total_size, (size - total_size), r);
   }
   con->incomplete = (Rboolean)r->has_more;
@@ -130,15 +128,19 @@ SEXP read_connection(
   Rconnection con;
 
   std::string desc = archive_filename + '[' + filename + ']';
-  SEXP rc = PROTECT(R_new_custom_connection(
-      desc.c_str(), mode.c_str(), "archive_read", &con));
+  SEXP rc = PROTECT(
+      R_new_custom_connection(
+          desc.c_str(), mode.c_str(), "archive_read", &con));
 
   /* Setup archive */
   rchive* r = (rchive*)malloc(sizeof(rchive));
   r->limit = sz;
   r->buf = (char*)malloc(r->limit);
+  r->size = 0;
+  r->cur = NULL;
 
-  r->archive_filename = (char*)malloc(strlen(archive_filename.c_str()) + 1);
+  r->archive_filename_size = archive_filename.length() + 1;
+  r->archive_filename = (char*)malloc(r->archive_filename_size);
   strcpy(r->archive_filename, archive_filename.c_str());
 
   r->format = format.size() == 0 ? -1 : format[0];
@@ -154,7 +156,8 @@ SEXP read_connection(
     r->filters[i] = filters[i];
   }
 
-  r->filename = (char*)malloc(strlen(filename.c_str()) + 1);
+  r->filename_size = filename.length() + 1;
+  r->filename = (char*)malloc(r->filename_size);
   strcpy(r->filename, filename.c_str());
 
   r->ar = archive_read_new();
@@ -173,6 +176,7 @@ SEXP read_connection(
   con->read = rchive_read;
   con->fgetc = rchive_fgetc;
   con->fgetc_internal = rchive_fgetc;
+  con->text = strchr(con->mode, 'b') ? FALSE : TRUE;
 
   UNPROTECT(1);
   return rc;

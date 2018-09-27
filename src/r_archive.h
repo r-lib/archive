@@ -29,8 +29,10 @@
 
 typedef struct {
   char* archive_filename;
+  size_t archive_filename_size;
   int format;
   char* filename;
+  size_t filename_size;
   char* buf;
   char* cur;
   archive* ar;
@@ -44,7 +46,7 @@ typedef struct {
 
 size_t pop(void* target, size_t max, rchive* r);
 
-void copy_data(rchive* r);
+size_t push(rchive* r);
 
 #if ARCHIVE_VERSION_NUMBER < 3000004
 int archive_write_add_filter(struct archive* a, int code);

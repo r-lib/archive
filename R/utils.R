@@ -2,15 +2,14 @@ choices_rd <- function(x) {
   paste0(collapse = ", ", paste0("\\sQuote{", x, "}")) # nocov
 }
 
-#' @importFrom glue collapse single_quote evaluate
+#' @importFrom glue collapse single_quote
 collapse_quote_transformer <- function(code, envir) {
   collapse_re <- "[*]$"
   quote_re <- "^[|]"
   should_collapse <- grepl(collapse_re, code)
   should_quote <- !grepl(quote_re, code)
-  code <- sub(collapse_re, "",
-    sub(quote_re, "", code))
-  res <- eval(parse(text = code), envir)
+  code <- sub(collapse_re, "", sub(quote_re, "", code))
+  res <- eval(parse(text = code, keep.source = FALSE), envir)
   if (should_quote) {
     res <- single_quote(res)
   }

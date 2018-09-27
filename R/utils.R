@@ -2,7 +2,7 @@ choices_rd <- function(x) {
   paste0(collapse = ", ", paste0("\\sQuote{", x, "}")) # nocov
 }
 
-#' @importFrom glue collapse single_quote evaluate
+#' @importFrom glue collapse single_quote
 collapse_quote_transformer <- function(code, envir) {
   collapse_re <- "[*]$"
   quote_re <- "^[|]"

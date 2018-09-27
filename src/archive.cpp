@@ -62,7 +62,11 @@ Rcpp::IntegerVector archive_filters() {
 
 #if ARCHIVE_VERSION_NUMBER >= 3002000
       ,
-      Rcpp::_["lz4"] = ARCHIVE_FILTER_LZ4,
+      Rcpp::_["lz4"] = ARCHIVE_FILTER_LZ4
+#endif
+
+#if ARCHIVE_VERSION_NUMBER >= 3003003
+      ,
       Rcpp::_["zstd"] = ARCHIVE_FILTER_ZSTD
 #endif
       );

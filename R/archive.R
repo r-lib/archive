@@ -54,6 +54,7 @@ filter_by_extension <- function(path) {
       lzma = "lzma",
       uu = "uuencode",
       xz = "xz",
+      zst = "zstd",
 
       NULL)
   }
@@ -139,6 +140,8 @@ format_and_filter_by_extension <- function(path) {
 
     "taZ" = list("tar", "compress"),
     "tZ" = list("tar", "compress"),
+
+    "tar.zst" = list("tar", "zstd"),
 
     "warc" = list("warc", "none"),
 

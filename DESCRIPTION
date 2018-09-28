@@ -21,4 +21,3 @@ SystemRequirements: libarchive: libarchive-dev (deb), libarchive-devel (rpm), li
 URL: https://jimhester.github.io/archive/, https://github.com/jimhester/archive#readme
 ByteCompile: true
 BugReports: https://github.com/jimhester/archive/issues
-Remotes: tidyverse/glue

@@ -34,8 +34,11 @@ Rcpp::List archive_metadata(const std::string& path) {
   Rcpp::NumericVector d = Rcpp::wrap(dates);
   d.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
 
-  Rcpp::List out = as_tibble(Rcpp::List::create(
-      Rcpp::_["path"] = paths, Rcpp::_["size"] = sizes, Rcpp::_["date"] = d));
+  Rcpp::List out = as_tibble(
+      Rcpp::List::create(
+          Rcpp::_["path"] = paths,
+          Rcpp::_["size"] = sizes,
+          Rcpp::_["date"] = d));
 
   out.attr("path") = path;
 
@@ -79,6 +82,7 @@ Rcpp::IntegerVector archive_formats() {
       Rcpp::_["mtree"] = ARCHIVE_FORMAT_MTREE,
       Rcpp::_["shar"] = ARCHIVE_FORMAT_SHAR,
       Rcpp::_["rar"] = ARCHIVE_FORMAT_RAR,
+      Rcpp::_["raw"] = ARCHIVE_FORMAT_RAW,
       Rcpp::_["tar"] = ARCHIVE_FORMAT_TAR,
       Rcpp::_["xar"] = ARCHIVE_FORMAT_XAR,
       Rcpp::_["zip"] = ARCHIVE_FORMAT_ZIP

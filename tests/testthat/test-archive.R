@@ -84,6 +84,7 @@ describe("archive_read", {
   })
 
   it("works with readRDS", {
+    on.exit(unlink("archive.tar"))
 
     w_con <- archive_write(archive = "archive.tar", file = "mtcars")
     saveRDS(mtcars, w_con)
@@ -140,6 +141,10 @@ describe("archive_write", {
         #"warc",
         "jar",
         "zip")
+
+    if (libarchive_version() >= "3.3.3") {
+      extensions <- c(extensions, "tar.zst")
+    }
 
     test_extension <- function(ext) {
       filename <- paste0("mtcars", ".", ext)

@@ -21,12 +21,16 @@ archive_extract_ <- function(archive_filename, filenames, sz = 16384L) {
     invisible(.Call(`_archive_archive_extract_`, archive_filename, filenames, sz))
 }
 
+read_connection <- function(archive_filename, filename, mode, format, filters, sz = 16384L) {
+    .Call(`_archive_read_connection`, archive_filename, filename, mode, format, filters, sz)
+}
+
 read_file_connection <- function(filename, mode, sz = 16384L) {
     .Call(`_archive_read_file_connection`, filename, mode, sz)
 }
 
-read_connection <- function(archive_filename, filename, mode, format, filters, sz = 16384L) {
-    .Call(`_archive_read_connection`, archive_filename, filename, mode, format, filters, sz)
+write_connection <- function(archive_filename, filename, format, filters, sz = 16384L) {
+    .Call(`_archive_write_connection`, archive_filename, filename, format, filters, sz)
 }
 
 write_file_connection <- function(filename, filters) {
@@ -35,9 +39,5 @@ write_file_connection <- function(filename, filters) {
 
 write_files_ <- function(archive_filename, files, format, filters, sz = 16384L) {
     .Call(`_archive_write_files_`, archive_filename, files, format, filters, sz)
-}
-
-write_connection <- function(archive_filename, filename, format, filters, sz = 16384L) {
-    .Call(`_archive_write_connection`, archive_filename, filename, format, filters, sz)
 }
 

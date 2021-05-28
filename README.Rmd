@@ -16,14 +16,16 @@ knitr::opts_knit$set(root.dir = dir)
 options(tibble.print_min = 4L)
 library(archive)
 ```
-
 # archive
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/jimhester/archive/workflows/R-CMD-check/badge.svg)](https://github.com/jimhester/archive/actions)
 [![Coverage Status](https://img.shields.io/codecov/c/github/jimhester/archive/master.svg)](https://codecov.io/github/jimhester/archive?branch=master)
-[![Travis-CI Build Status](https://travis-ci.org/jimhester/archive.svg?branch=master)](https://travis-ci.org/jimhester/archive)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jimhester/archive?branch=master&svg=true)](https://ci.appveyor.com/project/jimhester/archive)
+[![Codecov test coverage](https://codecov.io/gh/jimhester/archive/branch/master/graph/badge.svg)](https://codecov.io/gh/jimhester/archive?branch=master)
+<!-- badges: end -->
 
 R bindings to libarchive <http://www.libarchive.org>, providing support for
-many file archives, including tar, ZIP, 7-zip, RAR, CAB including those
+many file archives, including tar, ZIP, 7-zip, RAR, CAB and
 compressed by gzip, bzip2, compress, lzma, xz, and others.
 
 ## Installation

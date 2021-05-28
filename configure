@@ -41,7 +41,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 # Find compiler
-CXXCPP=$("${R_HOME}"/bin/R CMD config CXXCPP)
+CXX=$("${R_HOME}"/bin/R CMD config CXX)
 CXXFLAGS=$("${R_HOME}"/bin/R CMD config CXXFLAGS)
 CPPFLAGS=$("${R_HOME}"/bin/R CMD config CPPFLAGS)
 
@@ -50,7 +50,7 @@ echo "PKG_CFLAGS=$PKG_CFLAGS"
 echo "PKG_LIBS=$PKG_LIBS"
 
 # Test for odbc
-echo "#include $PKG_TEST_HEADER" | ${CXXCPP} ${CPPFLAGS} ${PKG_CFLAGS} ${CXXFLAGS} -xc++ - > /dev/null
+echo "#include $PKG_TEST_HEADER" | ${CXX} ${CPPFLAGS} ${PKG_CFLAGS} ${CXXFLAGS} -E -xc++ - > /dev/null
 if [ $? -ne 0 ]; then
   echo "------------------------- ANTICONF ERROR ---------------------------"
   echo "Configuration failed because $PKG_CONFIG_NAME was not found. Try installing:"

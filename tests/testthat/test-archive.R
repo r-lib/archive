@@ -256,7 +256,7 @@ describe("archive_write_files", {
       mtcars)
 
     expect_equal(
-      read.csv(unz("data.zip", files[["iris"]]), row.names = 1),
+      read.csv(unz("data.zip", files[["iris"]]), row.names = 1, stringsAsFactors = TRUE),
       iris)
     })
   })
@@ -278,7 +278,7 @@ describe("archive_write_dir", {
       mtcars)
 
     expect_equal(
-      read.csv(unz("data.zip", files[["iris"]]), row.names = 1),
+      read.csv(unz("data.zip", files[["iris"]]), row.names = 1, stringsAsFactors = TRUE),
       iris)
     })
   })

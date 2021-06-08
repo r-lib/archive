@@ -1,8 +1,7 @@
 #include "r_archive.h"
 #include <Rcpp.h>
 
-// [[Rcpp::export]]
-Rcpp::List archive_metadata(const std::string& path) {
+[[cpp11::register]] Rcpp::List archive_metadata(const std::string& path) {
   std::vector<std::string> paths;
   std::vector<__LA_INT64_T> sizes;
   std::vector<time_t> dates;
@@ -34,19 +33,15 @@ Rcpp::List archive_metadata(const std::string& path) {
   Rcpp::NumericVector d = Rcpp::wrap(dates);
   d.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
 
-  Rcpp::List out = as_tibble(
-      Rcpp::List::create(
-          Rcpp::_["path"] = paths,
-          Rcpp::_["size"] = sizes,
-          Rcpp::_["date"] = d));
+  Rcpp::List out = as_tibble(Rcpp::List::create(
+      Rcpp::_["path"] = paths, Rcpp::_["size"] = sizes, Rcpp::_["date"] = d));
 
   out.attr("path") = path;
 
   return out;
 }
 
-// [[Rcpp::export]]
-Rcpp::IntegerVector archive_filters() {
+[[cpp11::register]] Rcpp::IntegerVector archive_filters() {
   Rcpp::IntegerVector out = Rcpp::IntegerVector::create(
       Rcpp::_["none"] = ARCHIVE_FILTER_NONE,
       Rcpp::_["gzip"] = ARCHIVE_FILTER_GZIP,
@@ -72,12 +67,11 @@ Rcpp::IntegerVector archive_filters() {
       ,
       Rcpp::_["zstd"] = ARCHIVE_FILTER_ZSTD
 #endif
-      );
+  );
   return out;
 }
 
-// [[Rcpp::export]]
-Rcpp::IntegerVector archive_formats() {
+[[cpp11::register]] Rcpp::IntegerVector archive_formats() {
   Rcpp::IntegerVector out = Rcpp::IntegerVector::create(
       Rcpp::_["7zip"] = ARCHIVE_FORMAT_7ZIP,
       Rcpp::_["cab"] = ARCHIVE_FORMAT_CAB,
@@ -96,12 +90,11 @@ Rcpp::IntegerVector archive_formats() {
 
       Rcpp::_["warc"] = ARCHIVE_FORMAT_WARC
 #endif
-      );
+  );
   return out;
 }
 
-// [[Rcpp::export]]
-std::string libarchive_version_() {
+[[cpp11::register]] std::string libarchive_version_() {
   std::string str = archive_version_string();
 
   // Remove 'libarchive '

@@ -1,3 +1,5 @@
+#include <cpp11.hpp>
+
 #include "r_archive.h"
 #include <Rcpp.h>
 #include <fcntl.h>
@@ -128,16 +130,14 @@ void rchive_write_destroy(Rconnection con) {
 // scratch file, then adds it to the archive, because the archive headers need
 // to be written before the data is added, and we do not know the size of the
 // data until it has been written.
-// [[Rcpp::export]]
-SEXP write_connection(
+[[cpp11::register]] SEXP write_connection(
     const std::string& archive_filename,
     const std::string& filename,
     int format,
     Rcpp::NumericVector filters,
-    size_t sz = 16384) {
+    size_t sz) {
   Rconnection con;
-  SEXP rc =
-      PROTECT(R_new_custom_connection("input", "wb", "archive_write", &con));
+  SEXP rc = PROTECT(new_connection("input", "wb", "archive_write", &con));
 
   /* Setup archive */
   rchive* r = (rchive*)malloc(sizeof(rchive));

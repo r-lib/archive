@@ -1,5 +1,3 @@
-CXX_STD = CXX11
-
 PKG_CPPFLAGS= \
   -I../windows/libarchive-3.2.2/include -I.
 
@@ -10,10 +8,16 @@ PKG_LIBS = \
 
 # Originally from https://github.com/cran/curl/blob/3897ba5203dee940e2ce40ac23a0d1106da93df6/src/Makevars.win
 
-all: winlibs $(OBJECTS) $(SHLIB)
+LIB_CON = ../inst/lib$(R_ARCH)/libconnection.dll
+
+all: winlibs $(OBJECTS) $(SHLIB) $(LIB_CON)
+
+$(LIB_CON): connection/connection.o
+	mkdir -p $(dir $(LIB_CON))
+	$(SHLIB_LINK) $(LIBR) -o $@ $^
 
 clean:
-	rm -f $(OBJECTS) $(SHLIB)
+	rm -f $(OBJECTS) $(SHLIB) $(LIB_CON) connection/connection.o
 
 winlibs:
 	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"

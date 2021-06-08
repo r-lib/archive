@@ -31,8 +31,7 @@ bool any_matches(const char* filename, Rcpp::CharacterVector filenames) {
   return false;
 }
 
-// [[Rcpp::export]]
-void archive_extract_(
+[[cpp11::register]] void archive_extract_(
     const std::string& archive_filename,
     Rcpp::CharacterVector filenames,
     size_t sz = 16384) {

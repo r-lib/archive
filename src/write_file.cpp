@@ -69,15 +69,13 @@ void file_write_destroy(Rconnection con) {
 
 // Get a connection to a single non-archive file, optionally with one or more
 // filters.
-// [[Rcpp::export]]
-SEXP write_file_connection(
+[[cpp11::register]] SEXP write_file_connection(
     const std::string& filename, Rcpp::NumericVector filters) {
 #if ARCHIVE_VERSION_NUMBER < 3002000
   Rcpp::stop("This functionality is only available with libarchive >= 3.2.0");
 #else
   Rconnection con;
-  SEXP rc =
-      PROTECT(R_new_custom_connection("file_output", "wb", "archive", &con));
+  SEXP rc = PROTECT(new_connection("input", "wb", "archive_write", &con));
 
   /* Setup file */
   file* r = (file*)malloc(sizeof(file));
@@ -116,8 +114,7 @@ SEXP write_file_connection(
 }
 
 // Write files already on disk to a new archive
-// [[Rcpp::export]]
-SEXP write_files_(
+[[cpp11::register]] SEXP write_files_(
     const std::string& archive_filename,
     Rcpp::CharacterVector files,
     int format,

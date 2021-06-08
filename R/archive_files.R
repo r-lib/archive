@@ -40,7 +40,7 @@ archive_extract <- function(archive, dir = ".", file = NULL) {
     old <- setwd(dir)
     on.exit(setwd(old))
   }
-  archive_extract_(attr(archive, "path"), file)
+  archive_extract_(attr(archive, "path"), file, sz = 2^14)
 
   invisible(archive)
 }
@@ -88,7 +88,7 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
     format <- res[[1]]
     filter <- res[[2]]
   }
-  write_files_(archive, files, archive_formats()[format], archive_filters()[filter])
+  write_files_(archive, files, archive_formats()[format], archive_filters()[filter], sz = 2^14)
 
   invisible(as_archive(archive))
 }

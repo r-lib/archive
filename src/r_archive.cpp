@@ -1,5 +1,23 @@
 #include "r_archive.h"
 
+SEXP new_connection_xptr;
+
+void rchive_init(SEXP xptr) {
+  new_connection_xptr = xptr;
+  R_PreserveObject(xptr);
+}
+
+SEXP new_connection(
+    const char* description,
+    const char* mode,
+    const char* class_name,
+    Rconnection* ptr) {
+  auto new_connection_ptr = reinterpret_cast<SEXP (*)(
+      const char*, const char*, const char*, Rconnection*)>(
+      R_ExternalPtrAddr(new_connection_xptr));
+  return new_connection_ptr(description, mode, class_name, ptr);
+}
+
 size_t pop(void* target, size_t max, rchive* r) {
   size_t copy_size = min(r->size, max);
   memcpy(target, r->cur, copy_size);
@@ -92,14 +110,15 @@ size_t push(rchive* r) {
 static struct {
   int code;
   int (*setter)(struct archive*);
-} codes[] = {{ARCHIVE_FILTER_NONE, archive_write_add_filter_none},
-             {ARCHIVE_FILTER_GZIP, archive_write_add_filter_gzip},
-             {ARCHIVE_FILTER_BZIP2, archive_write_add_filter_bzip2},
-             {ARCHIVE_FILTER_COMPRESS, archive_write_add_filter_compress},
-             {ARCHIVE_FILTER_LZMA, archive_write_add_filter_lzma},
-             {ARCHIVE_FILTER_XZ, archive_write_add_filter_xz},
-             {ARCHIVE_FILTER_LZIP, archive_write_add_filter_lzip},
-             {-1, NULL}};
+} codes[] = {
+    {ARCHIVE_FILTER_NONE, archive_write_add_filter_none},
+    {ARCHIVE_FILTER_GZIP, archive_write_add_filter_gzip},
+    {ARCHIVE_FILTER_BZIP2, archive_write_add_filter_bzip2},
+    {ARCHIVE_FILTER_COMPRESS, archive_write_add_filter_compress},
+    {ARCHIVE_FILTER_LZMA, archive_write_add_filter_lzma},
+    {ARCHIVE_FILTER_XZ, archive_write_add_filter_xz},
+    {ARCHIVE_FILTER_LZIP, archive_write_add_filter_lzip},
+    {-1, NULL}};
 
 int archive_write_add_filter(struct archive* a, int code) {
   int i;

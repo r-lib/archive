@@ -31,7 +31,7 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
   assert(paste0("`file` {file} not found in `archive` {archive}"),
     file %in% archive$path)
 
-  read_connection(attr(archive, "path"), mode = mode, file, archive_formats()[format], archive_filters()[filter])
+  read_connection(attr(archive, "path"), mode = mode, file, archive_formats()[format], archive_filters()[filter], sz = 2^14)
 }
 
 #' Acquire a read or write connection to an archive file
@@ -82,5 +82,5 @@ archive_write <- function(archive, file, format = NULL, filter = NULL) {
   assert("`file` must be a length one character vector",
     is_string(file))
 
-  write_connection(archive, file, archive_formats()[format], archive_filters()[filter])
+  write_connection(archive, file, archive_formats()[format], archive_filters()[filter], sz = 2^14)
 }

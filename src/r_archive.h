@@ -1,14 +1,8 @@
+#include <cpp11.hpp>
+
 #include <Rcpp.h>
 
-#define class class_name
-#define private private_ptr
-#include <R_ext/Connections.h>
-#undef class
-#undef private
-
-#if R_CONNECTIONS_VERSION != 1
-#error "Missing or unsupported connection API in R"
-#endif
+#include "connection/connection.h"
 
 #undef Realloc
 // Also need to undefine the Free macro
@@ -51,3 +45,5 @@ size_t push(rchive* r);
 #if ARCHIVE_VERSION_NUMBER < 3000004
 int archive_write_add_filter(struct archive* a, int code);
 #endif
+
+[[cpp11::register]] void rchive_init(SEXP xptr);

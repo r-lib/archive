@@ -68,9 +68,7 @@ jobs:
 
       - name: Install macOS system dependencies
         if: runner.os == 'macOS'
-        run: |
-          brew install libarchive
-        shell: Rscript {0}
+        run: brew install libarchive
 
       - name: Install system dependencies
         if: runner.os == 'Linux'

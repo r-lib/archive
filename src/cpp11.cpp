@@ -35,10 +35,10 @@ extern "C" SEXP _archive_libarchive_version_() {
   END_CPP11
 }
 // extract.cpp
-void archive_extract_(const std::string& archive_filename, Rcpp::CharacterVector filenames, size_t sz);
+void archive_extract_(const std::string& archive_filename, cpp11::strings filenames, size_t sz);
 extern "C" SEXP _archive_archive_extract_(SEXP archive_filename, SEXP filenames, SEXP sz) {
   BEGIN_CPP11
-    archive_extract_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<Rcpp::CharacterVector>>(filenames), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz));
+    archive_extract_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(filenames), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz));
     return R_NilValue;
   END_CPP11
 }

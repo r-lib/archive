@@ -1,5 +1,4 @@
 #include "r_archive.h"
-#include <Rcpp.h>
 
 static int copy_data(struct archive* ar, struct archive* aw) {
   int r;
@@ -13,18 +12,18 @@ static int copy_data(struct archive* ar, struct archive* aw) {
       return (ARCHIVE_OK);
     }
     if (r != ARCHIVE_OK) {
-      Rcpp::stop("archive_read_data_block(): %s", archive_error_string(ar));
+      cpp11::stop("archive_read_data_block(): %s", archive_error_string(ar));
     }
     r = archive_write_data_block(aw, buff, size, offset);
     if (r != ARCHIVE_OK) {
-      Rcpp::stop("archive_write_data_block(): %s", archive_error_string(aw));
+      cpp11::stop("archive_write_data_block(): %s", archive_error_string(aw));
     }
   }
 }
 
-bool any_matches(const char* filename, Rcpp::CharacterVector filenames) {
-  for (int i = 0; i < filenames.size(); ++i) {
-    if (strcmp(filename, filenames[i]) == 0) {
+bool any_matches(const char* filename, cpp11::strings filenames) {
+  for (std::string f : filenames) {
+    if (strcmp(filename, f.c_str()) == 0) {
       return true;
     }
   }
@@ -33,7 +32,7 @@ bool any_matches(const char* filename, Rcpp::CharacterVector filenames) {
 
 [[cpp11::register]] void archive_extract_(
     const std::string& archive_filename,
-    Rcpp::CharacterVector filenames,
+    cpp11::strings filenames,
     size_t sz = 16384) {
   struct archive* a;
   struct archive* ext;
@@ -54,25 +53,25 @@ bool any_matches(const char* filename, Rcpp::CharacterVector filenames) {
   archive_write_disk_set_options(ext, flags);
   archive_write_disk_set_standard_lookup(ext);
   if ((r = archive_read_open_filename(a, archive_filename.c_str(), sz))) {
-    Rcpp::stop("Could not open '%s'", archive_filename.c_str());
+    cpp11::stop("Could not open '%s'", archive_filename.c_str());
   }
   for (;;) {
     r = archive_read_next_header(a, &entry);
     if (r == ARCHIVE_EOF)
       break;
     if (r != ARCHIVE_OK) {
-      Rcpp::stop("archive_read_next_header(): %s", archive_error_string(a));
+      cpp11::stop("archive_read_next_header(): %s", archive_error_string(a));
     }
     const char* filename = archive_entry_pathname(entry);
-    if (filenames.length() == 0 || any_matches(filename, filenames)) {
+    if (filenames.size() == 0 || any_matches(filename, filenames)) {
       r = archive_write_header(ext, entry);
       if (r != ARCHIVE_OK) {
-        Rcpp::stop("archive_write_header(): %s", archive_error_string(ext));
+        cpp11::stop("archive_write_header(): %s", archive_error_string(ext));
       } else {
         copy_data(a, ext);
         r = archive_write_finish_entry(ext);
         if (r != ARCHIVE_OK) {
-          Rcpp::stop(
+          cpp11::stop(
               "archive_write_finish_entry(): %s", archive_error_string(ext));
         }
       }

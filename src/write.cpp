@@ -1,7 +1,4 @@
-#include <cpp11.hpp>
-
 #include "r_archive.h"
-#include <Rcpp.h>
 #include <fcntl.h>
 #include <string.h>
 
@@ -23,7 +20,7 @@ rchive_write_data(const void* contents, size_t sz, size_t n, Rconnection ctx) {
 }
 
 std::string scratch_file(const char* filename) {
-  static Rcpp::Function tempdir("tempdir", R_BaseEnv);
+  static auto tempdir = cpp11::package("base")["tempdir"];
   std::string out =
       std::string(CHAR(STRING_ELT(tempdir(), 0))) + '/' + my_basename(filename);
   return out;
@@ -134,7 +131,7 @@ void rchive_write_destroy(Rconnection con) {
     const std::string& archive_filename,
     const std::string& filename,
     int format,
-    Rcpp::NumericVector filters,
+    cpp11::integers filters,
     size_t sz) {
   Rconnection con;
   SEXP rc = PROTECT(new_connection("input", "wb", "archive_write", &con));
@@ -153,7 +150,7 @@ void rchive_write_destroy(Rconnection con) {
 
   // Initialize filters
   if (filters.size() > FILTER_MAX) {
-    Rcpp::stop("Cannot use more than %i filters", FILTER_MAX);
+    cpp11::stop("Cannot use more than %i filters", FILTER_MAX);
   }
   for (int i = 0; i < FILTER_MAX; ++i) {
     r->filters[i] = -1;

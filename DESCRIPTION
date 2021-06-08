@@ -12,7 +12,6 @@ Suggests: testthat,
     covr
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 LinkingTo: 
     cpp11
 RoxygenNote: 7.1.1

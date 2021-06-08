@@ -170,7 +170,7 @@ for <code>archive_read()</code>.</p>
 <span class='va'>a</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 x 3</span>
 #&gt;   path            size date               
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>             
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>             
 #&gt; <span style='color: #BCBCBC;'>1</span> iris.csv         192 2017-04-28 <span style='color: #949494;'>19:55:29</span>
 #&gt; <span style='color: #BCBCBC;'>2</span> mtcars.csv       274 2017-04-28 <span style='color: #949494;'>19:55:29</span>
 #&gt; <span style='color: #BCBCBC;'>3</span> airquality.csv   142 2017-04-28 <span style='color: #949494;'>19:55:29</span></div><div class='input'>
@@ -204,8 +204,8 @@ for <code>archive_read()</code>.</p>
 <span class='fu'><a href='archive.html'>archive</a></span><span class='op'>(</span><span class='va'>f1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span>
 #&gt;   path        size date               
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>             
-#&gt; <span style='color: #BCBCBC;'>1</span> mtcars.csv  <span style='text-decoration: underline;'>1</span>783 2021-06-08 <span style='color: #949494;'>16:10:59</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>f1</span><span class='op'>)</span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>             
+#&gt; <span style='color: #BCBCBC;'>1</span> mtcars.csv  <span style='text-decoration: underline;'>1</span>783 2021-06-08 <span style='color: #949494;'>16:35:20</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>f1</span><span class='op'>)</span>
 
 <span class='co'># They can also be specified explicitly</span>
 <span class='va'>f2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span>
@@ -213,8 +213,8 @@ for <code>archive_read()</code>.</p>
 <span class='fu'><a href='archive.html'>archive</a></span><span class='op'>(</span><span class='va'>f2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span>
 #&gt;   path      size date               
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>             
-#&gt; <span style='color: #BCBCBC;'>1</span> iris.csv  <span style='text-decoration: underline;'>4</span>821 2021-06-08 <span style='color: #949494;'>16:10:59</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>f2</span><span class='op'>)</span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dttm&gt;</span>             
+#&gt; <span style='color: #BCBCBC;'>1</span> iris.csv  <span style='text-decoration: underline;'>4</span>821 2021-06-08 <span style='color: #949494;'>16:35:20</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>f2</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

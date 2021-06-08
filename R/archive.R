@@ -1,7 +1,6 @@
 ## usethis namespace: start
 #' @useDynLib archive, .registration = TRUE
 #' @importFrom tibble as_tibble
-#' @importFrom Rcpp sourceCpp
 ## usethis namespace: end
 NULL
 

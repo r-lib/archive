@@ -1,7 +1,10 @@
 #include "r_archive.h"
-#include <Rcpp.h>
 
-[[cpp11::register]] Rcpp::List archive_metadata(const std::string& path) {
+#include <vector>
+
+using namespace cpp11::literals;
+
+[[cpp11::register]] cpp11::sexp archive_metadata(const std::string& path) {
   std::vector<std::string> paths;
   std::vector<__LA_INT64_T> sizes;
   std::vector<time_t> dates;
@@ -15,7 +18,7 @@
   archive_read_support_format_all(a);
   r = archive_read_open_filename(a, path.c_str(), 10240);
   if (r != ARCHIVE_OK) {
-    Rcpp::stop(archive_error_string(a));
+    cpp11::stop(archive_error_string(a));
   }
   while (archive_read_next_header(a, &entry) == ARCHIVE_OK) {
     paths.push_back(archive_entry_pathname(entry));
@@ -25,72 +28,59 @@
   }
   r = archive_read_free(a);
   if (r != ARCHIVE_OK) {
-    Rcpp::stop(archive_error_string(a));
+    cpp11::stop(archive_error_string(a));
   }
 
-  static Rcpp::Function as_tibble(
-      "as_tibble", Rcpp::Environment::namespace_env("tibble"));
-  Rcpp::NumericVector d = Rcpp::wrap(dates);
-  d.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
+  static auto as_tibble = cpp11::package("tibble")["as_tibble"];
+  cpp11::writable::doubles d(dates);
+  d.attr("class") = {"POSIXct", "POSIXt"};
 
-  Rcpp::List out = as_tibble(Rcpp::List::create(
-      Rcpp::_["path"] = paths, Rcpp::_["size"] = sizes, Rcpp::_["date"] = d));
+  cpp11::writable::list out(
+      {"path"_nm = paths, "size"_nm = sizes, "date"_nm = d});
 
   out.attr("path") = path;
 
-  return out;
+  return as_tibble(out);
 }
 
-[[cpp11::register]] Rcpp::IntegerVector archive_filters() {
-  Rcpp::IntegerVector out = Rcpp::IntegerVector::create(
-      Rcpp::_["none"] = ARCHIVE_FILTER_NONE,
-      Rcpp::_["gzip"] = ARCHIVE_FILTER_GZIP,
-      Rcpp::_["bzip2"] = ARCHIVE_FILTER_BZIP2,
-      Rcpp::_["compress"] = ARCHIVE_FILTER_COMPRESS,
-      Rcpp::_["lzma"] = ARCHIVE_FILTER_LZMA,
-      Rcpp::_["xz"] = ARCHIVE_FILTER_XZ,
-      Rcpp::_["uuencode"] = ARCHIVE_FILTER_UU,
-      Rcpp::_["lzip"] = ARCHIVE_FILTER_LZIP
+[[cpp11::register]] cpp11::integers archive_filters() {
+  cpp11::writable::integers out({
+    "none"_nm = ARCHIVE_FILTER_NONE, "gzip"_nm = ARCHIVE_FILTER_GZIP,
+    "bzip2"_nm = ARCHIVE_FILTER_BZIP2, "compress"_nm = ARCHIVE_FILTER_COMPRESS,
+    "lzma"_nm = ARCHIVE_FILTER_LZMA, "xz"_nm = ARCHIVE_FILTER_XZ,
+    "uuencode"_nm = ARCHIVE_FILTER_UU, "lzip"_nm = ARCHIVE_FILTER_LZIP
 #if ARCHIVE_VERSION_NUMBER >= 3001000
-      ,
-      Rcpp::_["lrzip"] = ARCHIVE_FILTER_LRZIP,
-      Rcpp::_["lzop"] = ARCHIVE_FILTER_LZOP,
-      Rcpp::_["grzip"] = ARCHIVE_FILTER_GRZIP
+        ,
+    "lrzip"_nm = ARCHIVE_FILTER_LRZIP, "lzop"_nm = ARCHIVE_FILTER_LZOP,
+    "grzip"_nm = ARCHIVE_FILTER_GRZIP
 #endif
 
 #if ARCHIVE_VERSION_NUMBER >= 3002000
-      ,
-      Rcpp::_["lz4"] = ARCHIVE_FILTER_LZ4
+        ,
+    "lz4"_nm = ARCHIVE_FILTER_LZ4
 #endif
 
 #if ARCHIVE_VERSION_NUMBER >= 3003003
-      ,
-      Rcpp::_["zstd"] = ARCHIVE_FILTER_ZSTD
+        ,
+    "zstd"_nm = ARCHIVE_FILTER_ZSTD
 #endif
-  );
+  });
   return out;
 }
 
-[[cpp11::register]] Rcpp::IntegerVector archive_formats() {
-  Rcpp::IntegerVector out = Rcpp::IntegerVector::create(
-      Rcpp::_["7zip"] = ARCHIVE_FORMAT_7ZIP,
-      Rcpp::_["cab"] = ARCHIVE_FORMAT_CAB,
-      Rcpp::_["cpio"] = ARCHIVE_FORMAT_CPIO,
-      Rcpp::_["iso9660"] = ARCHIVE_FORMAT_ISO9660,
-      Rcpp::_["lha"] = ARCHIVE_FORMAT_LHA,
-      Rcpp::_["mtree"] = ARCHIVE_FORMAT_MTREE,
-      Rcpp::_["shar"] = ARCHIVE_FORMAT_SHAR,
-      Rcpp::_["rar"] = ARCHIVE_FORMAT_RAR,
-      Rcpp::_["raw"] = ARCHIVE_FORMAT_RAW,
-      Rcpp::_["tar"] = ARCHIVE_FORMAT_TAR,
-      Rcpp::_["xar"] = ARCHIVE_FORMAT_XAR,
-      Rcpp::_["zip"] = ARCHIVE_FORMAT_ZIP
+[[cpp11::register]] cpp11::integers archive_formats() {
+  cpp11::writable::integers out({
+    "7zip"_nm = ARCHIVE_FORMAT_7ZIP, "cab"_nm = ARCHIVE_FORMAT_CAB,
+    "cpio"_nm = ARCHIVE_FORMAT_CPIO, "iso9660"_nm = ARCHIVE_FORMAT_ISO9660,
+    "lha"_nm = ARCHIVE_FORMAT_LHA, "mtree"_nm = ARCHIVE_FORMAT_MTREE,
+    "shar"_nm = ARCHIVE_FORMAT_SHAR, "rar"_nm = ARCHIVE_FORMAT_RAR,
+    "raw"_nm = ARCHIVE_FORMAT_RAW, "tar"_nm = ARCHIVE_FORMAT_TAR,
+    "xar"_nm = ARCHIVE_FORMAT_XAR, "zip"_nm = ARCHIVE_FORMAT_ZIP
 #if ARCHIVE_VERSION_NUMBER >= 3002000
-      ,
-
-      Rcpp::_["warc"] = ARCHIVE_FORMAT_WARC
+        ,
+    "warc"_nm = ARCHIVE_FORMAT_WARC
 #endif
-  );
+  });
   return out;
 }
 

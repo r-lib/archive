@@ -7,21 +7,21 @@ using namespace Rcpp;
 #include "cpp11/declarations.hpp"
 
 // archive.cpp
-Rcpp::List archive_metadata(const std::string& path);
+cpp11::sexp archive_metadata(const std::string& path);
 extern "C" SEXP _archive_archive_metadata(SEXP path) {
   BEGIN_CPP11
     return cpp11::as_sexp(archive_metadata(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(path)));
   END_CPP11
 }
 // archive.cpp
-Rcpp::IntegerVector archive_filters();
+cpp11::integers archive_filters();
 extern "C" SEXP _archive_archive_filters() {
   BEGIN_CPP11
     return cpp11::as_sexp(archive_filters());
   END_CPP11
 }
 // archive.cpp
-Rcpp::IntegerVector archive_formats();
+cpp11::integers archive_formats();
 extern "C" SEXP _archive_archive_formats() {
   BEGIN_CPP11
     return cpp11::as_sexp(archive_formats());

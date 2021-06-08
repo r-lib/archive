@@ -1,7 +1,5 @@
 #include <cpp11.hpp>
 
-#include <Rcpp.h>
-
 #include "connection/connection.h"
 
 #undef Realloc

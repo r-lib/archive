@@ -8,13 +8,13 @@ PKG_LIBS = \
 
 # Originally from https://github.com/cran/curl/blob/3897ba5203dee940e2ce40ac23a0d1106da93df6/src/Makevars.win
 
-LIB_CON = ../inst/lib$(R_ARCH)/libconnection$(DYLIB_EXT)
+LIB_CON = ../inst/lib$(R_ARCH)/libconnection.dll
 
 all: winlibs $(OBJECTS) $(SHLIB) $(LIB_CON)
 
 $(LIB_CON): connection/connection.o
 	mkdir -p $(dir $(LIB_CON))
-	$(SHLIB_LINK) -o $@ $^
+	$(SHLIB_LINK) $(LIBR) -o $@ $^
 
 clean:
 	rm -f $(OBJECTS) $(SHLIB) $(LIB_CON) connection/connection.o

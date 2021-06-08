@@ -1,5 +1,4 @@
 #include "r_archive.h"
-#include <R_ext/Boolean.h>
 
 /* Read archives
  *
@@ -44,7 +43,6 @@ static Rboolean rchive_read_open(Rconnection con) {
   r->last_response = archive_read_support_format_all(r->ar);
 #endif
 
-  size_t size;
   r->last_response = archive_read_open_filename(
       r->ar, r->archive_filename, r->archive_filename_size);
 
@@ -121,8 +119,8 @@ static int rchive_fgetc(Rconnection con) {
     const std::string& archive_filename,
     const std::string& filename,
     const std::string& mode,
-    Rcpp::NumericVector format,
-    Rcpp::NumericVector filters,
+    cpp11::integers format,
+    cpp11::integers filters,
     size_t sz = 16384) {
   Rconnection con;
 
@@ -145,7 +143,7 @@ static int rchive_fgetc(Rconnection con) {
 
   /* Initialize filters */
   if (filters.size() > FILTER_MAX) {
-    Rcpp::stop("Cannot use more than %i filters", FILTER_MAX);
+    cpp11::stop("Cannot use more than %i filters", FILTER_MAX);
   }
   for (int i = 0; i < FILTER_MAX; ++i) {
     r->filters[i] = -1;

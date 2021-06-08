@@ -58,10 +58,10 @@ extern "C" SEXP _archive_read_file_connection(SEXP filename, SEXP mode, SEXP sz)
   END_CPP11
 }
 // read.cpp
-SEXP read_connection(const std::string& archive_filename, const std::string& filename, const std::string& mode, Rcpp::NumericVector format, Rcpp::NumericVector filters, size_t sz);
+SEXP read_connection(const std::string& archive_filename, const std::string& filename, const std::string& mode, cpp11::integers format, cpp11::integers filters, size_t sz);
 extern "C" SEXP _archive_read_connection(SEXP archive_filename, SEXP filename, SEXP mode, SEXP format, SEXP filters, SEXP sz) {
   BEGIN_CPP11
-    return cpp11::as_sexp(read_connection(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(mode), cpp11::as_cpp<cpp11::decay_t<Rcpp::NumericVector>>(format), cpp11::as_cpp<cpp11::decay_t<Rcpp::NumericVector>>(filters), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
+    return cpp11::as_sexp(read_connection(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(mode), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
   END_CPP11
 }
 // write_file.cpp

@@ -7,15 +7,14 @@ Description: Bindings to 'libarchive' <http://www.libarchive.org> the
 Version: 1.0.0
 Authors@R: person("Jim", "Hester", email = "james.f.hester@gmail.com", role = c("aut", "cre"))
 Depends: R (>= 3.1.0)
-Imports: Rcpp, tibble, glue
+Imports: tibble, glue
 Suggests: testthat,
     covr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 LinkingTo: 
-    cpp11,
-    Rcpp
+    cpp11
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 SystemRequirements: C++11, libarchive: libarchive-dev (deb), libarchive-devel (rpm), libarchive

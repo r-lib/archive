@@ -1,6 +1,8 @@
+## usethis namespace: start
 #' @useDynLib archive, .registration = TRUE
-#' @importFrom Rcpp sourceCpp
 #' @importFrom tibble as_tibble
+#' @importFrom Rcpp sourceCpp
+## usethis namespace: end
 NULL
 
 #' Construct a new archive
@@ -105,7 +107,7 @@ file_read <- function(file, mode = "r") {
   assert("{file} is not a readable file path",
     is_readable(file))
 
-  read_file_connection(file, mode)
+  read_file_connection(file, mode, sz = 2^14)
 }
 
 format_and_filter_by_extension <- function(path) {

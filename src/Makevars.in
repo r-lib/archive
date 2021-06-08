@@ -1,2 +1,14 @@
 PKG_CXXFLAGS = @PKG_CXXFLAGS@
 PKG_LIBS = @PKG_LIBS@
+
+LIB_CON = ../inst/lib$(R_ARCH)/libconnection.so
+
+$(SHLIB): $(LIB_CON)
+
+$(LIB_CON): connection/connection.o
+	mkdir -p $(dir $(LIB_CON))
+	$(SHLIB_LINK) -o $@ $^
+
+.PHONY: clean
+clean:
+	rm -f $(OBJECTS) $(SHLIB) $(LIB_CON) connection/connection.o

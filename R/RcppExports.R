@@ -2,42 +2,42 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 archive_metadata <- function(path) {
-    .Call(`_archive_archive_metadata`, path)
+    .Call('_archive_archive_metadata', PACKAGE = 'archive', path)
 }
 
 archive_filters <- function() {
-    .Call(`_archive_archive_filters`)
+    .Call('_archive_archive_filters', PACKAGE = 'archive')
 }
 
 archive_formats <- function() {
-    .Call(`_archive_archive_formats`)
+    .Call('_archive_archive_formats', PACKAGE = 'archive')
 }
 
 libarchive_version_ <- function() {
-    .Call(`_archive_libarchive_version_`)
+    .Call('_archive_libarchive_version_', PACKAGE = 'archive')
 }
 
 archive_extract_ <- function(archive_filename, filenames, sz = 16384L) {
-    invisible(.Call(`_archive_archive_extract_`, archive_filename, filenames, sz))
+    invisible(.Call('_archive_archive_extract_', PACKAGE = 'archive', archive_filename, filenames, sz))
 }
 
 read_connection <- function(archive_filename, filename, mode, format, filters, sz = 16384L) {
-    .Call(`_archive_read_connection`, archive_filename, filename, mode, format, filters, sz)
+    .Call('_archive_read_connection', PACKAGE = 'archive', archive_filename, filename, mode, format, filters, sz)
 }
 
 read_file_connection <- function(filename, mode, sz = 16384L) {
-    .Call(`_archive_read_file_connection`, filename, mode, sz)
+    .Call('_archive_read_file_connection', PACKAGE = 'archive', filename, mode, sz)
 }
 
 write_connection <- function(archive_filename, filename, format, filters, sz = 16384L) {
-    .Call(`_archive_write_connection`, archive_filename, filename, format, filters, sz)
+    .Call('_archive_write_connection', PACKAGE = 'archive', archive_filename, filename, format, filters, sz)
 }
 
 write_file_connection <- function(filename, filters) {
-    .Call(`_archive_write_file_connection`, filename, filters)
+    .Call('_archive_write_file_connection', PACKAGE = 'archive', filename, filters)
 }
 
 write_files_ <- function(archive_filename, files, format, filters, sz = 16384L) {
-    .Call(`_archive_write_files_`, archive_filename, files, format, filters, sz)
+    .Call('_archive_write_files_', PACKAGE = 'archive', archive_filename, files, format, filters, sz)
 }
 

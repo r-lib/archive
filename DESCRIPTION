@@ -13,12 +13,13 @@ Suggests: testthat,
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-LinkingTo: Rcpp
-RoxygenNote: 6.1.0
+LinkingTo: 
+    cpp11,
+    Rcpp
+RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
-SystemRequirements: libarchive: libarchive-dev (deb), libarchive-devel (rpm), libarchive
+SystemRequirements: C++11, libarchive: libarchive-dev (deb), libarchive-devel (rpm), libarchive
   (homebrew), libarchive_dev (csw)
 URL: https://jimhester.github.io/archive/, https://github.com/jimhester/archive#readme
 ByteCompile: true
 BugReports: https://github.com/jimhester/archive/issues
-Remotes: tidyverse/glue

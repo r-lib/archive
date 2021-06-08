@@ -117,8 +117,7 @@ static int rchive_fgetc(Rconnection con) {
 #endif
 }
 
-// [[Rcpp::export]]
-SEXP read_connection(
+[[cpp11::register]] SEXP read_connection(
     const std::string& archive_filename,
     const std::string& filename,
     const std::string& mode,
@@ -128,9 +127,8 @@ SEXP read_connection(
   Rconnection con;
 
   std::string desc = archive_filename + '[' + filename + ']';
-  SEXP rc = PROTECT(
-      R_new_custom_connection(
-          desc.c_str(), mode.c_str(), "archive_read", &con));
+  SEXP rc =
+      PROTECT(new_connection(desc.c_str(), mode.c_str(), "archive_read", &con));
 
   /* Setup archive */
   rchive* r = (rchive*)malloc(sizeof(rchive));

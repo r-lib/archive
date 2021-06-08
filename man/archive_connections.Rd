@@ -6,8 +6,7 @@
 \alias{archive_write}
 \title{Acquire a read or write connection to an archive file}
 \usage{
-archive_read(archive, file = 1L, mode = "r", format = NULL,
-  filter = NULL)
+archive_read(archive, file = 1L, mode = "r", format = NULL, filter = NULL)
 
 archive_write(archive, file, format = NULL, filter = NULL)
 }

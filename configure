@@ -1,4 +1,3 @@
-#!/bin/bash
 # Anticonf (tm) script by Jeroen Ooms, Jim Hester (2017)
 # This script will query 'pkg-config' for the required cflags and ldflags.
 # If pkg-config is unavailable or does not find the library, try setting
@@ -29,14 +28,15 @@ elif [ "$PKGCONFIG_CFLAGS" ] || [ "$PKGCONFIG_LIBS" ]; then
   echo "Found pkg-config cflags and libs!"
   PKG_CFLAGS=${PKGCONFIG_CFLAGS}
   PKG_LIBS=${PKGCONFIG_LIBS}
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-  if [ "$(command -v brew)" ]; then
-    BREWDIR=$(brew --prefix)
-    PKG_CFLAGS="$BREWDIR/opt/libarchive/include"
-    PKG_LIBS="$BREWDIR/opt/libarchive/lib $PKG_LIBS"
+elif [ `uname` = "Darwin" ]; then
+  brew --version 2>/dev/null
+  if [ $? -eq 0 ]; then
+    BREWDIR=`brew --prefix`
+    PKG_CFLAGS="-I$BREWDIR/opt/openssl/include"
+    PKG_LIBS="-L$BREWDIR/opt/openssl/lib $PKG_LIBS"
   else
-    curl -sfL "https://autobrew.github.io/scripts/libarchive" > autobrew
-    source autobrew
+    curl -sfL "https://autobrew.github.io/scripts/$PKG_BREW_NAME" > autobrew
+    . ./autobrew
   fi
 fi
 

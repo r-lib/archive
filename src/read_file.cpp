@@ -1,5 +1,4 @@
 #include "r_archive.h"
-#include <Rcpp.h>
 #include <fcntl.h>
 
 static Rboolean file_read_open(Rconnection con) {

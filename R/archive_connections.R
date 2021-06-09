@@ -79,6 +79,8 @@ archive_write <- function(archive, file, format = NULL, filter = NULL) {
   assert("`archive` {archive} must be a writable file path",
     is_writable(dirname(archive)))
 
+  archive <- normalizePath(archive, mustWork = FALSE)
+
   assert("`file` must be a length one character vector",
     is_string(file))
 

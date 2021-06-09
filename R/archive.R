@@ -89,6 +89,8 @@ file_write <- function(file, filter = NULL) {
   assert("{file} is not a writable file path",
     is_writable(dirname(file)))
 
+  file <- normalizePath(file, mustWork = FALSE)
+
   if (is.null(filter)) {
     res <- filter_by_extension(file)
     assert("Could not automatically determine the `filter` for {file}",

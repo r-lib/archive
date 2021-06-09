@@ -78,6 +78,8 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
   assert("`archive` {archive} must be a writable file path",
     is_writable(dirname(archive)))
 
+  archive <- normalizePath(archive, mustWork = FALSE)
+
   assert("`files` must be one or more readable file paths",
     lapply(files, is_readable))
 

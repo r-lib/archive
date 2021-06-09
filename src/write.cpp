@@ -51,6 +51,9 @@ void rchive_write_close(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
   int response;
 
+  if (!con->isopen) {
+    return;
+  }
   /* Close scratch file */
   archive_write_finish_entry(r->ar);
   archive_write_close(r->ar);
@@ -68,11 +71,13 @@ void rchive_write_close(Rconnection con) {
   std::string scratch = scratch_file(r->filename);
   int fd = open(scratch.c_str(), O_RDONLY);
   if (fd < 0) {
+    con->isopen = FALSE;
     Rf_error("Could not open scratch file");
   }
   archive_entry_copy_pathname(entry, r->filename);
   response = archive_read_disk_entry_from_file(in, entry, fd, NULL);
   if (response != ARCHIVE_OK) {
+    con->isopen = FALSE;
     Rf_error(archive_error_string(in));
   }
 
@@ -80,6 +85,7 @@ void rchive_write_close(Rconnection con) {
 
   response = archive_write_set_format(out, r->format);
   if (response != ARCHIVE_OK) {
+    con->isopen = FALSE;
     Rf_error(archive_error_string(out));
   }
 
@@ -92,16 +98,19 @@ void rchive_write_close(Rconnection con) {
 
   response = archive_write_open_filename(out, r->archive_filename);
   if (response != ARCHIVE_OK) {
+    con->isopen = FALSE;
     Rf_error(archive_error_string(out));
   }
   response = archive_write_header(out, entry);
   if (response != ARCHIVE_OK) {
+    con->isopen = FALSE;
     Rf_error(archive_error_string(out));
   }
 
   while ((bytes_read = read(fd, buf, sizeof(buf))) > 0) {
     int bytes_out = archive_write_data(out, buf, bytes_read);
     if (bytes_out < 0) {
+      con->isopen = FALSE;
       Rf_error("Error writing to '%s'", r->archive_filename);
     }
   }

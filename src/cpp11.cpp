@@ -77,10 +77,10 @@ extern "C" SEXP _archive_write_files_(SEXP archive_filename, SEXP files, SEXP fo
   END_CPP11
 }
 // write.cpp
-SEXP write_connection2(const std::string& archive_filename, const std::string& filename, int format, cpp11::integers filters, cpp11::strings format_options, cpp11::strings filter_options, size_t sz);
-extern "C" SEXP _archive_write_connection2(SEXP archive_filename, SEXP filename, SEXP format, SEXP filters, SEXP format_options, SEXP filter_options, SEXP sz) {
+SEXP write_connection(const std::string& archive_filename, const std::string& filename, int format, cpp11::integers filters, cpp11::strings options, size_t sz);
+extern "C" SEXP _archive_write_connection(SEXP archive_filename, SEXP filename, SEXP format, SEXP filters, SEXP options, SEXP sz) {
   BEGIN_CPP11
-    return cpp11::as_sexp(write_connection2(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(format_options), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(filter_options), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
+    return cpp11::as_sexp(write_connection(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
   END_CPP11
 }
 
@@ -94,7 +94,7 @@ extern SEXP _archive_libarchive_version_();
 extern SEXP _archive_rchive_init(SEXP);
 extern SEXP _archive_read_connection(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_read_file_connection(SEXP, SEXP, SEXP);
-extern SEXP _archive_write_connection2(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _archive_write_connection(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_write_file_connection(SEXP, SEXP);
 extern SEXP _archive_write_files_(SEXP, SEXP, SEXP, SEXP, SEXP);
 
@@ -107,7 +107,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_archive_rchive_init",           (DL_FUNC) &_archive_rchive_init,           1},
     {"_archive_read_connection",       (DL_FUNC) &_archive_read_connection,       6},
     {"_archive_read_file_connection",  (DL_FUNC) &_archive_read_file_connection,  3},
-    {"_archive_write_connection2",     (DL_FUNC) &_archive_write_connection2,     7},
+    {"_archive_write_connection",      (DL_FUNC) &_archive_write_connection,      6},
     {"_archive_write_file_connection", (DL_FUNC) &_archive_write_file_connection, 2},
     {"_archive_write_files_",          (DL_FUNC) &_archive_write_files_,          5},
     {NULL, NULL, 0}

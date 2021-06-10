@@ -1,2 +1,17 @@
 #' @param format \code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.
 #' @param filter \code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.
+#' @param options \code{character()} default: \code{character(0)} Options to pass to the filter or format.
+#'   options can have one of the following forms:
+#'   - `option=value`
+#'     The option/value pair will be provided to every module.
+#'     Modules that do not accept an option with this name will
+#'     ignore it.
+#'   - `option`
+#'     The option will be provided to every module with a value
+#'     of "1".
+#'   - `!option`
+#'     The option will be provided to every module with a NULL
+#'     value.
+#'   - `module:option=value`, `module:option`, `module:!option`
+#'     As above, but the corresponding option and value will be
+#'     provided only to modules whose name matches module.

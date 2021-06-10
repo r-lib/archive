@@ -66,7 +66,7 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
 #' unlink(f2)
 #' @importFrom rlang is_character is_named
 #' @export
-archive_write <- function(archive, file, format = NULL, filter = NULL, format_options = character(), filter_options = character()) {
+archive_write <- function(archive, file, format = NULL, filter = NULL, options = character()) {
   if (is.null(format) && is.null(filter)) {
     res <- format_and_filter_by_extension(archive)
 
@@ -85,21 +85,13 @@ archive_write <- function(archive, file, format = NULL, filter = NULL, format_op
   assert("`file` must be a length one character vector",
     is_string(file))
 
-  assert("`format_options` must be a named character vector",
-    length(format_options) == 0 || is_character(format_options) && is_named(format_options)
+  assert("`options` must be an unnamed character vector",
+    length(options) == 0 || is_character(options) && !is_named(options)
   )
 
-  assert("`filter_options` must be a named character vector",
-    length(format_options) == 0 || is_character(format_options) && is_named(format_options)
-  )
+  if (length(options) > 1) {
+    options <- glue::glue_collapse(options, ",")
+  }
 
-  assert("`format` must be length 1 to use `format_options`",
-    length(format_options) == 0 || length(format) == 1
-  )
-
-  assert("`filter` must be length 1 to use `filter_options`",
-    length(filter_options) == 0 || length(filter) == 1
-  )
-
-  write_connection2(archive, file, archive_formats()[format], archive_filters()[filter], format_options, filter_options, 2^14)
+  write_connection(archive, file, archive_formats()[format], archive_filters()[filter], options, 2^14)
 }

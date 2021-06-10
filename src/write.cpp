@@ -98,6 +98,14 @@ void rchive_write_close(Rconnection con) {
     }
   }
 
+  if (!r->options.empty()) {
+    response = archive_write_set_options(out, r->options.c_str());
+    if (response != ARCHIVE_OK) {
+      con->isopen = FALSE;
+      Rf_error(archive_error_string(out));
+    }
+  }
+
   response = archive_write_open_filename(out, r->archive_filename.c_str());
   if (response != ARCHIVE_OK) {
     con->isopen = FALSE;
@@ -132,28 +140,16 @@ void rchive_write_destroy(Rconnection con) {
   delete r;
 }
 
-std::vector<rchive_option> make_archive_options(cpp11::strings x) {
-  cpp11::strings nms(x.names());
-
-  std::vector<rchive_option> out;
-  out.reserve(x.size());
-  for (auto i = 0; i < x.size(); ++i) {
-    out.push_back({nms[i], x[i]});
-  }
-  return out;
-}
-
 // This writes a single file to a new connection, it first writes the data
 // to a scratch file, then adds it to the archive, because the archive
 // headers need to be written before the data is added, and we do not know
 // the size of the data until it has been written.
-[[cpp11::register]] SEXP write_connection2(
+[[cpp11::register]] SEXP write_connection(
     const std::string& archive_filename,
     const std::string& filename,
     int format,
     cpp11::integers filters,
-    cpp11::strings format_options,
-    cpp11::strings filter_options,
+    cpp11::strings options,
     size_t sz) {
   Rconnection con;
   SEXP rc = PROTECT(new_connection("input", "wb", "archive_write", &con));
@@ -182,8 +178,9 @@ std::vector<rchive_option> make_archive_options(cpp11::strings x) {
 
   r->filename = filename;
 
-  r->format_options = make_archive_options(format_options);
-  r->filter_options = make_archive_options(filter_options);
+  if (options.size() > 0) {
+    r->options = options[0];
+  }
 
   /* set connection properties */
   con->incomplete = TRUE;

@@ -21,11 +21,6 @@
 
 #define FILTER_MAX 8
 
-struct rchive_option {
-  std::string option;
-  std::string value;
-};
-
 struct rchive {
   std::string archive_filename;
   int format;
@@ -39,8 +34,7 @@ struct rchive {
   size_t limit;
   size_t size;
   int filters[FILTER_MAX];
-  std::vector<rchive_option> filter_options;
-  std::vector<rchive_option> format_options;
+  std::string options;
 };
 
 size_t pop(void* target, size_t max, rchive* r);

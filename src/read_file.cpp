@@ -10,7 +10,8 @@ static Rboolean file_read_open(Rconnection con) {
   archive_read_support_filter_all(r->ar);
   archive_read_support_format_raw(r->ar);
 
-  r->last_response = archive_read_open_filename(r->ar, r->filename, r->limit);
+  r->last_response =
+      archive_read_open_filename(r->ar, r->filename.c_str(), r->limit);
   if (r->last_response != ARCHIVE_OK) {
     Rf_error(archive_error_string(r->ar));
   }
@@ -57,8 +58,7 @@ void file_read_destroy(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
   /* free the handle connection */
-  free(r->filename);
-  free(r);
+  delete r;
 }
 
 /* naive implementation of readLines */
@@ -80,13 +80,12 @@ static int file_read_getc(Rconnection con) {
       PROTECT(new_connection("file_input", mode.c_str(), "archive", &con));
 
   /* Setup archive */
-  rchive* r = (rchive*)malloc(sizeof(rchive));
+  rchive* r = new rchive;
 
   r->limit = sz;
   r->buf = (char*)malloc(r->limit);
 
-  r->filename = (char*)malloc(strlen(filename.c_str()) + 1);
-  strcpy(r->filename, filename.c_str());
+  r->filename = filename;
 
   /* set connection properties */
   con->incomplete = TRUE;

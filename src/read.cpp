@@ -44,7 +44,7 @@ static Rboolean rchive_read_open(Rconnection con) {
 #endif
 
   r->last_response = archive_read_open_filename(
-      r->ar, r->archive_filename, r->archive_filename_size);
+      r->ar, r->archive_filename.c_str(), r->archive_filename.size());
 
   if (r->last_response != ARCHIVE_OK) {
     con->isopen = FALSE;
@@ -55,7 +55,7 @@ static Rboolean rchive_read_open(Rconnection con) {
   /* Find entry to extract */
   while (archive_read_next_header(r->ar, &r->entry) == ARCHIVE_OK) {
     const char* str = archive_entry_pathname(r->entry);
-    if (strcmp(r->filename, str) == 0) {
+    if (strcmp(r->filename.c_str(), str) == 0) {
       r->has_more = 1;
       con->isopen = TRUE;
       push(r);
@@ -63,7 +63,7 @@ static Rboolean rchive_read_open(Rconnection con) {
     }
     archive_read_data_skip(r->ar);
   }
-  Rf_error("'%s' not found in archive", r->filename);
+  Rf_error("'%s' not found in archive", r->filename.c_str());
   return FALSE;
 }
 
@@ -83,9 +83,8 @@ void rchive_read_destroy(Rconnection con) {
   /* free the handle connection */
   archive_read_free(r->ar);
   free(r->buf);
-  free(r->archive_filename);
-  free(r->filename);
-  free(r);
+
+  delete r;
 }
 
 /* Support for readBin() */
@@ -129,15 +128,13 @@ static int rchive_fgetc(Rconnection con) {
       PROTECT(new_connection(desc.c_str(), mode.c_str(), "archive_read", &con));
 
   /* Setup archive */
-  rchive* r = (rchive*)malloc(sizeof(rchive));
+  rchive* r = new rchive;
   r->limit = sz;
   r->buf = (char*)malloc(r->limit);
   r->size = 0;
   r->cur = NULL;
 
-  r->archive_filename_size = archive_filename.length() + 1;
-  r->archive_filename = (char*)malloc(r->archive_filename_size);
-  strcpy(r->archive_filename, archive_filename.c_str());
+  r->archive_filename = archive_filename;
 
   r->format = format.size() == 0 ? -1 : format[0];
 
@@ -152,9 +149,7 @@ static int rchive_fgetc(Rconnection con) {
     r->filters[i] = filters[i];
   }
 
-  r->filename_size = filename.length() + 1;
-  r->filename = (char*)malloc(r->filename_size);
-  strcpy(r->filename, filename.c_str());
+  r->filename = filename;
 
   r->ar = archive_read_new();
 

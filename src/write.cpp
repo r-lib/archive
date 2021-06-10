@@ -34,7 +34,8 @@ static Rboolean rchive_write_open(Rconnection con) {
 
   r->entry = archive_entry_new();
 
-  archive_entry_set_pathname(r->entry, scratch_file(r->filename).c_str());
+  archive_entry_set_pathname(
+      r->entry, scratch_file(r->filename.c_str()).c_str());
   archive_entry_set_filetype(r->entry, AE_IFREG);
   archive_entry_set_perm(r->entry, 0644);
   archive_write_header(r->ar, r->entry);
@@ -69,13 +70,13 @@ void rchive_write_close(Rconnection con) {
   archive_read_disk_set_standard_lookup(in);
   entry = archive_entry_new();
 
-  std::string scratch = scratch_file(r->filename);
+  std::string scratch = scratch_file(r->filename.c_str());
   int fd = open(scratch.c_str(), O_RDONLY);
   if (fd < 0) {
     con->isopen = FALSE;
     Rf_error("Could not open scratch file");
   }
-  archive_entry_copy_pathname(entry, r->filename);
+  archive_entry_copy_pathname(entry, r->filename.c_str());
   response = archive_read_disk_entry_from_file(in, entry, fd, NULL);
   if (response != ARCHIVE_OK) {
     con->isopen = FALSE;
@@ -97,7 +98,7 @@ void rchive_write_close(Rconnection con) {
     }
   }
 
-  response = archive_write_open_filename(out, r->archive_filename);
+  response = archive_write_open_filename(out, r->archive_filename.c_str());
   if (response != ARCHIVE_OK) {
     con->isopen = FALSE;
     Rf_error(archive_error_string(out));
@@ -112,7 +113,7 @@ void rchive_write_close(Rconnection con) {
     int bytes_out = archive_write_data(out, buf, bytes_read);
     if (bytes_out < 0) {
       con->isopen = FALSE;
-      Rf_error("Error writing to '%s'", r->archive_filename);
+      Rf_error("Error writing to '%s'", r->archive_filename.c_str());
     }
   }
   close(fd);
@@ -128,8 +129,6 @@ void rchive_write_destroy(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
   /* free the handle connection */
-  free(r->archive_filename);
-  free(r->filename);
   delete r;
 }
 
@@ -166,8 +165,7 @@ std::vector<rchive_option> make_archive_options(cpp11::strings x) {
   // r->cur = r->buf;
   // r->size = 0;
 
-  r->archive_filename = (char*)malloc(strlen(archive_filename.c_str()) + 1);
-  strcpy(r->archive_filename, archive_filename.c_str());
+  r->archive_filename = archive_filename;
 
   r->format = format;
 
@@ -182,8 +180,7 @@ std::vector<rchive_option> make_archive_options(cpp11::strings x) {
     r->filters[i] = filters[i];
   }
 
-  r->filename = (char*)malloc(strlen(filename.c_str()) + 1);
-  strcpy(r->filename, filename.c_str());
+  r->filename = filename;
 
   r->format_options = make_archive_options(format_options);
   r->filter_options = make_archive_options(filter_options);

@@ -27,11 +27,9 @@ struct rchive_option {
 };
 
 struct rchive {
-  char* archive_filename;
-  size_t archive_filename_size;
+  std::string archive_filename;
   int format;
-  char* filename;
-  size_t filename_size;
+  std::string filename;
   char* buf;
   char* cur;
   archive* ar;

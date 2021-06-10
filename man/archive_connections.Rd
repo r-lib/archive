@@ -8,7 +8,14 @@
 \usage{
 archive_read(archive, file = 1L, mode = "r", format = NULL, filter = NULL)
 
-archive_write(archive, file, format = NULL, filter = NULL)
+archive_write(
+  archive,
+  file,
+  format = NULL,
+  filter = NULL,
+  format_options = character(),
+  filter_options = character()
+)
 }
 \arguments{
 \item{archive}{\code{character(1)} The archive filename or an \code{archive} object.}

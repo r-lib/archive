@@ -13,13 +13,20 @@
 #undef FALSE
 #include <R_ext/Boolean.h>
 
+#include <vector>
+
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 
 #define R_EOF -1
 
 #define FILTER_MAX 8
 
-typedef struct {
+struct rchive_option {
+  std::string option;
+  std::string value;
+};
+
+struct rchive {
   char* archive_filename;
   size_t archive_filename_size;
   int format;
@@ -34,7 +41,9 @@ typedef struct {
   size_t limit;
   size_t size;
   int filters[FILTER_MAX];
-} rchive;
+  std::vector<rchive_option> filter_options;
+  std::vector<rchive_option> format_options;
+};
 
 size_t pop(void* target, size_t max, rchive* r);
 

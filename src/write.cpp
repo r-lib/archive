@@ -1,6 +1,7 @@
 #include "r_archive.h"
 #include <fcntl.h>
 #include <string.h>
+#include <vector>
 
 std::string my_basename(std::string const& str) {
   std::size_t found = str.find_last_of("/\\");
@@ -129,24 +130,37 @@ void rchive_write_destroy(Rconnection con) {
   /* free the handle connection */
   free(r->archive_filename);
   free(r->filename);
-  free(r);
+  delete r;
 }
 
-// This writes a single file to a new connection, it first writes the data to a
-// scratch file, then adds it to the archive, because the archive headers need
-// to be written before the data is added, and we do not know the size of the
-// data until it has been written.
-[[cpp11::register]] SEXP write_connection(
+std::vector<rchive_option> make_archive_options(cpp11::strings x) {
+  cpp11::strings nms(x.names());
+
+  std::vector<rchive_option> out;
+  out.reserve(x.size());
+  for (auto i = 0; i < x.size(); ++i) {
+    out.push_back({nms[i], x[i]});
+  }
+  return out;
+}
+
+// This writes a single file to a new connection, it first writes the data
+// to a scratch file, then adds it to the archive, because the archive
+// headers need to be written before the data is added, and we do not know
+// the size of the data until it has been written.
+[[cpp11::register]] SEXP write_connection2(
     const std::string& archive_filename,
     const std::string& filename,
     int format,
     cpp11::integers filters,
+    cpp11::strings format_options,
+    cpp11::strings filter_options,
     size_t sz) {
   Rconnection con;
   SEXP rc = PROTECT(new_connection("input", "wb", "archive_write", &con));
 
   /* Setup archive */
-  rchive* r = (rchive*)malloc(sizeof(rchive));
+  rchive* r = (rchive*)new rchive;
   // r->limit = sz;
   // r->buf = (char *) malloc(r->limit);
   // r->cur = r->buf;
@@ -170,6 +184,9 @@ void rchive_write_destroy(Rconnection con) {
 
   r->filename = (char*)malloc(strlen(filename.c_str()) + 1);
   strcpy(r->filename, filename.c_str());
+
+  r->format_options = make_archive_options(format_options);
+  r->filter_options = make_archive_options(filter_options);
 
   /* set connection properties */
   con->incomplete = TRUE;

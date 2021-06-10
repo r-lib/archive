@@ -64,8 +64,9 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
 #' write.csv(iris, archive_write(f2, "iris.csv", format = "tar", filter = "bzip2"))
 #' archive(f2)
 #' unlink(f2)
+#' @importFrom rlang is_character is_named
 #' @export
-archive_write <- function(archive, file, format = NULL, filter = NULL) {
+archive_write <- function(archive, file, format = NULL, filter = NULL, format_options = character(), filter_options = character()) {
   if (is.null(format) && is.null(filter)) {
     res <- format_and_filter_by_extension(archive)
 
@@ -84,5 +85,21 @@ archive_write <- function(archive, file, format = NULL, filter = NULL) {
   assert("`file` must be a length one character vector",
     is_string(file))
 
-  write_connection(archive, file, archive_formats()[format], archive_filters()[filter], sz = 2^14)
+  assert("`format_options` must be a named character vector",
+    length(format_options) == 0 || is_character(format_options) && is_named(format_options)
+  )
+
+  assert("`filter_options` must be a named character vector",
+    length(format_options) == 0 || is_character(format_options) && is_named(format_options)
+  )
+
+  assert("`format` must be length 1 to use `format_options`",
+    length(format_options) == 0 || length(format) == 1
+  )
+
+  assert("`filter` must be length 1 to use `filter_options`",
+    length(filter_options) == 0 || length(filter) == 1
+  )
+
+  write_connection2(archive, file, archive_formats()[format], archive_filters()[filter], format_options, filter_options, 2^14)
 }

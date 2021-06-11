@@ -144,7 +144,7 @@ void rchive_write_destroy(Rconnection con) {
 // to a scratch file, then adds it to the archive, because the archive
 // headers need to be written before the data is added, and we do not know
 // the size of the data until it has been written.
-[[cpp11::register]] SEXP write_connection(
+[[cpp11::register]] SEXP archive_write_(
     const std::string& archive_filename,
     const std::string& filename,
     int format,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/archive_read.R
 \name{archive_read}
 \alias{archive_read}
-\title{Create a read connection to a file in an archive.}
+\title{Create a readable connection to a file in an archive.}
 \usage{
 archive_read(archive, file = 1L, mode = "r", format = NULL, filter = NULL)
 }
@@ -12,7 +12,7 @@ connection (if it should be opened initially).  See section
 ‘Modes’ in \code{\link[base:connections]{base::connections()}} for possible values.}
 }
 \description{
-Create a read connection to a file in an archive.
+Create a readable connection to a file in an archive.
 }
 \examples{
 a <- archive(system.file(package = "archive", "extdata", "data.zip"))

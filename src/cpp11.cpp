@@ -11,6 +11,13 @@ extern "C" SEXP _archive_archive_read_(SEXP archive_filename, SEXP filename, SEX
     return cpp11::as_sexp(archive_read_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(mode), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
   END_CPP11
 }
+// archive_write.cpp
+SEXP archive_write_(const std::string& archive_filename, const std::string& filename, int format, cpp11::integers filters, cpp11::strings options, size_t sz);
+extern "C" SEXP _archive_archive_write_(SEXP archive_filename, SEXP filename, SEXP format, SEXP filters, SEXP options, SEXP sz) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(archive_write_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
+  END_CPP11
+}
 // archive.cpp
 cpp11::sexp archive_metadata(const std::string& path);
 extern "C" SEXP _archive_archive_metadata(SEXP path) {
@@ -76,13 +83,6 @@ extern "C" SEXP _archive_write_files_(SEXP archive_filename, SEXP files, SEXP fo
     return cpp11::as_sexp(write_files_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(files), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
   END_CPP11
 }
-// write.cpp
-SEXP write_connection(const std::string& archive_filename, const std::string& filename, int format, cpp11::integers filters, cpp11::strings options, size_t sz);
-extern "C" SEXP _archive_write_connection(SEXP archive_filename, SEXP filename, SEXP format, SEXP filters, SEXP options, SEXP sz) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(write_connection(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
-  END_CPP11
-}
 
 extern "C" {
 /* .Call calls */
@@ -91,10 +91,10 @@ extern SEXP _archive_archive_filters();
 extern SEXP _archive_archive_formats();
 extern SEXP _archive_archive_metadata(SEXP);
 extern SEXP _archive_archive_read_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _archive_archive_write_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_libarchive_version_();
 extern SEXP _archive_rchive_init(SEXP);
 extern SEXP _archive_read_file_connection(SEXP, SEXP, SEXP);
-extern SEXP _archive_write_connection(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_write_file_connection(SEXP, SEXP, SEXP);
 extern SEXP _archive_write_files_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
@@ -104,10 +104,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_archive_archive_formats",       (DL_FUNC) &_archive_archive_formats,       0},
     {"_archive_archive_metadata",      (DL_FUNC) &_archive_archive_metadata,      1},
     {"_archive_archive_read_",         (DL_FUNC) &_archive_archive_read_,         6},
+    {"_archive_archive_write_",        (DL_FUNC) &_archive_archive_write_,        6},
     {"_archive_libarchive_version_",   (DL_FUNC) &_archive_libarchive_version_,   0},
     {"_archive_rchive_init",           (DL_FUNC) &_archive_rchive_init,           1},
     {"_archive_read_file_connection",  (DL_FUNC) &_archive_read_file_connection,  3},
-    {"_archive_write_connection",      (DL_FUNC) &_archive_write_connection,      6},
     {"_archive_write_file_connection", (DL_FUNC) &_archive_write_file_connection, 3},
     {"_archive_write_files_",          (DL_FUNC) &_archive_write_files_,          6},
     {NULL, NULL, 0}

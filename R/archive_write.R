@@ -1,22 +1,12 @@
-#' Acquire a read or write connection to an archive file
-#'
-#' `archive_read()` returns an readable input connection to an existing archive.
-#' `archive_write()` returns an writable output connection to a new archive.
+#' Create a writable connection to a file in an archive.
 #'
 #' @param archive `character(1)` The archive filename or an `archive` object.
 #' @param file `character(1) || integer(1)` The filename within the archive,
 #'   specified either by filename or by position.
-#' @name archive_connections
 #' @template archive
-#' @details
-#' If `format` and `filter` are `NULL`, they will be set automatically based on
-#' the file extension given in `file` for `archive_write()` or automatically
-#' detected using
-#' [Robust automatic format detection](https://github.com/libarchive/libarchive/wiki/FormatDetection)
-#' for `archive_read()`.
-#'
+#' @importFrom rlang is_character is_named
 #' @examples
-#' # Achive format and filters can be set automatically from the file extensions.
+#' # Archive format and filters can be set automatically from the file extensions.
 #' f1 <- tempfile(fileext = ".tar.gz")
 #'
 #' write.csv(mtcars, archive_write(f1, "mtcars.csv"))
@@ -25,10 +15,15 @@
 #'
 #' # They can also be specified explicitly
 #' f2 <- tempfile()
-#' write.csv(iris, archive_write(f2, "iris.csv", format = "tar", filter = "bzip2"))
+#' write.csv(mtcars, archive_write(f2, "mtcars.csv", format = "tar", filter = "bzip2"))
 #' archive(f2)
 #' unlink(f2)
-#' @importFrom rlang is_character is_named
+#'
+#' # You can also pass additional options to control things like compression level
+#' f3 <- tempfile(fileext = ".tar.gz")
+#' write.csv(mtcars, archive_write(f2, "mtcars.csv", options = "compression-level=2"))
+#' archive(f3)
+#' unlink(f3)
 #' @export
 archive_write <- function(archive, file, format = NULL, filter = NULL, options = character()) {
   if (is.null(format) && is.null(filter)) {
@@ -51,5 +46,5 @@ archive_write <- function(archive, file, format = NULL, filter = NULL, options =
 
   options <- validate_options(options)
 
-  write_connection(archive, file, archive_formats()[format], archive_filters()[filter], options, 2^14)
+  archive_write_(archive, file, archive_formats()[format], archive_filters()[filter], options, 2^14)
 }

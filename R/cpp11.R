@@ -4,6 +4,10 @@ archive_read_ <- function(archive_filename, filename, mode, format, filters, sz)
   .Call(`_archive_archive_read_`, archive_filename, filename, mode, format, filters, sz)
 }
 
+archive_write_ <- function(archive_filename, filename, format, filters, options, sz) {
+  .Call(`_archive_archive_write_`, archive_filename, filename, format, filters, options, sz)
+}
+
 archive_metadata <- function(path) {
   .Call(`_archive_archive_metadata`, path)
 }
@@ -38,8 +42,4 @@ write_file_connection <- function(filename, filters, options) {
 
 write_files_ <- function(archive_filename, files, format, filters, options, sz) {
   .Call(`_archive_write_files_`, archive_filename, files, format, filters, options, sz)
-}
-
-write_connection <- function(archive_filename, filename, format, filters, options, sz) {
-  .Call(`_archive_write_connection`, archive_filename, filename, format, filters, options, sz)
 }

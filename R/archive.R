@@ -73,7 +73,8 @@ filter_by_extension <- function(path) {
 #'
 #' `file_write()` returns an writable output connection,
 #' `file_read()` returns a readable input connection.
-#' @inheritParams archive_connections
+#' @inheritParams archive_read
+#' @inheritParams archive_write
 #' @name file_connections
 #' @export
 #' @examples

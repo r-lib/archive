@@ -15,3 +15,9 @@
 #'   - `module:option=value`, `module:option`, `module:!option`
 #'     As above, but the corresponding option and value will be
 #'     provided only to modules whose name matches module.
+#' @details
+#' If `format` and `filter` are `NULL`, they will be set automatically based on
+#' the file extension given in `file` when writing and automatically detected
+#' using
+#' [Robust automatic format detection](https://github.com/libarchive/libarchive/wiki/FormatDetection)
+#' when reading.

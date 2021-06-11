@@ -1,6 +1,6 @@
 #' Extract contents of an archive
 #'
-#' @inheritParams archive_connections
+#' @inheritParams archive_read
 #' @param dir `character(1)` Directory location to extract archive contents, will be created
 #' if it does not exist.
 #' @details
@@ -50,7 +50,7 @@ archive_extract <- function(archive, dir = ".", file = NULL) {
 #' `archive_write_files()` adds one or more files to a new archive.
 #' `archive_write_dir()` adds all the file(s) in a directory to a new archive.
 #' @param files `character()` One or more files to add to the archive.
-#' @inheritParams archive_connections
+#' @inheritParams archive_write
 #' @examples
 #' if (archive:::libarchive_version() > "3.2.0") {
 #' # write some files to a directory

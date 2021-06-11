@@ -1,5 +1,6 @@
 #' Create a readable connection to a file in an archive.
 #'
+#' @inheritParams archive_write
 #' @param mode `character(1)` A description of how to open the
 #'   connection (if it should be opened initially).  See section
 #'   ‘Modes’ in [base::connections()] for possible values.

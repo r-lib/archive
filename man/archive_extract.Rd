@@ -7,8 +7,13 @@
 archive_extract(archive, dir = ".", file = NULL)
 }
 \arguments{
+\item{archive}{\code{character(1)} The archive filename or an \code{archive} object.}
+
 \item{dir}{\code{character(1)} Directory location to extract archive contents, will be created
 if it does not exist.}
+
+\item{file}{\code{character(1) || integer(1)} The filename within the archive,
+specified either by filename or by position.}
 }
 \description{
 Extract contents of an archive

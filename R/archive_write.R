@@ -21,7 +21,7 @@
 #'
 #' # You can also pass additional options to control things like compression level
 #' f3 <- tempfile(fileext = ".tar.gz")
-#' write.csv(mtcars, archive_write(f2, "mtcars.csv", options = "compression-level=2"))
+#' write.csv(mtcars, archive_write(f3, "mtcars.csv", options = "compression-level=2"))
 #' archive(f3)
 #' unlink(f3)
 #' @export

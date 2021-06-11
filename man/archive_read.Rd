@@ -7,9 +7,18 @@
 archive_read(archive, file = 1L, mode = "r", format = NULL, filter = NULL)
 }
 \arguments{
+\item{archive}{\code{character(1)} The archive filename or an \code{archive} object.}
+
+\item{file}{\code{character(1) || integer(1)} The filename within the archive,
+specified either by filename or by position.}
+
 \item{mode}{\code{character(1)} A description of how to open the
 connection (if it should be opened initially).  See section
 ‘Modes’ in \code{\link[base:connections]{base::connections()}} for possible values.}
+
+\item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
+
+\item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 }
 \description{
 Create a readable connection to a file in an archive.

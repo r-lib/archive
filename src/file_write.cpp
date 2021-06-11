@@ -76,7 +76,7 @@ void file_write_destroy(Rconnection con) {
 
 // Get a connection to a single non-archive file, optionally with one or more
 // filters.
-[[cpp11::register]] SEXP write_file_connection(
+[[cpp11::register]] SEXP file_write_(
     const std::string& filename,
     cpp11::integers filters,
     cpp11::strings options) {

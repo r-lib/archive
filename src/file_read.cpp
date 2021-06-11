@@ -73,8 +73,8 @@ static int file_read_getc(Rconnection con) {
 
 // Get a connection to a single non-archive file, optionally with one or more
 // filters.
-[[cpp11::register]] SEXP read_file_connection(
-    const std::string& filename, const std::string& mode, size_t sz) {
+[[cpp11::register]] SEXP
+file_read_(const std::string& filename, const std::string& mode, size_t sz) {
   Rconnection con;
   SEXP rc =
       PROTECT(new_connection("file_input", mode.c_str(), "archive", &con));

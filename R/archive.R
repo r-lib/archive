@@ -36,7 +36,6 @@ as_archive <- function(x) {
   archive(x)
 }
 
-
 filter_by_extension <- function(path) {
 
   extension_to_filter <- function(ext) {
@@ -63,16 +62,6 @@ filter_by_extension <- function(path) {
   extensions <- sub("^[^.][.]", "", basename(path))
 
   Reduce(`c`, Map(extension_to_filter, strsplit(extensions, "[.]")[[1]]))
-}
-
-#' @rdname file_connections
-#' @inheritParams archive_read
-#' @export
-file_read <- function(file, mode = "r") {
-  assert("{file} is not a readable file path",
-    is_readable(file))
-
-  read_file_connection(file, mode, sz = 2^14)
 }
 
 format_and_filter_by_extension <- function(path) {

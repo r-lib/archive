@@ -61,6 +61,13 @@ extern "C" SEXP _archive_libarchive_version_() {
     return cpp11::as_sexp(libarchive_version_());
   END_CPP11
 }
+// file_read.cpp
+SEXP file_read_(const std::string& filename, const std::string& mode, size_t sz);
+extern "C" SEXP _archive_file_read_(SEXP filename, SEXP mode, SEXP sz) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(file_read_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(mode), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
+  END_CPP11
+}
 // file_write.cpp
 SEXP file_write_(const std::string& filename, cpp11::integers filters, cpp11::strings options);
 extern "C" SEXP _archive_file_write_(SEXP filename, SEXP filters, SEXP options) {
@@ -76,13 +83,6 @@ extern "C" SEXP _archive_rchive_init(SEXP xptr) {
     return R_NilValue;
   END_CPP11
 }
-// read_file.cpp
-SEXP read_file_connection(const std::string& filename, const std::string& mode, size_t sz);
-extern "C" SEXP _archive_read_file_connection(SEXP filename, SEXP mode, SEXP sz) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(read_file_connection(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(mode), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
-  END_CPP11
-}
 
 extern "C" {
 /* .Call calls */
@@ -93,10 +93,10 @@ extern SEXP _archive_archive_metadata(SEXP);
 extern SEXP _archive_archive_read_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_archive_write_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_archive_write_files_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _archive_file_read_(SEXP, SEXP, SEXP);
 extern SEXP _archive_file_write_(SEXP, SEXP, SEXP);
 extern SEXP _archive_libarchive_version_();
 extern SEXP _archive_rchive_init(SEXP);
-extern SEXP _archive_read_file_connection(SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_archive_archive_extract_",     (DL_FUNC) &_archive_archive_extract_,     3},
@@ -106,10 +106,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_archive_archive_read_",        (DL_FUNC) &_archive_archive_read_,        6},
     {"_archive_archive_write_",       (DL_FUNC) &_archive_archive_write_,       6},
     {"_archive_archive_write_files_", (DL_FUNC) &_archive_archive_write_files_, 6},
+    {"_archive_file_read_",           (DL_FUNC) &_archive_file_read_,           3},
     {"_archive_file_write_",          (DL_FUNC) &_archive_file_write_,          3},
     {"_archive_libarchive_version_",  (DL_FUNC) &_archive_libarchive_version_,  0},
     {"_archive_rchive_init",          (DL_FUNC) &_archive_rchive_init,          1},
-    {"_archive_read_file_connection", (DL_FUNC) &_archive_read_file_connection, 3},
     {NULL, NULL, 0}
 };
 }

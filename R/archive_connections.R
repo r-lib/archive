@@ -85,13 +85,7 @@ archive_write <- function(archive, file, format = NULL, filter = NULL, options =
   assert("`file` must be a length one character vector",
     is_string(file))
 
-  assert("`options` must be an unnamed character vector",
-    length(options) == 0 || is_character(options) && !is_named(options)
-  )
-
-  if (length(options) > 1) {
-    options <- glue::glue_collapse(options, ",")
-  }
+  options <- validate_options(options)
 
   write_connection(archive, file, archive_formats()[format], archive_filters()[filter], options, 2^14)
 }

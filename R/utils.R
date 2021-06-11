@@ -30,6 +30,19 @@ assert <- function(msg, ...) {
   }
 }
 
+# TODO check the options match the correct formats here?
+validate_options <- function(options) {
+  assert("`options` must be an unnamed character vector",
+    length(options) == 0 || is_character(options) && !is_named(options)
+  )
+
+  if (length(options) > 1) {
+    options <- glue::glue_collapse(options, ",")
+  }
+
+  options
+}
+
 is_string <- function(x) {
   is.character(x) && length(x) == 1
 }

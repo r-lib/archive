@@ -63,10 +63,10 @@ extern "C" SEXP _archive_read_connection(SEXP archive_filename, SEXP filename, S
   END_CPP11
 }
 // write_file.cpp
-SEXP write_file_connection(const std::string& filename, cpp11::integers filters);
-extern "C" SEXP _archive_write_file_connection(SEXP filename, SEXP filters) {
+SEXP write_file_connection(const std::string& filename, cpp11::integers filters, cpp11::strings options);
+extern "C" SEXP _archive_write_file_connection(SEXP filename, SEXP filters, SEXP options) {
   BEGIN_CPP11
-    return cpp11::as_sexp(write_file_connection(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters)));
+    return cpp11::as_sexp(write_file_connection(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options)));
   END_CPP11
 }
 // write_file.cpp
@@ -95,7 +95,7 @@ extern SEXP _archive_rchive_init(SEXP);
 extern SEXP _archive_read_connection(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_read_file_connection(SEXP, SEXP, SEXP);
 extern SEXP _archive_write_connection(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _archive_write_file_connection(SEXP, SEXP);
+extern SEXP _archive_write_file_connection(SEXP, SEXP, SEXP);
 extern SEXP _archive_write_files_(SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
@@ -108,7 +108,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_archive_read_connection",       (DL_FUNC) &_archive_read_connection,       6},
     {"_archive_read_file_connection",  (DL_FUNC) &_archive_read_file_connection,  3},
     {"_archive_write_connection",      (DL_FUNC) &_archive_write_connection,      6},
-    {"_archive_write_file_connection", (DL_FUNC) &_archive_write_file_connection, 2},
+    {"_archive_write_file_connection", (DL_FUNC) &_archive_write_file_connection, 3},
     {"_archive_write_files_",          (DL_FUNC) &_archive_write_files_,          5},
     {NULL, NULL, 0}
 };

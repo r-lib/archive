@@ -6,6 +6,7 @@ struct file {
   archive* ar;
   archive_entry* entry;
   std::string filename;
+  std::string options;
   int filters[FILTER_MAX];
 };
 
@@ -33,6 +34,14 @@ static Rboolean file_write_open(Rconnection con) {
     }
   }
   archive_write_set_format_raw(r->ar);
+
+  if (!r->options.empty()) {
+    int response = archive_write_set_options(r->ar, r->options.c_str());
+    if (response != ARCHIVE_OK) {
+      Rf_error(archive_error_string(r->ar));
+    }
+  }
+
   archive_write_open_filename(r->ar, r->filename.c_str());
 
   r->entry = archive_entry_new();
@@ -67,8 +76,10 @@ void file_write_destroy(Rconnection con) {
 
 // Get a connection to a single non-archive file, optionally with one or more
 // filters.
-[[cpp11::register]] SEXP
-write_file_connection(const std::string& filename, cpp11::integers filters) {
+[[cpp11::register]] SEXP write_file_connection(
+    const std::string& filename,
+    cpp11::integers filters,
+    cpp11::strings options) {
 #if ARCHIVE_VERSION_NUMBER < 3002000
   cpp11::stop("This functionality is only available with libarchive >= 3.2.0");
 #else
@@ -78,7 +89,11 @@ write_file_connection(const std::string& filename, cpp11::integers filters) {
   /* Setup file */
   file* r = new file;
 
-  r->filename = filename;
+  r->filename = std::move(filename);
+
+  if (options.size() > 0) {
+    r->options = options[0];
+  }
 
   /* Initialize filters */
   if (filters.size() > FILTER_MAX) {

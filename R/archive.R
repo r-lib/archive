@@ -85,7 +85,7 @@ filter_by_extension <- function(path) {
 #' read.csv(file_read("mtcars.bz2"), row.names = 1, nrows = 3)
 #' unlink("mtcars.bz2")
 #' }
-file_write <- function(file, filter = NULL) {
+file_write <- function(file, filter = NULL, options = character()) {
   assert("{file} is not a writable file path",
     is_writable(dirname(file)))
 
@@ -98,7 +98,9 @@ file_write <- function(file, filter = NULL) {
     filter <- res
   }
 
-  write_file_connection(file, archive_filters()[filter])
+  options <- validate_options(options)
+
+  write_file_connection(file, archive_filters()[filter], options)
 }
 
 #' @rdname file_connections

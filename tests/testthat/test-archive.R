@@ -211,6 +211,22 @@ if (libarchive_version() >= "3.2.0") {
         mtcars)
     })
 
+    it("can take options", {
+      f <- tempfile(fileext = ".gz")
+      f2 <- tempfile(fileext = ".gz")
+      on.exit(unlink(c(f, f2)))
+
+      write.csv(mtcars,
+        file_write(f, options = "compression-level=0")
+      )
+
+      write.csv(mtcars,
+        file_write(f2, options = "compression-level=9")
+      )
+
+      expect_gt(file.size(f), file.size(f2))
+    })
+
     it("can write a xz file", {
       write.csv(mtcars,
         file_write("test.xz"))

@@ -157,7 +157,7 @@ void rchive_write_destroy(Rconnection con) {
   /* Setup archive */
   rchive* r = (rchive*)new rchive;
 
-  r->archive_filename = archive_filename;
+  r->archive_filename = std::move(archive_filename);
 
   r->format = format;
 
@@ -172,7 +172,7 @@ void rchive_write_destroy(Rconnection con) {
     r->filters[i] = filters[i];
   }
 
-  r->filename = filename;
+  r->filename = std::move(filename);
 
   if (options.size() > 0) {
     r->options = options[0];

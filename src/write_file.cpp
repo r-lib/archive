@@ -2,12 +2,12 @@
 #include <fcntl.h>
 
 #if ARCHIVE_VERSION_NUMBER >= 3002000
-typedef struct {
+struct file {
   archive* ar;
   archive_entry* entry;
-  char* filename;
+  std::string filename;
   int filters[FILTER_MAX];
-} file;
+};
 
 /* callback function to store received data */
 static size_t
@@ -33,11 +33,11 @@ static Rboolean file_write_open(Rconnection con) {
     }
   }
   archive_write_set_format_raw(r->ar);
-  archive_write_open_filename(r->ar, r->filename);
+  archive_write_open_filename(r->ar, r->filename.c_str());
 
   r->entry = archive_entry_new();
 
-  archive_entry_set_pathname(r->entry, r->filename);
+  archive_entry_set_pathname(r->entry, r->filename.c_str());
   archive_entry_set_filetype(r->entry, AE_IFREG);
   archive_entry_set_perm(r->entry, 0644);
   archive_write_header(r->ar, r->entry);
@@ -61,8 +61,7 @@ void file_write_destroy(Rconnection con) {
   file* r = (file*)con->private_ptr;
 
   /* free the handle connection */
-  free(r->filename);
-  free(r);
+  delete r;
 }
 #endif
 
@@ -77,10 +76,9 @@ write_file_connection(const std::string& filename, cpp11::integers filters) {
   SEXP rc = PROTECT(new_connection("input", "wb", "archive_write", &con));
 
   /* Setup file */
-  file* r = (file*)malloc(sizeof(file));
+  file* r = new file;
 
-  r->filename = (char*)malloc(strlen(filename.c_str()) + 1);
-  strcpy(r->filename, filename.c_str());
+  r->filename = filename;
 
   /* Initialize filters */
   if (filters.size() > FILTER_MAX) {

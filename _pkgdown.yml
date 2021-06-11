@@ -8,7 +8,7 @@ reference:
       - archive_read
       - archive_write
 
-  - title: Extract and write extract archives to and from files.
+  - title: Extract files from archives and write existing files to archives.
     desc: These functions create archives from a set of existing files or
       extract some or all files from an archive to disk.
     contents:
@@ -18,8 +18,8 @@ reference:
 
   - title: Read and Write files using R connections.
     desc: These functions write or read a file filtered by one or more
-      compression algorithms such as gzip, bzip2 and xz or encodings like
-      uuencoding and return a R connection to that file.
+      compression algorithms or encoding filters supported by libarchive, such
+      as gzip, bzip2 and xz and return an R connection to that file.
     contents:
       - file_read
       - file_write

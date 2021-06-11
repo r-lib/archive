@@ -21,7 +21,7 @@
 #' # Explicitly specify the format and filter if automatic detection fails.
 #' read.csv(archive_read(a, format = "zip"), nrows = 3)
 #' @export
-archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter = NULL) {
+archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter = NULL, options = character()) {
   archive <- as_archive(archive)
   if (is_number(file)) {
     file <- archive$path[[file]]
@@ -33,5 +33,7 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
   assert(paste0("`file` {file} not found in `archive` {archive}"),
     file %in% archive$path)
 
-  archive_read_(attr(archive, "path"), mode = mode, file, archive_formats()[format], archive_filters()[filter], sz = 2^14)
+  options <- validate_options(options)
+
+  archive_read_(attr(archive, "path"), mode = mode, file, archive_formats()[format], archive_filters()[filter], options, sz = 2^14)
 }

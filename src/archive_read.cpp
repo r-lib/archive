@@ -43,6 +43,14 @@ static Rboolean rchive_read_open(Rconnection con) {
   r->last_response = archive_read_support_format_all(r->ar);
 #endif
 
+  if (!r->options.empty()) {
+    r->last_response = archive_read_set_options(r->ar, r->options.c_str());
+    if (r->last_response != ARCHIVE_OK) {
+      con->isopen = FALSE;
+      Rf_error(archive_error_string(r->ar));
+    }
+  }
+
   r->last_response = archive_read_open_filename(
       r->ar, r->archive_filename.c_str(), r->archive_filename.size());
 
@@ -119,6 +127,7 @@ static int rchive_fgetc(Rconnection con) {
     const std::string& mode,
     cpp11::integers format,
     cpp11::integers filters,
+    cpp11::strings options,
     size_t sz = 16384) {
   Rconnection con;
 

@@ -16,6 +16,11 @@ using namespace cpp11::literals;
   a = archive_read_new();
   archive_read_support_filter_all(a);
   archive_read_support_format_all(a);
+
+  r = archive_read_set_options(a, "read_concatenated_archives");
+  if (r != ARCHIVE_OK) {
+    Rf_error(archive_error_string(a));
+  }
   r = archive_read_open_filename(a, path.c_str(), 10240);
   if (r != ARCHIVE_OK) {
     cpp11::stop(archive_error_string(a));

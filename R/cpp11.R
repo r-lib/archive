@@ -32,14 +32,14 @@ libarchive_version_ <- function() {
   .Call(`_archive_libarchive_version_`)
 }
 
+file_write_ <- function(filename, filters, options) {
+  .Call(`_archive_file_write_`, filename, filters, options)
+}
+
 rchive_init <- function(xptr) {
   invisible(.Call(`_archive_rchive_init`, xptr))
 }
 
 read_file_connection <- function(filename, mode, sz) {
   .Call(`_archive_read_file_connection`, filename, mode, sz)
-}
-
-write_file_connection <- function(filename, filters, options) {
-  .Call(`_archive_write_file_connection`, filename, filters, options)
 }

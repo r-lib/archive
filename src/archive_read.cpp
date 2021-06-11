@@ -113,7 +113,7 @@ static int rchive_fgetc(Rconnection con) {
 #endif
 }
 
-[[cpp11::register]] SEXP read_connection(
+[[cpp11::register]] SEXP archive_read_(
     const std::string& archive_filename,
     const std::string& filename,
     const std::string& mode,

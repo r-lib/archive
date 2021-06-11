@@ -46,59 +46,6 @@ describe("archive_extract", {
   })
 })
 
-describe("archive_read", {
-  it("creates a read only connection", {
-    con <- archive_read(data_file)
-    on.exit(close(con))
-    expect_is(con, "connection")
-    expect_is(con, "archive_read")
-
-    s <- summary(con)
-
-    expect_equal(basename(s[["description"]]), "data.zip[iris.csv]")
-    expect_equal(s[["mode"]], "r")
-    expect_equal(s[["text"]], "text")
-    expect_equal(s[["opened"]], "closed")
-    expect_equal(s[["can read"]], "yes")
-    expect_equal(s[["can write"]], "no")
-  })
-  it("can be read from with a text connection", {
-    con <- archive_read(data_file)
-
-    i <- iris
-    i$Species <- as.character(i$Species)
-
-    expect_equal(read.csv(con, stringsAsFactors = FALSE), head(i))
-  })
-
-  it("can be read from with a binary connection", {
-    con <- archive_read(data_file, mode = "rb")
-
-    text <- rawToChar(readBin(con, "raw", n = file.info(data_file)$size))
-    close(con)
-
-    i <- iris
-    i$Species <- as.character(i$Species)
-
-    expect_equal(read.csv(text = text, stringsAsFactors = FALSE), head(i))
-  })
-
-  it("works with readRDS", {
-    on.exit(unlink("archive.tar"))
-
-    w_con <- archive_write(archive = "archive.tar", file = "mtcars")
-    saveRDS(mtcars, w_con)
-    close(w_con)
-
-    r_con <- archive_read(archive = "archive.tar", file = "mtcars")
-    out <- readRDS(r_con)
-    expect_false(isOpen(r_con))
-    close(r_con)
-
-    expect_identical(out, mtcars)
-  })
-})
-
 describe("archive_write", {
   it("creates a writable connection", {
     out_con <- archive_write("mtcars.zip", "mtcars.csv")

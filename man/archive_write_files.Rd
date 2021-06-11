@@ -5,7 +5,13 @@
 \alias{archive_write_dir}
 \title{Add files to a new archive}
 \usage{
-archive_write_files(archive, files, format = NULL, filter = NULL)
+archive_write_files(
+  archive,
+  files,
+  format = NULL,
+  filter = NULL,
+  options = character()
+)
 
 archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
 }
@@ -17,6 +23,24 @@ archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
 \item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
 
 \item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
+
+\item{options}{\code{character()} default: \code{character(0)} Options to pass to the filter or format.
+options can have one of the following forms:
+\itemize{
+\item \code{option=value}
+The option/value pair will be provided to every module.
+Modules that do not accept an option with this name will
+ignore it.
+\item \code{option}
+The option will be provided to every module with a value
+of "1".
+\item \code{!option}
+The option will be provided to every module with a NULL
+value.
+\item \code{module:option=value}, \code{module:option}, \code{module:!option}
+As above, but the corresponding option and value will be
+provided only to modules whose name matches module.
+}}
 
 \item{dir}{\code{character(1)} The directory of files to add.}
 

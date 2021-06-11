@@ -157,6 +157,22 @@ describe("archive_write", {
       test_extension(ext)
     }
   })
+
+  it("can take options", {
+    f <- tempfile(fileext = ".tar.gz")
+    f2 <- tempfile(fileext = ".tar.gz")
+    on.exit(unlink(c(f, f2)))
+
+    write.csv(mtcars,
+      archive_write(f, "mtcars.csv", options = "compression-level=0")
+    )
+
+    write.csv(mtcars,
+      archive_write(f2, "mtcars.csv", options = "compression-level=9")
+    )
+
+    expect_gt(file.size(f), file.size(f2))
+  })
 })
 
 describe("file_read", {

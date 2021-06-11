@@ -131,6 +131,7 @@ void file_write_destroy(Rconnection con) {
     cpp11::strings files,
     int format,
     cpp11::integers filters,
+    cpp11::strings options,
     size_t sz = 16384) {
 
   struct archive* a;
@@ -150,6 +151,13 @@ void file_write_destroy(Rconnection con) {
 
   for (int i = 0; i < filters.size(); ++i) {
     response = archive_write_add_filter(a, filters[i]);
+    if (response != ARCHIVE_OK) {
+      Rf_error(archive_error_string(a));
+    }
+  }
+
+  if (options.size() > 0) {
+    response = archive_write_set_options(a, std::string(options[0]).c_str());
     if (response != ARCHIVE_OK) {
       Rf_error(archive_error_string(a));
     }

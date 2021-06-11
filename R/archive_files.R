@@ -74,7 +74,7 @@ archive_extract <- function(archive, dir = ".", file = NULL) {
 #' unlink("data.zip")
 #' }
 #' @export
-archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
+archive_write_files <- function(archive, files, format = NULL, filter = NULL, options = character()) {
   assert("`archive` {archive} must be a writable file path",
     is_writable(dirname(archive)))
 
@@ -90,7 +90,9 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL) {
     format <- res[[1]]
     filter <- res[[2]]
   }
-  write_files_(archive, files, archive_formats()[format], archive_filters()[filter], sz = 2^14)
+  options <- validate_options(options)
+
+  write_files_(archive, files, archive_formats()[format], archive_filters()[filter], options, sz = 2^14)
 
   invisible(as_archive(archive))
 }

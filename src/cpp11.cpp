@@ -70,10 +70,10 @@ extern "C" SEXP _archive_write_file_connection(SEXP filename, SEXP filters, SEXP
   END_CPP11
 }
 // write_file.cpp
-SEXP write_files_(const std::string& archive_filename, cpp11::strings files, int format, cpp11::integers filters, size_t sz);
-extern "C" SEXP _archive_write_files_(SEXP archive_filename, SEXP files, SEXP format, SEXP filters, SEXP sz) {
+SEXP write_files_(const std::string& archive_filename, cpp11::strings files, int format, cpp11::integers filters, cpp11::strings options, size_t sz);
+extern "C" SEXP _archive_write_files_(SEXP archive_filename, SEXP files, SEXP format, SEXP filters, SEXP options, SEXP sz) {
   BEGIN_CPP11
-    return cpp11::as_sexp(write_files_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(files), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
+    return cpp11::as_sexp(write_files_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(files), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
   END_CPP11
 }
 // write.cpp
@@ -96,7 +96,7 @@ extern SEXP _archive_read_connection(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_read_file_connection(SEXP, SEXP, SEXP);
 extern SEXP _archive_write_connection(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_write_file_connection(SEXP, SEXP, SEXP);
-extern SEXP _archive_write_files_(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _archive_write_files_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_archive_archive_extract_",      (DL_FUNC) &_archive_archive_extract_,      3},
@@ -109,7 +109,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_archive_read_file_connection",  (DL_FUNC) &_archive_read_file_connection,  3},
     {"_archive_write_connection",      (DL_FUNC) &_archive_write_connection,      6},
     {"_archive_write_file_connection", (DL_FUNC) &_archive_write_file_connection, 3},
-    {"_archive_write_files_",          (DL_FUNC) &_archive_write_files_,          5},
+    {"_archive_write_files_",          (DL_FUNC) &_archive_write_files_,          6},
     {NULL, NULL, 0}
 };
 }

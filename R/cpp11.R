@@ -36,8 +36,8 @@ write_file_connection <- function(filename, filters, options) {
   .Call(`_archive_write_file_connection`, filename, filters, options)
 }
 
-write_files_ <- function(archive_filename, files, format, filters, sz) {
-  .Call(`_archive_write_files_`, archive_filename, files, format, filters, sz)
+write_files_ <- function(archive_filename, files, format, filters, options, sz) {
+  .Call(`_archive_write_files_`, archive_filename, files, format, filters, options, sz)
 }
 
 write_connection <- function(archive_filename, filename, format, filters, options, sz) {

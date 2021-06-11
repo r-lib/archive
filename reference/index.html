@@ -142,14 +142,20 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="archive_connections.html">archive_read()</a></code> <code><a href="archive_connections.html">archive_write()</a></code> </p>
+          <p><code><a href="archive_read.html">archive_read()</a></code> </p>
         </td>
-        <td><p>Acquire a read or write connection to an archive file</p></td>
+        <td><p>Create a readable connection to a file in an archive.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="archive_write.html">archive_write()</a></code> </p>
+        </td>
+        <td><p>Create a writable connection to a file in an archive.</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-extract-and-write-extract-archives-to-and-from-files-" class="hasAnchor"><a href="#section-extract-and-write-extract-archives-to-and-from-files-" class="anchor"></a>Extract and write extract archives to and from files.</h2>
+          <h2 id="section-extract-files-from-archives-and-write-existing-files-to-archives-" class="hasAnchor"><a href="#section-extract-files-from-archives-and-write-existing-files-to-archives-" class="anchor"></a>Extract files from archives and write existing files to archives.</h2>
           <p class="section-desc"><p>These functions create archives from a set of existing files or extract some or all files from an archive to disk.</p></p>
         </th>
       </tr>
@@ -167,7 +173,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="archive_write_files.html">archive_write_files()</a></code> <code><a href="archive_write_files.html">archive_write_dir()</a></code> </p>
+          <p><code><a href="archive_write_files.html">archive_write_dir()</a></code> <code><a href="archive_write_files.html">archive_write_files()</a></code> </p>
         </td>
         <td><p>Add files to a new archive</p></td>
       </tr>
@@ -175,7 +181,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-read-and-write-files-using-r-connections-" class="hasAnchor"><a href="#section-read-and-write-files-using-r-connections-" class="anchor"></a>Read and Write files using R connections.</h2>
-          <p class="section-desc"><p>These functions write or read a file filtered by one or more compression algorithms such as gzip, bzip2 and xz or encodings like uuencoding and return a R connection to that file.</p></p>
+          <p class="section-desc"><p>These functions write or read a file filtered by one or more compression algorithms or encoding filters supported by libarchive, such as gzip, bzip2 and xz and return an R connection to that file.</p></p>
         </th>
       </tr>
       
@@ -186,7 +192,7 @@
       <tr>
         
         <td>
-          <p><code><a href="file_connections.html">file_write()</a></code> <code><a href="file_connections.html">file_read()</a></code> </p>
+          <p><code><a href="file_connections.html">file_read()</a></code> <code><a href="file_connections.html">file_write()</a></code> </p>
         </td>
         <td><p>Construct a connections for (possibly compressed) files.</p></td>
       </tr>

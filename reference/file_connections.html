@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Construct a connections for (possibly compressed) files. — file_connections • archive</title>
+<title>Construct a connections for (possibly compressed) files. — file_read • archive</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,10 @@
 
 
 
-<meta property="og:title" content="Construct a connections for (possibly compressed) files. — file_connections" />
+<meta property="og:title" content="Construct a connections for (possibly compressed) files. — file_read" />
 <meta property="og:description" content="These work similar to R's built-in connections for files and differ from
-archive_read and archive_write because they do not use an archive
-format, just use one or more of the filters." />
+archive_read and archive_write because they do not put the file in an
+archive, they just use one or more of the filters." />
 
 
 
@@ -114,19 +114,19 @@ format, just use one or more of the filters." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Construct a connections for (possibly compressed) files.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jimhester/archive/blob/master/R/archive.R'><code>R/archive.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/jimhester/archive/blob/master/R/file_read.R'><code>R/file_read.R</code></a>, <a href='https://github.com/jimhester/archive/blob/master/R/file_write.R'><code>R/file_write.R</code></a></small>
     <div class="hidden name"><code>file_connections.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>These work similar to R's built-in <a href='https://rdrr.io/r/base/connections.html'>connections</a> for files and differ from
-<a href='archive_read.html'>archive_read</a> and <a href='archive_read.html'>archive_write</a> because they do not use an archive
-format, just use one or more of the filters.</p>
+<a href='archive_read.html'>archive_read</a> and <a href='archive_write.html'>archive_write</a> because they do not put the file in an
+archive, they just use one or more of the filters.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>file_write</span><span class='op'>(</span><span class='va'>file</span>, filter <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>file_read</span><span class='op'>(</span><span class='va'>file</span>, mode <span class='op'>=</span> <span class='st'>"r"</span><span class='op'>)</span>
 
-<span class='fu'>file_read</span><span class='op'>(</span><span class='va'>file</span>, mode <span class='op'>=</span> <span class='st'>"r"</span><span class='op'>)</span></pre>
+<span class='fu'>file_write</span><span class='op'>(</span><span class='va'>file</span>, filter <span class='op'>=</span> <span class='cn'>NULL</span>, options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,15 +137,34 @@ format, just use one or more of the filters.</p>
 specified either by filename or by position.</p></td>
     </tr>
     <tr>
+      <th>mode</th>
+      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> A description of how to open the
+connection (if it should be opened initially).  See section
+‘Modes’ in <code><a href='https://rdrr.io/r/base/connections.html'>base::connections()</a></code> for possible values.</p></td>
+    </tr>
+    <tr>
       <th>filter</th>
       <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> default: <code>NULL</code> The archive filter, one of &#8216;none&#8217;, &#8216;gzip&#8217;, &#8216;bzip2&#8217;, &#8216;compress&#8217;, &#8216;lzma&#8217;, &#8216;xz&#8217;, &#8216;uuencode&#8217;, &#8216;lzip&#8217;, &#8216;lrzip&#8217;, &#8216;lzop&#8217;, &#8216;grzip&#8217;, &#8216;lz4&#8217;
 .</p></td>
     </tr>
     <tr>
-      <th>mode</th>
-      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> A description of how to open the
-connection (if it should be opened initially).  See section
-‘Modes’ in <code><a href='https://rdrr.io/r/base/connections.html'>base::connections()</a></code> for possible values.</p></td>
+      <th>options</th>
+      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> default: <code><a href='https://rdrr.io/r/base/character.html'>character(0)</a></code> Options to pass to the filter or format.
+options can have one of the following forms:</p><ul>
+<li><p><code>option=value</code>
+The option/value pair will be provided to every module.
+Modules that do not accept an option with this name will
+ignore it.</p></li>
+<li><p><code>option</code>
+The option will be provided to every module with a value
+of "1".</p></li>
+<li><p><code>!option</code>
+The option will be provided to every module with a NULL
+value.</p></li>
+<li><p><code>module:option=value</code>, <code>module:option</code>, <code>module:!option</code>
+As above, but the corresponding option and value will be
+provided only to modules whose name matches module.</p></li>
+</ul></td>
     </tr>
     </table>
 

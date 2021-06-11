@@ -1,4 +1,3 @@
-
 #' @rdname archive_write_files
 #' @param ... additional parameters passed to `base::dir`.
 #' @param dir `character(1)` The directory of files to add.

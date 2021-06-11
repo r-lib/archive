@@ -25,13 +25,12 @@ struct rchive {
   std::string archive_filename;
   int format;
   std::string filename;
-  char* buf;
+  std::vector<char> buf;
   char* cur;
   archive* ar;
   archive_entry* entry;
   int last_response;
   int has_more;
-  size_t limit;
   size_t size;
   int filters[FILTER_MAX];
   std::string options;

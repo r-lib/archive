@@ -42,7 +42,7 @@ size_t push(rchive* r) {
   }
 
   /* move existing data to front of buffer (if any) */
-  memmove(r->buf, r->cur, r->size);
+  memmove(r->buf.data(), r->cur, r->size);
 
   /* read data from archive */
   r->last_response = archive_read_data_block(r->ar, &buf, &size, &offset);
@@ -56,22 +56,17 @@ size_t push(rchive* r) {
 
   /* allocate more space if required */
   size_t newsize = r->size + size;
-  while (newsize > r->limit) {
-    size_t newlimit = 2 * r->limit;
+  while (newsize > r->buf.size()) {
+    size_t newlimit = 2 * r->buf.size();
     Rprintf("Resizing buffer to %d.\n", newlimit);
-    char* newbuf = (char*)realloc(r->buf, newlimit);
-    if (!newbuf) {
-      Rf_error("Failure in realloc. Out of memory?");
-    }
-    r->buf = newbuf;
-    r->limit = newlimit;
+    r->buf.resize(newlimit);
   }
 
   /* append new data */
   /* Rprintf("Pushed %d bytes, new size %d bytes.\n", size, newsize); */
-  memcpy(r->buf + r->size, buf, size);
+  memcpy(r->buf.data() + r->size, buf, size);
   r->size = newsize;
-  r->cur = r->buf;
+  r->cur = r->buf.data();
   return size;
 }
 

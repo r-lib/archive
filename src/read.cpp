@@ -82,7 +82,6 @@ void rchive_read_destroy(Rconnection con) {
 
   /* free the handle connection */
   archive_read_free(r->ar);
-  free(r->buf);
 
   delete r;
 }
@@ -129,8 +128,7 @@ static int rchive_fgetc(Rconnection con) {
 
   /* Setup archive */
   rchive* r = new rchive;
-  r->limit = sz;
-  r->buf = (char*)malloc(r->limit);
+  r->buf.resize(sz);
   r->size = 0;
   r->cur = NULL;
 

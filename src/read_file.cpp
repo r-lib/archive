@@ -11,7 +11,7 @@ static Rboolean file_read_open(Rconnection con) {
   archive_read_support_format_raw(r->ar);
 
   r->last_response =
-      archive_read_open_filename(r->ar, r->filename.c_str(), r->limit);
+      archive_read_open_filename(r->ar, r->filename.c_str(), r->buf.size());
   if (r->last_response != ARCHIVE_OK) {
     Rf_error(archive_error_string(r->ar));
   }
@@ -21,7 +21,7 @@ static Rboolean file_read_open(Rconnection con) {
   }
 
   r->size = archive_entry_size(r->entry);
-  r->cur = r->buf;
+  r->cur = r->buf.data();
   r->has_more = 1;
   push(r);
 
@@ -82,8 +82,7 @@ static int file_read_getc(Rconnection con) {
   /* Setup archive */
   rchive* r = new rchive;
 
-  r->limit = sz;
-  r->buf = (char*)malloc(r->limit);
+  r->buf.resize(sz);
 
   r->filename = filename;
 

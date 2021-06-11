@@ -156,10 +156,6 @@ void rchive_write_destroy(Rconnection con) {
 
   /* Setup archive */
   rchive* r = (rchive*)new rchive;
-  // r->limit = sz;
-  // r->buf = (char *) malloc(r->limit);
-  // r->cur = r->buf;
-  // r->size = 0;
 
   r->archive_filename = archive_filename;
 

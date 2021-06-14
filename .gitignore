@@ -5,3 +5,5 @@ src/Makevars
 script.R
 src-*/
 windows/
+compile_commands.json
+.cache

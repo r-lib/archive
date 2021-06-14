@@ -122,7 +122,16 @@ archive_write_dir() adds all the file(s) in a directory to a new archive." />
 <code>archive_write_dir()</code> adds all the file(s) in a directory to a new archive.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>archive_write_dir</span><span class='op'>(</span><span class='va'>archive</span>, <span class='va'>dir</span>, <span class='va'>...</span>, recursive <span class='op'>=</span> <span class='cn'>TRUE</span>, full.names <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>archive_write_dir</span><span class='op'>(</span>
+  <span class='va'>archive</span>,
+  <span class='va'>dir</span>,
+  format <span class='op'>=</span> <span class='cn'>NULL</span>,
+  filter <span class='op'>=</span> <span class='cn'>NULL</span>,
+  options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>,
+  recursive <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  full.names <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
 <span class='fu'>archive_write_files</span><span class='op'>(</span>
   <span class='va'>archive</span>,
@@ -142,24 +151,6 @@ archive_write_dir() adds all the file(s) in a directory to a new archive." />
     <tr>
       <th>dir</th>
       <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> The directory of files to add.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>additional parameters passed to <code><a href='https://rdrr.io/r/base/list.files.html'>base::dir</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>recursive</th>
-      <td><p>logical.  Should the listing recurse into directories?</p></td>
-    </tr>
-    <tr>
-      <th>full.names</th>
-      <td><p>a logical value.  If <code>TRUE</code>, the directory
-    path is prepended to the file names to give a relative file path.
-    If <code>FALSE</code>, the file names (rather than paths) are returned.</p></td>
-    </tr>
-    <tr>
-      <th>files</th>
-      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> One or more files to add to the archive.</p></td>
     </tr>
     <tr>
       <th>format</th>
@@ -189,6 +180,24 @@ value.</p></li>
 As above, but the corresponding option and value will be
 provided only to modules whose name matches module.</p></li>
 </ul></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional parameters passed to <code><a href='https://rdrr.io/r/base/list.files.html'>base::dir</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>recursive</th>
+      <td><p>logical.  Should the listing recurse into directories?</p></td>
+    </tr>
+    <tr>
+      <th>full.names</th>
+      <td><p>a logical value.  If <code>TRUE</code>, the directory
+    path is prepended to the file names to give a relative file path.
+    If <code>FALSE</code>, the file names (rather than paths) are returned.</p></td>
+    </tr>
+    <tr>
+      <th>files</th>
+      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> One or more files to add to the archive.</p></td>
     </tr>
     </table>
 

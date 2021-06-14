@@ -120,7 +120,14 @@
     <p>Create a readable connection to a file in an archive.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>archive_read</span><span class='op'>(</span><span class='va'>archive</span>, file <span class='op'>=</span> <span class='fl'>1L</span>, mode <span class='op'>=</span> <span class='st'>"r"</span>, format <span class='op'>=</span> <span class='cn'>NULL</span>, filter <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>archive_read</span><span class='op'>(</span>
+  <span class='va'>archive</span>,
+  file <span class='op'>=</span> <span class='fl'>1L</span>,
+  mode <span class='op'>=</span> <span class='st'>"r"</span>,
+  format <span class='op'>=</span> <span class='cn'>NULL</span>,
+  filter <span class='op'>=</span> <span class='cn'>NULL</span>,
+  options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,6 +156,25 @@ connection (if it should be opened initially).  See section
       <th>filter</th>
       <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> default: <code>NULL</code> The archive filter, one of &#8216;none&#8217;, &#8216;gzip&#8217;, &#8216;bzip2&#8217;, &#8216;compress&#8217;, &#8216;lzma&#8217;, &#8216;xz&#8217;, &#8216;uuencode&#8217;, &#8216;lzip&#8217;, &#8216;lrzip&#8217;, &#8216;lzop&#8217;, &#8216;grzip&#8217;, &#8216;lz4&#8217;
 .</p></td>
+    </tr>
+    <tr>
+      <th>options</th>
+      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> default: <code><a href='https://rdrr.io/r/base/character.html'>character(0)</a></code> Options to pass to the filter or format.
+options can have one of the following forms:</p><ul>
+<li><p><code>option=value</code>
+The option/value pair will be provided to every module.
+Modules that do not accept an option with this name will
+ignore it.</p></li>
+<li><p><code>option</code>
+The option will be provided to every module with a value
+of "1".</p></li>
+<li><p><code>!option</code>
+The option will be provided to every module with a NULL
+value.</p></li>
+<li><p><code>module:option=value</code>, <code>module:option</code>, <code>module:!option</code>
+As above, but the corresponding option and value will be
+provided only to modules whose name matches module.</p></li>
+</ul></td>
     </tr>
     </table>
 

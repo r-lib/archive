@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract contents of an archive — archive_extract • archive</title>
+<title>Extract contents of an archive to a directory — archive_extract • archive</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Extract contents of an archive — archive_extract" />
-<meta property="og:description" content="Extract contents of an archive" />
+<meta property="og:title" content="Extract contents of an archive to a directory — archive_extract" />
+<meta property="og:description" content="Extract contents of an archive to a directory" />
 
 
 
@@ -111,13 +111,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract contents of an archive</h1>
+    <h1>Extract contents of an archive to a directory</h1>
     <small class="dont-index">Source: <a href='https://github.com/jimhester/archive/blob/master/R/archive_extract.R'><code>R/archive_extract.R</code></a></small>
     <div class="hidden name"><code>archive_extract.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract contents of an archive</p>
+    <p>Extract contents of an archive to a directory</p>
     </div>
 
     <pre class="usage"><span class='fu'>archive_extract</span><span class='op'>(</span><span class='va'>archive</span>, dir <span class='op'>=</span> <span class='st'>"."</span>, file <span class='op'>=</span> <span class='cn'>NULL</span>, options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
@@ -142,6 +142,7 @@ specified either by filename or by position.</p></td>
     <tr>
       <th>options</th>
       <td><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> default: <code><a href='https://rdrr.io/r/base/character.html'>character(0)</a></code> Options to pass to the filter or format.
+The list of available options are documented in
 options can have one of the following forms:</p><ul>
 <li><p><code>option=value</code>
 The option/value pair will be provided to every module.
@@ -155,7 +156,9 @@ The option will be provided to every module with a NULL
 value.</p></li>
 <li><p><code>module:option=value</code>, <code>module:option</code>, <code>module:!option</code>
 As above, but the corresponding option and value will be
-provided only to modules whose name matches module.</p></li>
+provided only to modules whose name matches module.
+See <a href='https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&amp;sektion=3&amp;format=html'>read options</a> for available read options
+See <a href='https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&amp;sektion=3&amp;format=html'>write options</a> for available write options</p></li>
 </ul></td>
     </tr>
     </table>

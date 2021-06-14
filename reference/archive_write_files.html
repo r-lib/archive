@@ -165,6 +165,7 @@ archive_write_dir() adds all the file(s) in a directory to a new archive." />
     <tr>
       <th>options</th>
       <td><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> default: <code><a href='https://rdrr.io/r/base/character.html'>character(0)</a></code> Options to pass to the filter or format.
+The list of available options are documented in
 options can have one of the following forms:</p><ul>
 <li><p><code>option=value</code>
 The option/value pair will be provided to every module.
@@ -178,7 +179,9 @@ The option will be provided to every module with a NULL
 value.</p></li>
 <li><p><code>module:option=value</code>, <code>module:option</code>, <code>module:!option</code>
 As above, but the corresponding option and value will be
-provided only to modules whose name matches module.</p></li>
+provided only to modules whose name matches module.
+See <a href='https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&amp;sektion=3&amp;format=html'>read options</a> for available read options
+See <a href='https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&amp;sektion=3&amp;format=html'>write options</a> for available write options</p></li>
 </ul></td>
     </tr>
     <tr>

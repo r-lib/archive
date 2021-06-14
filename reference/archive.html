@@ -41,8 +41,8 @@
 
 <meta property="og:title" content="Construct a new archive — archive" />
 <meta property="og:description" content="This function retrieves metadata about files in an archive, it can be passed
-to archive_con() to create a connection to read a specific file from the
-archive." />
+to archive_read() or archive_write to create a connection to read or
+write a specific file from the archive." />
 
 
 
@@ -120,8 +120,8 @@ archive." />
 
     <div class="ref-description">
     <p>This function retrieves metadata about files in an archive, it can be passed
-to <code>archive_con()</code> to create a connection to read a specific file from the
-archive.</p>
+to <code><a href='archive_read.html'>archive_read()</a></code> or <a href='archive_write.html'>archive_write</a> to create a connection to read or
+write a specific file from the archive.</p>
     </div>
 
     <pre class="usage"><span class='fu'>archive</span><span class='op'>(</span><span class='va'>path</span>, options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
@@ -136,6 +136,7 @@ archive.</p>
     <tr>
       <th>options</th>
       <td><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> default: <code><a href='https://rdrr.io/r/base/character.html'>character(0)</a></code> Options to pass to the filter or format.
+The list of available options are documented in
 options can have one of the following forms:</p><ul>
 <li><p><code>option=value</code>
 The option/value pair will be provided to every module.
@@ -149,28 +150,13 @@ The option will be provided to every module with a NULL
 value.</p></li>
 <li><p><code>module:option=value</code>, <code>module:option</code>, <code>module:!option</code>
 As above, but the corresponding option and value will be
-provided only to modules whose name matches module.</p></li>
+provided only to modules whose name matches module.
+See <a href='https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&amp;sektion=3&amp;format=html'>read options</a> for available read options
+See <a href='https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&amp;sektion=3&amp;format=html'>write options</a> for available write options</p></li>
 </ul></td>
-    </tr>
-    <tr>
-      <th>format</th>
-      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> default: <code>NULL</code> The archive format, one of &#8216;7zip&#8217;, &#8216;cab&#8217;, &#8216;cpio&#8217;, &#8216;iso9660&#8217;, &#8216;lha&#8217;, &#8216;mtree&#8217;, &#8216;shar&#8217;, &#8216;rar&#8217;, &#8216;raw&#8217;, &#8216;tar&#8217;, &#8216;xar&#8217;, &#8216;zip&#8217;, &#8216;warc&#8217;
-.</p></td>
-    </tr>
-    <tr>
-      <th>filter</th>
-      <td><p><code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> default: <code>NULL</code> The archive filter, one of &#8216;none&#8217;, &#8216;gzip&#8217;, &#8216;bzip2&#8217;, &#8216;compress&#8217;, &#8216;lzma&#8217;, &#8216;xz&#8217;, &#8216;uuencode&#8217;, &#8216;lzip&#8217;, &#8216;lrzip&#8217;, &#8216;lzop&#8217;, &#8216;grzip&#8217;, &#8216;lz4&#8217;
-.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>If <code>format</code> and <code>filter</code> are <code>NULL</code>, they will be set automatically based on
-the file extension given in <code>file</code> when writing and automatically detected
-using
-<a href='https://github.com/libarchive/libarchive/wiki/FormatDetection'>Robust automatic format detection</a>
-when reading.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='archive_read.html'>archive_read()</a></code>, <code><a href='archive_write.html'>archive_write()</a></code> to read and write archive files

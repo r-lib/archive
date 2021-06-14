@@ -5,7 +5,16 @@
 \alias{archive_write_files}
 \title{Add files to a new archive}
 \usage{
-archive_write_dir(archive, dir, ..., recursive = TRUE, full.names = FALSE)
+archive_write_dir(
+  archive,
+  dir,
+  format = NULL,
+  filter = NULL,
+  options = character(),
+  ...,
+  recursive = TRUE,
+  full.names = FALSE
+)
 
 archive_write_files(
   archive,
@@ -19,16 +28,6 @@ archive_write_files(
 \item{archive}{\code{character(1)} The archive filename or an \code{archive} object.}
 
 \item{dir}{\code{character(1)} The directory of files to add.}
-
-\item{...}{additional parameters passed to \code{base::dir}.}
-
-\item{recursive}{logical.  Should the listing recurse into directories?}
-
-\item{full.names}{a logical value.  If \code{TRUE}, the directory
-    path is prepended to the file names to give a relative file path.
-    If \code{FALSE}, the file names (rather than paths) are returned.}
-
-\item{files}{\code{character()} One or more files to add to the archive.}
 
 \item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
 
@@ -51,6 +50,16 @@ value.
 As above, but the corresponding option and value will be
 provided only to modules whose name matches module.
 }}
+
+\item{...}{additional parameters passed to \code{base::dir}.}
+
+\item{recursive}{logical.  Should the listing recurse into directories?}
+
+\item{full.names}{a logical value.  If \code{TRUE}, the directory
+    path is prepended to the file names to give a relative file path.
+    If \code{FALSE}, the file names (rather than paths) are returned.}
+
+\item{files}{\code{character()} One or more files to add to the archive.}
 }
 \description{
 \code{archive_write_files()} adds one or more files to a new archive.

@@ -4,7 +4,7 @@
 \alias{archive_extract}
 \title{Extract contents of an archive}
 \usage{
-archive_extract(archive, dir = ".", file = NULL)
+archive_extract(archive, dir = ".", file = NULL, options = character())
 }
 \arguments{
 \item{archive}{\code{character(1)} The archive filename or an \code{archive} object.}
@@ -14,6 +14,24 @@ if it does not exist.}
 
 \item{file}{\code{character(1) || integer(1)} The filename within the archive,
 specified either by filename or by position.}
+
+\item{options}{\code{character()} default: \code{character(0)} Options to pass to the filter or format.
+options can have one of the following forms:
+\itemize{
+\item \code{option=value}
+The option/value pair will be provided to every module.
+Modules that do not accept an option with this name will
+ignore it.
+\item \code{option}
+The option will be provided to every module with a value
+of "1".
+\item \code{!option}
+The option will be provided to every module with a NULL
+value.
+\item \code{module:option=value}, \code{module:option}, \code{module:!option}
+As above, but the corresponding option and value will be
+provided only to modules whose name matches module.
+}}
 }
 \description{
 Extract contents of an archive

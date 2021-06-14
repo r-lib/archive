@@ -4,7 +4,7 @@
 \alias{archive}
 \title{Construct a new archive}
 \usage{
-archive(path)
+archive(path, options = character())
 }
 \arguments{
 \item{path}{File path to the archive.}

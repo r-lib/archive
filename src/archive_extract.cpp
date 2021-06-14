@@ -33,6 +33,7 @@ bool any_matches(const char* filename, cpp11::strings filenames) {
 [[cpp11::register]] void archive_extract_(
     const std::string& archive_filename,
     cpp11::strings filenames,
+    cpp11::strings options,
     size_t sz = 16384) {
   struct archive* a;
   struct archive* ext;
@@ -49,6 +50,11 @@ bool any_matches(const char* filename, cpp11::strings filenames) {
   a = archive_read_new();
   archive_read_support_format_all(a);
   archive_read_support_filter_all(a);
+
+  if (options.size() > 0) {
+    archive_read_set_options(a, std::string(options[0]).c_str());
+  }
+
   ext = archive_write_disk_new();
   archive_write_disk_set_options(ext, flags);
   archive_write_disk_set_standard_lookup(ext);

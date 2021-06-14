@@ -20,7 +20,7 @@
 #' list.files(d)
 #' unlink(d)
 #' @export
-archive_extract <- function(archive, dir = ".", file = NULL) {
+archive_extract <- function(archive, dir = ".", file = NULL, options = character()) {
   archive <- as_archive(archive, character())
   assert("`file` must be a character or numeric vector or `NULL`",
     is.null(file) || is.numeric(file) || is.character(file))
@@ -40,7 +40,9 @@ archive_extract <- function(archive, dir = ".", file = NULL) {
     old <- setwd(dir)
     on.exit(setwd(old))
   }
-  archive_extract_(attr(archive, "path"), file, sz = 2^14)
+  options <- validate_options(options)
+
+  archive_extract_(attr(archive, "path"), file, options, sz = 2^14)
 
   invisible(archive)
 }

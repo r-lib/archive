@@ -62,7 +62,7 @@ size_t push(rchive* r) {
   size_t newsize = r->size + size;
   while (newsize > r->buf.size()) {
     size_t newlimit = 2 * r->buf.size();
-    Rprintf("Resizing buffer to %d.\n", newlimit);
+    // Rprintf("Resizing buffer to %d.\n", newlimit);
     r->buf.resize(newlimit);
   }
 

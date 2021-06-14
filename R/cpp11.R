@@ -16,8 +16,8 @@ archive_write_ <- function(archive_filename, filename, format, filters, options,
   .Call(`_archive_archive_write_`, archive_filename, filename, format, filters, options, sz)
 }
 
-archive_metadata <- function(path) {
-  .Call(`_archive_archive_metadata`, path)
+archive_ <- function(path, options) {
+  .Call(`_archive_archive_`, path, options)
 }
 
 archive_filters <- function() {

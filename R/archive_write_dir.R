@@ -13,5 +13,5 @@ archive_write_dir <- function(archive, dir, ..., recursive = TRUE, full.names = 
   files <- dir(dir, ..., recursive = recursive, full.names = full.names)
   archive_write_files(archive, files)
 
-  invisible(as_archive(archive))
+  invisible(as_archive(archive, options = character()))
 }

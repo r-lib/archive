@@ -4,7 +4,8 @@
 
 using namespace cpp11::literals;
 
-[[cpp11::register]] cpp11::sexp archive_metadata(const std::string& path) {
+[[cpp11::register]] cpp11::sexp
+archive_(const std::string& path, cpp11::strings options) {
   std::vector<std::string> paths;
   std::vector<__LA_INT64_T> sizes;
   std::vector<time_t> dates;
@@ -17,10 +18,13 @@ using namespace cpp11::literals;
   archive_read_support_filter_all(a);
   archive_read_support_format_all(a);
 
-  r = archive_read_set_options(a, "read_concatenated_archives");
-  if (r != ARCHIVE_OK) {
-    Rf_error(archive_error_string(a));
+  if (options.size() > 0) {
+    r = archive_read_set_options(a, std::string(options[0]).c_str());
+    if (r != ARCHIVE_OK) {
+      Rf_error(archive_error_string(a));
+    }
   }
+
   r = archive_read_open_filename(a, path.c_str(), 10240);
   if (r != ARCHIVE_OK) {
     cpp11::stop(archive_error_string(a));

@@ -21,7 +21,7 @@
 #' unlink(d)
 #' @export
 archive_extract <- function(archive, dir = ".", file = NULL) {
-  archive <- as_archive(archive)
+  archive <- as_archive(archive, character())
   assert("`file` must be a character or numeric vector or `NULL`",
     is.null(file) || is.numeric(file) || is.character(file))
 

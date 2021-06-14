@@ -143,6 +143,10 @@ static int rchive_fgetc(Rconnection con) {
 
   r->archive_filename = archive_filename;
 
+  if (options.size() > 0) {
+    r->options = options[0];
+  }
+
   r->format = format.size() == 0 ? -1 : format[0];
 
   /* Initialize filters */

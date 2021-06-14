@@ -51,5 +51,14 @@ describe("archive_read", {
 
     expect_identical(out, mtcars)
   })
-})
+  it("takes options", {
+    con <- archive_read(test_path("cp866.tar.Z.uu"), "\u043f\u0440\u0438\u0432\u0435\u0442", mode = "rb", options = "hdrcharset=CP866")
+    on.exit(close(con))
 
+    res <- readBin(con, what = raw(), n = 100)
+
+    res_utf8 <- iconv(list(res), from = "CP866", to = "UTF-8")
+
+    expect_equal(res_utf8, "\u0401\u0404\u0449\u045e\u0445\u0407")
+  })
+})

@@ -18,22 +18,26 @@ NULL
 #' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 #' a
 #' @export
-archive <- function(path) {
+archive <- function(path, options = character()) {
   assert("{path} is not a readable file path",
     is_readable(path))
 
   path <- normalizePath(path)
 
-  res <- archive_metadata(path)
+  options <- validate_options(options)
+
+  res <- archive_(path, options)
+
   class(res) <- c("archive", class(res))
+
   res
 }
 
-as_archive <- function(x) {
+as_archive <- function(x, options) {
   if (inherits(x, "archive")) {
     return(x)
   }
-  archive(x)
+  archive(x, options)
 }
 
 filter_by_extension <- function(path) {

@@ -34,10 +34,10 @@ extern "C" SEXP _archive_archive_write_(SEXP archive_filename, SEXP filename, SE
   END_CPP11
 }
 // archive.cpp
-cpp11::sexp archive_metadata(const std::string& path);
-extern "C" SEXP _archive_archive_metadata(SEXP path) {
+cpp11::sexp archive_(const std::string& path, cpp11::strings options);
+extern "C" SEXP _archive_archive_(SEXP path, SEXP options) {
   BEGIN_CPP11
-    return cpp11::as_sexp(archive_metadata(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(path)));
+    return cpp11::as_sexp(archive_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(path), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options)));
   END_CPP11
 }
 // archive.cpp
@@ -86,10 +86,10 @@ extern "C" SEXP _archive_rchive_init(SEXP xptr) {
 
 extern "C" {
 /* .Call calls */
+extern SEXP _archive_archive_(SEXP, SEXP);
 extern SEXP _archive_archive_extract_(SEXP, SEXP, SEXP);
 extern SEXP _archive_archive_filters();
 extern SEXP _archive_archive_formats();
-extern SEXP _archive_archive_metadata(SEXP);
 extern SEXP _archive_archive_read_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_archive_write_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_archive_write_files_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -99,10 +99,10 @@ extern SEXP _archive_libarchive_version_();
 extern SEXP _archive_rchive_init(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_archive_archive_",             (DL_FUNC) &_archive_archive_,             2},
     {"_archive_archive_extract_",     (DL_FUNC) &_archive_archive_extract_,     3},
     {"_archive_archive_filters",      (DL_FUNC) &_archive_archive_filters,      0},
     {"_archive_archive_formats",      (DL_FUNC) &_archive_archive_formats,      0},
-    {"_archive_archive_metadata",     (DL_FUNC) &_archive_archive_metadata,     1},
     {"_archive_archive_read_",        (DL_FUNC) &_archive_archive_read_,        7},
     {"_archive_archive_write_",       (DL_FUNC) &_archive_archive_write_,       6},
     {"_archive_archive_write_files_", (DL_FUNC) &_archive_archive_write_files_, 6},

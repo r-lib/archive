@@ -22,7 +22,7 @@
 #' read.csv(archive_read(a, format = "zip"), nrows = 3)
 #' @export
 archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter = NULL, options = character()) {
-  archive <- as_archive(archive)
+  archive <- as_archive(archive, options)
   if (is_number(file)) {
     file <- archive$path[[file]]
   }

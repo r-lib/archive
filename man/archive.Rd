@@ -8,11 +8,40 @@ archive(path, options = character())
 }
 \arguments{
 \item{path}{File path to the archive.}
+
+\item{options}{\code{character()} default: \code{character(0)} Options to pass to the filter or format.
+options can have one of the following forms:
+\itemize{
+\item \code{option=value}
+The option/value pair will be provided to every module.
+Modules that do not accept an option with this name will
+ignore it.
+\item \code{option}
+The option will be provided to every module with a value
+of "1".
+\item \code{!option}
+The option will be provided to every module with a NULL
+value.
+\item \code{module:option=value}, \code{module:option}, \code{module:!option}
+As above, but the corresponding option and value will be
+provided only to modules whose name matches module.
+}}
+
+\item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
+
+\item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 }
 \description{
 This function retrieves metadata about files in an archive, it can be passed
 to \code{archive_con()} to create a connection to read a specific file from the
 archive.
+}
+\details{
+If \code{format} and \code{filter} are \code{NULL}, they will be set automatically based on
+the file extension given in \code{file} when writing and automatically detected
+using
+\href{https://github.com/libarchive/libarchive/wiki/FormatDetection}{Robust automatic format detection}
+when reading.
 }
 \examples{
 a <- archive(system.file(package = "archive", "extdata", "data.zip"))

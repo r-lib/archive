@@ -11,6 +11,7 @@ NULL
 #' archive.
 #'
 #' @param path File path to the archive.
+#' @template archive
 #' @seealso [archive_read()], [archive_write()] to read and write archive files
 #' using R connections, [archive_extract()], [archive_write_files()],
 #' [archive_write_dir()] to add or extract files from an archive.

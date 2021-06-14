@@ -41,6 +41,10 @@ size_t push(rchive* r) {
     return 0;
   }
 
+  if (!r->cur) {
+    r->cur = r->buf.data();
+  }
+
   /* move existing data to front of buffer (if any) */
   memmove(r->buf.data(), r->cur, r->size);
 

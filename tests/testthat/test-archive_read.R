@@ -52,6 +52,8 @@ describe("archive_read", {
     expect_identical(out, mtcars)
   })
   it("takes options", {
+    skip_on_os("windows")
+
     con <- archive_read(test_path("cp866.tar.Z.uu"), "\u043f\u0440\u0438\u0432\u0435\u0442", mode = "rb", options = "hdrcharset=CP866")
     on.exit(close(con))
 

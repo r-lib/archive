@@ -24,14 +24,16 @@ library(archive)
 [![Codecov test coverage](https://codecov.io/gh/jimhester/archive/branch/master/graph/badge.svg)](https://codecov.io/gh/jimhester/archive?branch=master)
 <!-- badges: end -->
 
-R bindings to libarchive <http://www.libarchive.org>, providing support for
-many file archives, including tar, ZIP, 7-zip, RAR, CAB and
-compressed by gzip, bzip2, compress, lzma, xz, and others.
+R bindings to libarchive <http://www.libarchive.org>.
+Supports many archives formats, including tar, ZIP, 7-zip, RAR, CAB.
+Also supports many filters such as gzip, bzip2, compress, lzma, xz and uuencoded files, among others.
+
+archive provides interfaces to read and write connections into archives, as
+well as efficiently reading and writing archives directly to disk.
 
 ## Installation
 
 You can install archive from github with:
-
 
 ``` r
 # install.packages("devtools")
@@ -42,6 +44,10 @@ devtools::install_github("jimhester/archive")
 
 ### Single file archives
 
+Use `archive_read()` and `archive_write()` to read and write single files to an archive.
+These files return connections, which can be passed to any R interface which can take a connection.
+Most base R file system functions use connections, as well as some packages like [readr](http://readr.tidyverse.org/).
+
 ```{r}
 library(readr) # read_csv(), write_csv(), cols()
 
@@ -51,9 +57,9 @@ write_csv(mtcars, archive_write("mtcars.zip", "mtcars.csv"))
 # Read the data back, by default the first file is read from the archive.
 read_csv(archive_read("mtcars.zip"), col_types = cols())
 
-# Also supports archiving and compression together
-# Write a single dataset to zip
-write_csv(mtcars, archive_write("mtcars.tar.gz", "mtcars.csv"))
+# Also supports things like archiving and compression together
+# Write a single dataset to (gzip compressed) tar
+write_csv(mtcars, archive_write("mtcars.tar.gz", "mtcars.csv", options = "compression-level=9"))
 
 # Read the data back
 read_csv(archive_read("mtcars.tar.gz"), col_types = cols())
@@ -63,6 +69,8 @@ file.size(c("mtcars.zip", "mtcars.tar.gz"))
 ```
 
 ### Multi file archives
+
+`archive_write_files()` is used to create a new archive from multiple files on disk.
 
 ```{r}
 # Write a few files to the temp directory
@@ -77,8 +85,14 @@ archive_write_files("data.tar.xz", c("iris.csv", "mtcars.csv", "airquality.csv")
 a <- archive("data.tar.xz")
 a
 
-# Read a specific file from the archive
-read_csv(archive_read(a, "mtcars.csv"), col_types = cols())
+# By default `archive_read()` will read the first file from a multi-file archive.
+read_csv(archive_read(a), col_types = cols())
+
+# Use a number to read a different file
+read_csv(archive_read(a, file = 2), col_types = cols())
+
+# Or a filename to read a specific file
+read_csv(archive_read(a, file = "mtcars.csv"), col_types = cols())
 ```
 
 ### Regular files (with compression)
@@ -87,9 +101,9 @@ encodings. `file_read()` reads a compressed file, automatically detecting the
 compression used.
 
 ```{r}
-# Write bzip2, base 64 encoded data
+# Write bzip2, uuencoded data
 write_csv(mtcars, file_write("mtcars.bz2", c("uuencode", "bzip2")))
 
-# Read it back
+# Read it back, the formats are automatically detected
 read_csv(file_read("mtcars.bz2"), col_types = cols())
 ```

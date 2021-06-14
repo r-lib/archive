@@ -7,11 +7,11 @@ NULL
 #' Construct a new archive
 #'
 #' This function retrieves metadata about files in an archive, it can be passed
-#' to `archive_con()` to create a connection to read a specific file from the
-#' archive.
+#' to [archive_read()] or [archive_write] to create a connection to read or
+#' write a specific file from the archive.
 #'
 #' @param path File path to the archive.
-#' @template archive
+#' @inheritParams archive_read
 #' @seealso [archive_read()], [archive_write()] to read and write archive files
 #' using R connections, [archive_extract()], [archive_write_files()],
 #' [archive_write_dir()] to add or extract files from an archive.

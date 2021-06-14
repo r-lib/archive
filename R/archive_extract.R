@@ -1,4 +1,4 @@
-#' Extract contents of an archive
+#' Extract contents of an archive to a directory
 #'
 #' @inheritParams archive_read
 #' @param dir `character(1)` Directory location to extract archive contents, will be created

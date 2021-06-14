@@ -10,6 +10,7 @@ archive(path, options = character())
 \item{path}{File path to the archive.}
 
 \item{options}{\code{character()} default: \code{character(0)} Options to pass to the filter or format.
+The list of available options are documented in
 options can have one of the following forms:
 \itemize{
 \item \code{option=value}
@@ -25,23 +26,14 @@ value.
 \item \code{module:option=value}, \code{module:option}, \code{module:!option}
 As above, but the corresponding option and value will be
 provided only to modules whose name matches module.
+See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sektion=3&format=html}{read options} for available read options
+See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
-
-\item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
-
-\item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
 }
 \description{
 This function retrieves metadata about files in an archive, it can be passed
-to \code{archive_con()} to create a connection to read a specific file from the
-archive.
-}
-\details{
-If \code{format} and \code{filter} are \code{NULL}, they will be set automatically based on
-the file extension given in \code{file} when writing and automatically detected
-using
-\href{https://github.com/libarchive/libarchive/wiki/FormatDetection}{Robust automatic format detection}
-when reading.
+to \code{\link[=archive_read]{archive_read()}} or \link{archive_write} to create a connection to read or
+write a specific file from the archive.
 }
 \examples{
 a <- archive(system.file(package = "archive", "extdata", "data.zip"))

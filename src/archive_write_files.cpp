@@ -47,7 +47,10 @@
     entry = archive_entry_new();
     archive_entry_copy_stat(entry, &st);
     archive_entry_set_pathname(entry, file.c_str());
-    archive_write_header(a, entry);
+    response = archive_write_header(a, entry);
+    if (response != ARCHIVE_OK) {
+      Rf_error(archive_error_string(a));
+    }
     if ((fd = open(file.c_str(), O_RDONLY)) != -1) {
       len = read(fd, buf.data(), buf.size());
       while (len > 0) {

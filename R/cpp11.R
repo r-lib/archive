@@ -8,12 +8,12 @@ archive_read_ <- function(archive_filename, filename, mode, format, filters, opt
   .Call(`_archive_archive_read_`, archive_filename, filename, mode, format, filters, options, sz)
 }
 
-archive_write_files_ <- function(archive_filename, files, format, filters, options, sz) {
-  .Call(`_archive_archive_write_files_`, archive_filename, files, format, filters, options, sz)
+archive_write_direct_ <- function(archive_filename, filename, format, filters, options, sz) {
+  .Call(`_archive_archive_write_direct_`, archive_filename, filename, format, filters, options, sz)
 }
 
-archive_write_zip_ <- function(archive_filename, filename, filters, options, sz) {
-  .Call(`_archive_archive_write_zip_`, archive_filename, filename, filters, options, sz)
+archive_write_files_ <- function(archive_filename, files, format, filters, options, sz) {
+  .Call(`_archive_archive_write_files_`, archive_filename, files, format, filters, options, sz)
 }
 
 archive_write_ <- function(archive_filename, filename, format, filters, options, sz) {
@@ -58,10 +58,6 @@ libarchive_libzstd_version <- function() {
 
 file_read_ <- function(filename, mode, sz) {
   .Call(`_archive_file_read_`, filename, mode, sz)
-}
-
-file_write_ <- function(filename, filters, options) {
-  .Call(`_archive_file_write_`, filename, filters, options)
 }
 
 rchive_init <- function(xptr) {

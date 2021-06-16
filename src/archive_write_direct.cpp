@@ -4,7 +4,7 @@
 #include <vector>
 
 /* callback function to store received data */
-static size_t rchive_write_zip_data(
+static size_t rchive_write_direct_data(
     const void* contents, size_t sz, size_t n, Rconnection ctx) {
   rchive* r = (rchive*)ctx->private_ptr;
 
@@ -15,7 +15,7 @@ static size_t rchive_write_zip_data(
   return n;
 }
 
-static Rboolean rchive_write_zip_open(Rconnection con) {
+static Rboolean rchive_write_direct_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
   r->ar = archive_write_new();
@@ -27,7 +27,7 @@ static Rboolean rchive_write_zip_open(Rconnection con) {
     }
   }
 
-  r->last_response = archive_write_set_format_zip(r->ar);
+  r->last_response = archive_write_set_format(r->ar, r->format);
 
   if (!r->options.empty()) {
     r->last_response = archive_write_set_options(r->ar, r->options.c_str());
@@ -61,7 +61,7 @@ static Rboolean rchive_write_zip_open(Rconnection con) {
 /* This function closes the temporary scratch file, then writes the actual
  * archive file based on the archive filename given and then unlinks the
  * scratch file */
-void rchive_write_zip_close(Rconnection con) {
+void rchive_write_direct_close(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
   if (!con->isopen) {
@@ -74,19 +74,20 @@ void rchive_write_zip_close(Rconnection con) {
   con->isopen = FALSE;
 }
 
-void rchive_write_zip_destroy(Rconnection con) {
+void rchive_write_direct_destroy(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
   /* free the handle connection */
   delete r;
 }
 
-// This writes a single (zip) file to a new connection. Unlike other archive
-// formats zip does not need to know the size of the file up front.
+// This writes a single (direct) file to a new connection. Unlike other archive
+// formats direct does not need to know the size of the file up front.
 // This lets us write to it without having to write to a scratch file first.
-[[cpp11::register]] SEXP archive_write_zip_(
+[[cpp11::register]] SEXP archive_write_direct_(
     const std::string& archive_filename,
     const std::string& filename,
+    int format,
     cpp11::integers filters,
     cpp11::strings options,
     size_t sz) {
@@ -109,6 +110,8 @@ void rchive_write_zip_destroy(Rconnection con) {
     r->filters[i] = filters[i];
   }
 
+  r->format = format;
+
   r->filename = std::move(filename);
 
   if (options.size() > 0) {
@@ -124,10 +127,10 @@ void rchive_write_zip_destroy(Rconnection con) {
   con->isopen = FALSE;
   con->blocking = TRUE;
   con->text = FALSE;
-  con->open = rchive_write_zip_open;
-  con->close = rchive_write_zip_close;
-  con->destroy = rchive_write_zip_destroy;
-  con->write = rchive_write_zip_data;
+  con->open = rchive_write_direct_open;
+  con->close = rchive_write_direct_close;
+  con->destroy = rchive_write_direct_destroy;
+  con->write = rchive_write_direct_data;
 
   UNPROTECT(1);
   return rc;

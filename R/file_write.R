@@ -38,5 +38,5 @@ file_write <- function(file, filter = NULL, options = character()) {
 
   options <- validate_options(options)
 
-  file_write_(file, archive_filters()[filter], options)
+  archive_write_direct_(file, file, archive_formats()["raw"], archive_filters()[filter], options, 2^14)
 }

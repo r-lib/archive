@@ -99,3 +99,48 @@ archive_(const std::string& path, cpp11::strings options) {
   // Remove 'libarchive '
   return str.substr(str.find_last_of(' ') + 1);
 }
+
+[[cpp11::register]] const char* libarchive_zlib_version_() {
+#if ARCHIVE_VERSION_NUMBER >= 3002000
+  const char* version = archive_zlib_version();
+  return version ? version : "";
+#else
+  return "";
+#endif
+}
+
+[[cpp11::register]] const char* libarchive_liblzma_version_() {
+#if ARCHIVE_VERSION_NUMBER >= 3002000
+  const char* version = archive_liblzma_version();
+  return version ? version : "";
+#else
+  return "";
+#endif
+}
+
+[[cpp11::register]] const char* libarchive_bzlib_version_() {
+#if ARCHIVE_VERSION_NUMBER >= 3002000
+  const char* version = archive_bzlib_version();
+  return version ? version : "";
+#else
+  return "";
+#endif
+}
+
+[[cpp11::register]] const char* libarchive_liblz4_version_() {
+#if ARCHIVE_VERSION_NUMBER >= 3002000
+  const char* version = archive_liblz4_version();
+  return version ? version : "";
+#else
+  return "";
+#endif
+}
+
+[[cpp11::register]] const char* libarchive_libzstd_version() {
+#if ARCHIVE_VERSION_NUMBER >= 3003003
+  const char* version = archive_libzstd_version();
+  return version ? version : "";
+#else
+  return "";
+#endif
+}

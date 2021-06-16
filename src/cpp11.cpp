@@ -61,6 +61,41 @@ extern "C" SEXP _archive_libarchive_version_() {
     return cpp11::as_sexp(libarchive_version_());
   END_CPP11
 }
+// archive.cpp
+const char* libarchive_zlib_version_();
+extern "C" SEXP _archive_libarchive_zlib_version_() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(libarchive_zlib_version_());
+  END_CPP11
+}
+// archive.cpp
+const char* libarchive_liblzma_version_();
+extern "C" SEXP _archive_libarchive_liblzma_version_() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(libarchive_liblzma_version_());
+  END_CPP11
+}
+// archive.cpp
+const char* libarchive_bzlib_version_();
+extern "C" SEXP _archive_libarchive_bzlib_version_() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(libarchive_bzlib_version_());
+  END_CPP11
+}
+// archive.cpp
+const char* libarchive_liblz4_version_();
+extern "C" SEXP _archive_libarchive_liblz4_version_() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(libarchive_liblz4_version_());
+  END_CPP11
+}
+// archive.cpp
+const char* libarchive_libzstd_version();
+extern "C" SEXP _archive_libarchive_libzstd_version() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(libarchive_libzstd_version());
+  END_CPP11
+}
 // file_read.cpp
 SEXP file_read_(const std::string& filename, const std::string& mode, size_t sz);
 extern "C" SEXP _archive_file_read_(SEXP filename, SEXP mode, SEXP sz) {
@@ -95,21 +130,31 @@ extern SEXP _archive_archive_write_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_archive_write_files_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_file_read_(SEXP, SEXP, SEXP);
 extern SEXP _archive_file_write_(SEXP, SEXP, SEXP);
+extern SEXP _archive_libarchive_bzlib_version_();
+extern SEXP _archive_libarchive_liblz4_version_();
+extern SEXP _archive_libarchive_liblzma_version_();
+extern SEXP _archive_libarchive_libzstd_version();
 extern SEXP _archive_libarchive_version_();
+extern SEXP _archive_libarchive_zlib_version_();
 extern SEXP _archive_rchive_init(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_archive_archive_",             (DL_FUNC) &_archive_archive_,             2},
-    {"_archive_archive_extract_",     (DL_FUNC) &_archive_archive_extract_,     4},
-    {"_archive_archive_filters",      (DL_FUNC) &_archive_archive_filters,      0},
-    {"_archive_archive_formats",      (DL_FUNC) &_archive_archive_formats,      0},
-    {"_archive_archive_read_",        (DL_FUNC) &_archive_archive_read_,        7},
-    {"_archive_archive_write_",       (DL_FUNC) &_archive_archive_write_,       6},
-    {"_archive_archive_write_files_", (DL_FUNC) &_archive_archive_write_files_, 6},
-    {"_archive_file_read_",           (DL_FUNC) &_archive_file_read_,           3},
-    {"_archive_file_write_",          (DL_FUNC) &_archive_file_write_,          3},
-    {"_archive_libarchive_version_",  (DL_FUNC) &_archive_libarchive_version_,  0},
-    {"_archive_rchive_init",          (DL_FUNC) &_archive_rchive_init,          1},
+    {"_archive_archive_",                    (DL_FUNC) &_archive_archive_,                    2},
+    {"_archive_archive_extract_",            (DL_FUNC) &_archive_archive_extract_,            4},
+    {"_archive_archive_filters",             (DL_FUNC) &_archive_archive_filters,             0},
+    {"_archive_archive_formats",             (DL_FUNC) &_archive_archive_formats,             0},
+    {"_archive_archive_read_",               (DL_FUNC) &_archive_archive_read_,               7},
+    {"_archive_archive_write_",              (DL_FUNC) &_archive_archive_write_,              6},
+    {"_archive_archive_write_files_",        (DL_FUNC) &_archive_archive_write_files_,        6},
+    {"_archive_file_read_",                  (DL_FUNC) &_archive_file_read_,                  3},
+    {"_archive_file_write_",                 (DL_FUNC) &_archive_file_write_,                 3},
+    {"_archive_libarchive_bzlib_version_",   (DL_FUNC) &_archive_libarchive_bzlib_version_,   0},
+    {"_archive_libarchive_liblz4_version_",  (DL_FUNC) &_archive_libarchive_liblz4_version_,  0},
+    {"_archive_libarchive_liblzma_version_", (DL_FUNC) &_archive_libarchive_liblzma_version_, 0},
+    {"_archive_libarchive_libzstd_version",  (DL_FUNC) &_archive_libarchive_libzstd_version,  0},
+    {"_archive_libarchive_version_",         (DL_FUNC) &_archive_libarchive_version_,         0},
+    {"_archive_libarchive_zlib_version_",    (DL_FUNC) &_archive_libarchive_zlib_version_,    0},
+    {"_archive_rchive_init",                 (DL_FUNC) &_archive_rchive_init,                 1},
     {NULL, NULL, 0}
 };
 }

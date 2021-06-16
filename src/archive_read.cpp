@@ -15,6 +15,8 @@ static Rboolean rchive_read_open(Rconnection con) {
 
   r->ar = archive_read_new();
 
+  bool is_raw_format = r->format == ARCHIVE_FORMAT_RAW;
+
   con->text = strchr(con->mode, 'b') ? FALSE : TRUE;
 
 /* explicit setting of the format and filters is not available until
@@ -34,7 +36,7 @@ static Rboolean rchive_read_open(Rconnection con) {
 
   if (r->format == -1) {
     r->last_response = archive_read_support_format_all(r->ar);
-  } else if (r->format == ARCHIVE_FORMAT_RAW) {
+  } else if (is_raw_format) {
     archive_read_support_format_raw(r->ar);
   } else {
     r->last_response = archive_read_set_format(r->ar, r->format);
@@ -67,8 +69,7 @@ static Rboolean rchive_read_open(Rconnection con) {
   /* Find entry to extract */
   while (archive_read_next_header(r->ar, &r->entry) == ARCHIVE_OK) {
     const char* str = archive_entry_pathname(r->entry);
-    if (r->format == ARCHIVE_FORMAT_RAW ||
-        strcmp(r->filename.c_str(), str) == 0) {
+    if (is_raw_format || strcmp(r->filename.c_str(), str) == 0) {
       r->has_more = 1;
       con->isopen = TRUE;
       push(r);

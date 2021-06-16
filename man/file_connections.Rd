@@ -6,9 +6,9 @@
 \alias{file_write}
 \title{Construct a connections for (possibly compressed) files.}
 \usage{
-file_read(file, mode = "r")
+file_read(file, mode = "r", filter = NULL, options = character())
 
-file_write(file, filter = NULL, options = character())
+file_write(file, mode = "w", filter = NULL, options = character())
 }
 \arguments{
 \item{file}{\code{character(1) || integer(1)} The filename within the archive,
@@ -42,22 +42,17 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&se
 }}
 }
 \description{
-These work similar to R's built-in \link{connections} for files.
-They differ from \link{archive_read} and \link{archive_write} because they do \emph{not}
-put the file in an archive, they just use one or more of the filters.
+They are functionally equivalent to calling \link{archive_read} or
+\link{archive_write} using \verb{format = "raw", archive = file}.
 }
 \details{
-They are functionally equivalent to calling \link{archive_read} or
-\link{archive_write} using `format = "raw", but can be a little more efficient in
-some cases.
-
 \code{file_write()} returns an writable output connection,
 \code{file_read()} returns a readable input connection.
 }
 \examples{
 if (archive:::libarchive_version() > "3.2.0") {
 # Write bzip2, base 64 encoded data and use high compression
-write.csv(mtcars, file_write("mtcars.bz2", c("uuencode", "bzip2"), options = "compression-level=9"))
+write.csv(mtcars, file_write("mtcars.bz2", filter = c("uuencode", "bzip2"), options = "compression-level=9"))
 
 # Read it back
 read.csv(file_read("mtcars.bz2"), row.names = 1, nrows = 3)

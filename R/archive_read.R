@@ -1,9 +1,6 @@
 #' Create a readable connection to a file in an archive.
 #'
 #' @inheritParams archive_write
-#' @param mode `character(1)` A description of how to open the
-#'   connection (if it should be opened initially).  See section
-#'   ‘Modes’ in [base::connections()] for possible values.
 #' @examples
 #' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 #' # Show files in archive
@@ -35,5 +32,5 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
 
   options <- validate_options(options)
 
-  archive_read_(attr(archive, "path"), mode = mode, file, archive_formats()[format], archive_filters()[filter], options, sz = 2^14)
+  archive_read_(attr(archive, "path"), file, mode, archive_formats()[format], archive_filters()[filter], options, sz = 2^14)
 }

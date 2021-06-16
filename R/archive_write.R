@@ -3,6 +3,9 @@
 #' @param archive `character(1)` The archive filename or an `archive` object.
 #' @param file `character(1) || integer(1)` The filename within the archive,
 #'   specified either by filename or by position.
+#' @param mode `character(1)` A description of how to open the
+#'   connection (if it should be opened initially).  See section
+#'   ‘Modes’ in [base::connections()] for possible values.
 #' @template archive
 #' @importFrom rlang is_character is_named
 #' @details
@@ -31,7 +34,7 @@
 #' archive(f3)
 #' unlink(f3)
 #' @export
-archive_write <- function(archive, file, format = NULL, filter = NULL, options = character()) {
+archive_write <- function(archive, file, mode = "w", format = NULL, filter = NULL, options = character()) {
   if (is.null(format) && is.null(filter)) {
     res <- format_and_filter_by_extension(archive)
 
@@ -53,8 +56,8 @@ archive_write <- function(archive, file, format = NULL, filter = NULL, options =
   options <- validate_options(options)
 
   if (identical(format, "zip") || identical(format, "raw")) {
-    return(archive_write_direct_(archive, file, archive_formats()[format], archive_filters()[filter], options, 2^14))
+    return(archive_write_direct_(archive, file, mode, archive_formats()[format], archive_filters()[filter], options, 2^14))
   }
 
-  archive_write_(archive, file, archive_formats()[format], archive_filters()[filter], options, 2^14)
+  archive_write_(archive, file, mode, archive_formats()[format], archive_filters()[filter], options, 2^14)
 }

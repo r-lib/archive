@@ -8,16 +8,16 @@ archive_read_ <- function(archive_filename, filename, mode, format, filters, opt
   .Call(`_archive_archive_read_`, archive_filename, filename, mode, format, filters, options, sz)
 }
 
-archive_write_direct_ <- function(archive_filename, filename, format, filters, options, sz) {
-  .Call(`_archive_archive_write_direct_`, archive_filename, filename, format, filters, options, sz)
+archive_write_direct_ <- function(archive_filename, filename, mode, format, filters, options, sz) {
+  .Call(`_archive_archive_write_direct_`, archive_filename, filename, mode, format, filters, options, sz)
 }
 
 archive_write_files_ <- function(archive_filename, files, format, filters, options, sz) {
   .Call(`_archive_archive_write_files_`, archive_filename, files, format, filters, options, sz)
 }
 
-archive_write_ <- function(archive_filename, filename, format, filters, options, sz) {
-  .Call(`_archive_archive_write_`, archive_filename, filename, format, filters, options, sz)
+archive_write_ <- function(archive_filename, filename, mode, format, filters, options, sz) {
+  .Call(`_archive_archive_write_`, archive_filename, filename, mode, format, filters, options, sz)
 }
 
 archive_ <- function(path, options) {

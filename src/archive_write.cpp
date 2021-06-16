@@ -147,12 +147,14 @@ void rchive_write_destroy(Rconnection con) {
 [[cpp11::register]] SEXP archive_write_(
     const std::string& archive_filename,
     const std::string& filename,
+    const std::string& mode,
     int format,
     cpp11::integers filters,
     cpp11::strings options,
     size_t sz) {
   Rconnection con;
-  SEXP rc = PROTECT(new_connection("input", "wb", "archive_write", &con));
+  SEXP rc =
+      PROTECT(new_connection("input", mode.c_str(), "archive_write", &con));
 
   /* Setup archive */
   rchive* r = (rchive*)new rchive;

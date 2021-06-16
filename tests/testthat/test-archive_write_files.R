@@ -21,6 +21,7 @@ describe("archive_write_files", {
     })
 
   it("takes options", {
+    skip_if_not(libarchive_zlib_version() > "0.0.0")
     files <- c(mtcars = tempfile(fileext = ".csv"), iris = tempfile(fileext = ".csv"))
     archive <- tempfile(fileext = ".zip")
     archive2 <- tempfile(fileext = ".zip")

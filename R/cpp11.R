@@ -12,6 +12,10 @@ archive_write_files_ <- function(archive_filename, files, format, filters, optio
   .Call(`_archive_archive_write_files_`, archive_filename, files, format, filters, options, sz)
 }
 
+archive_write_zip_ <- function(archive_filename, filename, filters, options, sz) {
+  .Call(`_archive_archive_write_zip_`, archive_filename, filename, filters, options, sz)
+}
+
 archive_write_ <- function(archive_filename, filename, format, filters, options, sz) {
   .Call(`_archive_archive_write_`, archive_filename, filename, format, filters, options, sz)
 }

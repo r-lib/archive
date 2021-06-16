@@ -72,5 +72,20 @@ describe("archive_write", {
 
     expect_gt(file.size(f), file.size(f2))
   })
+  it("zip writer can take options", {
+    f <- tempfile(fileext = ".zip")
+    f2 <- tempfile(fileext = ".zip")
+    on.exit(unlink(c(f, f2)))
+
+    write.csv(mtcars,
+      archive_write(f, "mtcars.csv", options = "compression-level=1")
+    )
+
+    write.csv(mtcars,
+      archive_write(f2, "mtcars.csv", options = "compression-level=9")
+    )
+
+    expect_gt(file.size(f), file.size(f2))
+  })
 })
 

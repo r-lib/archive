@@ -46,5 +46,9 @@ archive_write <- function(archive, file, format = NULL, filter = NULL, options =
 
   options <- validate_options(options)
 
+  if (identical(format, "zip")) {
+    return(archive_write_zip_(archive, file, archive_filters()[filter], options, 2^14))
+  }
+
   archive_write_(archive, file, archive_formats()[format], archive_filters()[filter], options, 2^14)
 }

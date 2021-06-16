@@ -104,7 +104,7 @@ archive_(const std::string& path, cpp11::strings options) {
 #if ARCHIVE_VERSION_NUMBER >= 3002000
   return archive_zlib_version();
 #else
-  return NULL
+  return NULL;
 #endif
 }
 
@@ -112,7 +112,7 @@ archive_(const std::string& path, cpp11::strings options) {
 #if ARCHIVE_VERSION_NUMBER >= 3002000
   return archive_liblzma_version();
 #else
-  return NULL
+  return NULL;
 #endif
 }
 
@@ -120,7 +120,7 @@ archive_(const std::string& path, cpp11::strings options) {
 #if ARCHIVE_VERSION_NUMBER >= 3002000
   return archive_bzlib_version();
 #else
-  return NULL
+  return NULL;
 #endif
 }
 
@@ -128,7 +128,7 @@ archive_(const std::string& path, cpp11::strings options) {
 #if ARCHIVE_VERSION_NUMBER >= 3002000
   return archive_liblz4_version();
 #else
-  return NULL
+  return NULL;
 #endif
 }
 
@@ -136,6 +136,6 @@ archive_(const std::string& path, cpp11::strings options) {
 #if ARCHIVE_VERSION_NUMBER >= 3003003
   return archive_libzstd_version();
 #else
-  return ""
+  return NULL;
 #endif
 }

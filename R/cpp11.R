@@ -32,6 +32,26 @@ libarchive_version_ <- function() {
   .Call(`_archive_libarchive_version_`)
 }
 
+libarchive_zlib_version_ <- function() {
+  .Call(`_archive_libarchive_zlib_version_`)
+}
+
+libarchive_liblzma_version_ <- function() {
+  .Call(`_archive_libarchive_liblzma_version_`)
+}
+
+libarchive_bzlib_version_ <- function() {
+  .Call(`_archive_libarchive_bzlib_version_`)
+}
+
+libarchive_liblz4_version_ <- function() {
+  .Call(`_archive_libarchive_liblz4_version_`)
+}
+
+libarchive_libzstd_version <- function() {
+  .Call(`_archive_libarchive_libzstd_version`)
+}
+
 file_read_ <- function(filename, mode, sz) {
   .Call(`_archive_file_read_`, filename, mode, sz)
 }

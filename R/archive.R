@@ -115,3 +115,49 @@ format_and_filter_by_extension <- function(path) {
 libarchive_version <- function() {
   package_version(libarchive_version_())
 }
+
+libarchive_zlib_version <- function() {
+  version <- libarchive_zlib_version_()
+  if (nzchar(version)) {
+    return(package_version(version))
+  }
+  package_version("0.0.0")
+}
+
+libarchive_liblzma_version <- function() {
+  version <- libarchive_liblzma_version_()
+  if (nzchar(version)) {
+    return(package_version(version))
+  }
+  package_version("0.0.0")
+}
+
+libarchive_bzlib_version <- function() {
+  version <- libarchive_bzlib_version_()
+
+  # bzlib versions are of the form
+  # 1.0.6, 6-Sept-2010
+  # So remove everything after the comma
+  version <- sub(",.+", "", version)
+
+  if (nzchar(version)) {
+    return(package_version(version))
+  }
+  package_version("0.0.0")
+}
+
+libarchive_liblz4_version <- function() {
+  version <- libarchive_liblz4_version_()
+  if (nzchar(version)) {
+    return(package_version(version))
+  }
+  package_version("0.0.0")
+}
+
+libarchive_libzstd_version <- function() {
+  version <- libarchive_libzstd_version_()
+  if (nzchar(version)) {
+    return(package_version(version))
+  }
+  package_version("0.0.0")
+}

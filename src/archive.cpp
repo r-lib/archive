@@ -99,3 +99,23 @@ archive_(const std::string& path, cpp11::strings options) {
   // Remove 'libarchive '
   return str.substr(str.find_last_of(' ') + 1);
 }
+
+[[cpp11::register]] const char* libarchive_zlib_version_() {
+  return archive_zlib_version();
+}
+
+[[cpp11::register]] const char* libarchive_liblzma_version_() {
+  return archive_liblzma_version();
+}
+
+[[cpp11::register]] const char* libarchive_bzlib_version_() {
+  return archive_bzlib_version();
+}
+
+[[cpp11::register]] const char* libarchive_liblz4_version_() {
+  return archive_liblz4_version();
+}
+
+[[cpp11::register]] const char* libarchive_libzstd_version() {
+  return archive_libzstd_version();
+}

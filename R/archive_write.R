@@ -5,6 +5,12 @@
 #'   specified either by filename or by position.
 #' @template archive
 #' @importFrom rlang is_character is_named
+#' @details
+#' For traditional zip archives [archive_write()] creates a connection which
+#' writes the data to the specified file directly. For other archive formats
+#' the file size must be known when the archive is created, so the data is
+#' first written to a scratch file on disk and then added to the archive. This
+#' scratch file is automatically removed when writing is complete.
 #' @examples
 #' # Archive format and filters can be set automatically from the file extensions.
 #' f1 <- tempfile(fileext = ".tar.gz")

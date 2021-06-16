@@ -52,6 +52,12 @@ the file extension given in \code{file} when writing and automatically detected
 using
 \href{https://github.com/libarchive/libarchive/wiki/FormatDetection}{Robust automatic format detection}
 when reading.
+
+For traditional zip archives \code{\link[=archive_write]{archive_write()}} creates a connection which
+writes the data to the specified file directly. For other archive formats
+the file size must be known when the archive is created, so the data is
+first written to a scratch file on disk and then added to the archive. This
+scratch file is automatically removed when writing is complete.
 }
 \examples{
 # Archive format and filters can be set automatically from the file extensions.

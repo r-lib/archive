@@ -101,21 +101,41 @@ archive_(const std::string& path, cpp11::strings options) {
 }
 
 [[cpp11::register]] const char* libarchive_zlib_version_() {
+#if ARCHIVE_VERSION_NUMBER >= 3002000
   return archive_zlib_version();
+#else
+  return NULL
+#endif
 }
 
 [[cpp11::register]] const char* libarchive_liblzma_version_() {
+#if ARCHIVE_VERSION_NUMBER >= 3002000
   return archive_liblzma_version();
+#else
+  return NULL
+#endif
 }
 
 [[cpp11::register]] const char* libarchive_bzlib_version_() {
+#if ARCHIVE_VERSION_NUMBER >= 3002000
   return archive_bzlib_version();
+#else
+  return NULL
+#endif
 }
 
 [[cpp11::register]] const char* libarchive_liblz4_version_() {
+#if ARCHIVE_VERSION_NUMBER >= 3002000
   return archive_liblz4_version();
+#else
+  return NULL
+#endif
 }
 
 [[cpp11::register]] const char* libarchive_libzstd_version() {
+#if ARCHIVE_VERSION_NUMBER >= 3003003
   return archive_libzstd_version();
+#else
+  return ""
+#endif
 }

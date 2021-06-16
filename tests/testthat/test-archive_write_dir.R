@@ -1,5 +1,6 @@
 describe("archive_write_dir", {
   it("can write a zip file", {
+    skip_if(libarchive_zlib_version() == "0.0.0")
     dir <- tempfile()
     dir.create(dir)
     files <- c(mtcars = "mtcars.csv", iris = "iris.csv")

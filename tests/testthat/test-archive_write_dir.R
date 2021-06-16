@@ -1,6 +1,6 @@
 describe("archive_write_dir", {
   it("can write a zip file", {
-    dir <- tempfile()
+    dir <- normalizePath(tempfile())
     dir.create(dir)
     files <- c(mtcars = "mtcars.csv", iris = "iris.csv")
 

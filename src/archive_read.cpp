@@ -13,6 +13,8 @@
 static Rboolean rchive_read_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
+  r->ar = archive_read_new();
+
   con->text = strchr(con->mode, 'b') ? FALSE : TRUE;
 
 /* explicit setting of the format and filters is not available until
@@ -32,6 +34,8 @@ static Rboolean rchive_read_open(Rconnection con) {
 
   if (r->format == -1) {
     r->last_response = archive_read_support_format_all(r->ar);
+  } else if (r->format == ARCHIVE_FORMAT_RAW) {
+    archive_read_support_format_raw(r->ar);
   } else {
     r->last_response = archive_read_set_format(r->ar, r->format);
     if (r->last_response != ARCHIVE_OK) {
@@ -52,7 +56,7 @@ static Rboolean rchive_read_open(Rconnection con) {
   }
 
   r->last_response = archive_read_open_filename(
-      r->ar, r->archive_filename.c_str(), r->archive_filename.size());
+      r->ar, r->archive_filename.c_str(), r->buf.size());
 
   if (r->last_response != ARCHIVE_OK) {
     con->isopen = FALSE;
@@ -63,7 +67,8 @@ static Rboolean rchive_read_open(Rconnection con) {
   /* Find entry to extract */
   while (archive_read_next_header(r->ar, &r->entry) == ARCHIVE_OK) {
     const char* str = archive_entry_pathname(r->entry);
-    if (strcmp(r->filename.c_str(), str) == 0) {
+    if (r->format == ARCHIVE_FORMAT_RAW ||
+        strcmp(r->filename.c_str(), str) == 0) {
       r->has_more = 1;
       con->isopen = TRUE;
       push(r);
@@ -78,7 +83,6 @@ static Rboolean rchive_read_open(Rconnection con) {
 void rchive_read_close(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
   archive_read_close(r->ar);
-  r->ar = archive_read_new();
 
   con->isopen = FALSE;
   con->incomplete = FALSE;
@@ -161,8 +165,6 @@ static int rchive_fgetc(Rconnection con) {
   }
 
   r->filename = filename;
-
-  r->ar = archive_read_new();
 
   /* set connection properties */
   con->incomplete = TRUE;

@@ -51,7 +51,10 @@ bool any_matches(const char* filename, cpp11::strings filenames) {
 
   ext = archive_write_disk_new();
   call(archive_write_disk_set_options, ext, flags);
+#ifndef __MINGW32__
+  /* set_standard_lookup is not available on windows */
   call(archive_write_disk_set_standard_lookup, ext);
+#endif
   call(archive_read_open_filename, a, archive_filename.c_str(), sz);
   for (;;) {
     r = call(archive_read_next_header, a, &entry);

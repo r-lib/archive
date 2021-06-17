@@ -9,7 +9,10 @@ static size_t rchive_write_direct_data(
   rchive* r = (rchive*)ctx->private_ptr;
 
   size_t realsize = sz * n;
-  archive_write_data(r->ar, contents, realsize);
+  ssize_t bytes_out = archive_write_data(r->ar, contents, realsize);
+  if (bytes_out < 0) {
+    Rf_errorcall(R_NilValue, archive_error_string(r->ar));
+  }
   r->size += realsize;
 
   return n;
@@ -21,28 +24,16 @@ static Rboolean rchive_write_direct_open(Rconnection con) {
   r->ar = archive_write_new();
 
   for (int i = 0; i < FILTER_MAX && r->filters[i] != -1; ++i) {
-    r->last_response = archive_write_add_filter(r->ar, r->filters[i]);
-    if (r->last_response != ARCHIVE_OK) {
-      Rf_error(archive_error_string(r->ar));
-    }
+    call(archive_write_add_filter, r, r->filters[i]);
   }
 
-  r->last_response = archive_write_set_format(r->ar, r->format);
+  call(archive_write_set_format, r, r->format);
 
   if (!r->options.empty()) {
-    r->last_response = archive_write_set_options(r->ar, r->options.c_str());
-    if (r->last_response != ARCHIVE_OK) {
-      con->isopen = FALSE;
-      Rf_error(archive_error_string(r->ar));
-    }
+    call(archive_write_set_options, r, r->options.c_str());
   }
 
-  r->last_response =
-      archive_write_open_filename(r->ar, r->archive_filename.c_str());
-  if (r->last_response != ARCHIVE_OK) {
-    con->isopen = FALSE;
-    Rf_error(archive_error_string(r->ar));
-  }
+  call(archive_write_open_filename, r, r->archive_filename.c_str());
 
   r->entry = archive_entry_new();
 
@@ -50,7 +41,7 @@ static Rboolean rchive_write_direct_open(Rconnection con) {
   archive_entry_set_filetype(r->entry, AE_IFREG);
   archive_entry_set_perm(r->entry, 0644);
   archive_entry_unset_size(r->entry);
-  archive_write_header(r->ar, r->entry);
+  call(archive_write_header, r, r->entry);
 
   archive_entry_free(r->entry);
 
@@ -68,8 +59,8 @@ void rchive_write_direct_close(Rconnection con) {
     return;
   }
   /* Close scratch file */
-  archive_write_close(r->ar);
-  archive_write_free(r->ar);
+  call(archive_write_close, r);
+  call(archive_write_free, r);
 
   con->isopen = FALSE;
 }

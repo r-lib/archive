@@ -67,7 +67,9 @@ void rchive_write_close(Rconnection con) {
   struct archive* out;
   struct archive_entry* entry;
   in = archive_read_disk_new();
+#ifndef __MINGW32__
   call(archive_read_disk_set_standard_lookup, in);
+#endif
   entry = archive_entry_new();
 
   std::string scratch = scratch_file(r->filename.c_str());

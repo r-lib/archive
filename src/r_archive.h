@@ -27,11 +27,11 @@ struct rchive {
   std::string filename;
   std::vector<char> buf;
   char* cur;
-  archive* ar;
-  archive_entry* entry;
-  ssize_t last_response;
-  int has_more;
-  size_t size;
+  archive* ar = nullptr;
+  archive_entry* entry = nullptr;
+  ssize_t last_response = 0;
+  bool has_more = true;
+  size_t size = 0;
   int filters[FILTER_MAX];
   std::string options;
 };
@@ -49,6 +49,9 @@ int archive_write_add_filter(struct archive* a, int code);
 template <typename F, typename... Args>
 inline int call_(const char* f_name, F f, Rconnection con, Args... args) {
   rchive* r = (rchive*)con->private_ptr;
+  if (!r->ar) {
+    return ARCHIVE_OK;
+  }
   r->last_response = f(r->ar, args...);
   if (r->last_response < ARCHIVE_OK) {
     con->isopen = FALSE;

@@ -14,10 +14,7 @@ rchive_write_data(const void* contents, size_t sz, size_t n, Rconnection ctx) {
   rchive* r = (rchive*)ctx->private_ptr;
 
   size_t realsize = sz * n;
-  ssize_t bytes_out = archive_write_data(r->ar, contents, realsize);
-  if (bytes_out < 0) {
-    Rf_error("Error writing to '%s'", r->archive_filename.c_str());
-  }
+  call(archive_write_data, r, contents, realsize);
   r->size += realsize;
 
   return n;
@@ -54,7 +51,6 @@ void rchive_write_close(Rconnection con) {
   char buf[8192];
   size_t bytes_read;
   rchive* r = (rchive*)con->private_ptr;
-  int response;
 
   if (!con->isopen) {
     return;
@@ -70,7 +66,7 @@ void rchive_write_close(Rconnection con) {
   struct archive* out;
   struct archive_entry* entry;
   in = archive_read_disk_new();
-  archive_read_disk_set_standard_lookup(in);
+  call(archive_read_disk_set_standard_lookup, in);
   entry = archive_entry_new();
 
   std::string scratch = scratch_file(r->filename.c_str());
@@ -80,57 +76,35 @@ void rchive_write_close(Rconnection con) {
     Rf_error("Could not open scratch file");
   }
   archive_entry_copy_pathname(entry, r->filename.c_str());
-  response = archive_read_disk_entry_from_file(in, entry, fd, NULL);
-  if (response != ARCHIVE_OK) {
-    con->isopen = FALSE;
-    Rf_error(archive_error_string(in));
-  }
+  call(
+      archive_read_disk_entry_from_file,
+      in,
+      entry,
+      fd,
+      (const struct stat*)NULL);
 
   out = archive_write_new();
 
-  response = archive_write_set_format(out, r->format);
-  if (response != ARCHIVE_OK) {
-    con->isopen = FALSE;
-    Rf_error(archive_error_string(out));
-  }
+  call(archive_write_set_format, out, r->format);
 
   for (int i = 0; i < FILTER_MAX && r->filters[i] != -1; ++i) {
-    response = archive_write_add_filter(out, r->filters[i]);
-    if (response != ARCHIVE_OK) {
-      Rf_error(archive_error_string(out));
-    }
+    call(archive_write_add_filter, out, r->filters[i]);
   }
 
   if (!r->options.empty()) {
-    response = archive_write_set_options(out, r->options.c_str());
-    if (response != ARCHIVE_OK) {
-      con->isopen = FALSE;
-      Rf_error(archive_error_string(out));
-    }
+    call(archive_write_set_options, out, r->options.c_str());
   }
 
-  response = archive_write_open_filename(out, r->archive_filename.c_str());
-  if (response != ARCHIVE_OK) {
-    con->isopen = FALSE;
-    Rf_error(archive_error_string(out));
-  }
-  response = archive_write_header(out, entry);
-  if (response != ARCHIVE_OK) {
-    con->isopen = FALSE;
-    Rf_error(archive_error_string(out));
-  }
+  call(archive_write_open_filename, out, r->archive_filename.c_str());
+  call(archive_write_header, out, entry);
 
   while ((bytes_read = read(fd, buf, sizeof(buf))) > 0) {
-    ssize_t bytes_out = archive_write_data(out, buf, bytes_read);
-    if (bytes_out < 0) {
-      con->isopen = FALSE;
-      Rf_error("Error writing to '%s'", r->archive_filename.c_str());
-    }
+    call(archive_write_data, out, buf, bytes_read);
   }
   close(fd);
   archive_entry_free(entry);
-  archive_write_free(out);
-  archive_read_free(in);
+  call(archive_write_free, out);
+  call(archive_read_free, in);
 
   unlink(scratch.c_str());
   con->isopen = FALSE;

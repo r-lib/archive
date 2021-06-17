@@ -15,8 +15,8 @@ archive_(const std::string& path, cpp11::strings options) {
   int r;
 
   a = archive_read_new();
-  archive_read_support_filter_all(a);
-  archive_read_support_format_all(a);
+  call(archive_read_support_filter_all, a);
+  call(archive_read_support_format_all, a);
 
   if (options.size() > 0) {
     r = archive_read_set_options(a, std::string(options[0]).c_str());
@@ -33,9 +33,9 @@ archive_(const std::string& path, cpp11::strings options) {
     paths.push_back(archive_entry_pathname(entry));
     sizes.push_back(archive_entry_size(entry));
     dates.push_back(archive_entry_mtime(entry));
-    archive_read_data_skip(a);
+    call(archive_read_data_skip, a);
   }
-  r = archive_read_free(a);
+  call(archive_read_free, a);
   if (r != ARCHIVE_OK) {
     cpp11::stop(archive_error_string(a));
   }

@@ -7,17 +7,11 @@ static int copy_data(struct archive* ar, struct archive* aw) {
   int64_t offset;
 
   for (;;) {
-    r = archive_read_data_block(ar, &buff, &size, &offset);
+    r = call(archive_read_data_block, ar, &buff, &size, &offset);
     if (r == ARCHIVE_EOF) {
       return (ARCHIVE_OK);
     }
-    if (r != ARCHIVE_OK) {
-      cpp11::stop("archive_read_data_block(): %s", archive_error_string(ar));
-    }
-    r = archive_write_data_block(aw, buff, size, offset);
-    if (r != ARCHIVE_OK) {
-      cpp11::stop("archive_write_data_block(): %s", archive_error_string(aw));
-    }
+    call(archive_write_data_block, aw, buff, size, offset);
   }
 }
 
@@ -48,19 +42,17 @@ bool any_matches(const char* filename, cpp11::strings filenames) {
   flags |= ARCHIVE_EXTRACT_FFLAGS;
 
   a = archive_read_new();
-  archive_read_support_format_all(a);
-  archive_read_support_filter_all(a);
+  call(archive_read_support_format_all, a);
+  call(archive_read_support_filter_all, a);
 
   if (options.size() > 0) {
-    archive_read_set_options(a, std::string(options[0]).c_str());
+    call(archive_read_set_options, a, std::string(options[0]).c_str());
   }
 
   ext = archive_write_disk_new();
-  archive_write_disk_set_options(ext, flags);
-  archive_write_disk_set_standard_lookup(ext);
-  if ((r = archive_read_open_filename(a, archive_filename.c_str(), sz))) {
-    cpp11::stop("Could not open '%s'", archive_filename.c_str());
-  }
+  call(archive_write_disk_set_options, ext, flags);
+  call(archive_write_disk_set_standard_lookup, ext);
+  call(archive_read_open_filename, a, archive_filename.c_str(), sz);
   for (;;) {
     r = archive_read_next_header(a, &entry);
     if (r == ARCHIVE_EOF)
@@ -70,21 +62,13 @@ bool any_matches(const char* filename, cpp11::strings filenames) {
     }
     const char* filename = archive_entry_pathname(entry);
     if (filenames.size() == 0 || any_matches(filename, filenames)) {
-      r = archive_write_header(ext, entry);
-      if (r != ARCHIVE_OK) {
-        cpp11::stop("archive_write_header(): %s", archive_error_string(ext));
-      } else {
-        copy_data(a, ext);
-        r = archive_write_finish_entry(ext);
-        if (r != ARCHIVE_OK) {
-          cpp11::stop(
-              "archive_write_finish_entry(): %s", archive_error_string(ext));
-        }
-      }
+      call(archive_write_header, ext, entry);
+      copy_data(a, ext);
+      call(archive_write_finish_entry, ext);
     }
   }
-  archive_read_close(a);
-  archive_read_free(a);
-  archive_write_close(ext);
-  archive_write_free(ext);
+  call(archive_read_close, a);
+  call(archive_read_free, a);
+  call(archive_write_close, ext);
+  call(archive_write_free, ext);
 }

@@ -29,7 +29,7 @@ struct rchive {
   char* cur;
   archive* ar;
   archive_entry* entry;
-  int last_response;
+  ssize_t last_response;
   int has_more;
   size_t size;
   int filters[FILTER_MAX];
@@ -45,9 +45,9 @@ int archive_write_add_filter(struct archive* a, int code);
 #endif
 
 template <typename F, typename... Args>
-inline void call(F f, rchive* r, Args... args) {
+inline int call(F f, rchive* r, Args... args) {
   r->last_response = f(r->ar, args...);
-  if (r->last_response != ARCHIVE_OK) {
+  if (r->last_response < ARCHIVE_OK) {
     const char* msg = archive_error_string(r->ar);
     if (msg) {
       Rf_errorcall(R_NilValue, msg);
@@ -55,6 +55,21 @@ inline void call(F f, rchive* r, Args... args) {
       Rf_errorcall(R_NilValue, "unknown libarchive error");
     }
   }
+  return r->last_response;
+}
+
+template <typename F, typename... Args>
+inline int call(F f, archive* ar, Args... args) {
+  ssize_t response = f(ar, args...);
+  if (response < ARCHIVE_OK) {
+    const char* msg = archive_error_string(ar);
+    if (msg) {
+      Rf_errorcall(R_NilValue, msg);
+    } else {
+      Rf_errorcall(R_NilValue, "unknown libarchive error");
+    }
+  }
+  return response;
 }
 
 [[cpp11::register]] void rchive_init(SEXP xptr);

@@ -56,6 +56,10 @@ libarchive_libzstd_version <- function() {
   .Call(`_archive_libarchive_libzstd_version`)
 }
 
+file_write_ <- function(filename, filters, options) {
+  .Call(`_archive_file_write_`, filename, filters, options)
+}
+
 rchive_init <- function(xptr) {
   invisible(.Call(`_archive_rchive_init`, xptr))
 }

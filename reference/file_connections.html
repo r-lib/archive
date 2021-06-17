@@ -40,9 +40,8 @@
 
 
 <meta property="og:title" content="Construct a connections for (possibly compressed) files. — file_read" />
-<meta property="og:description" content="These work similar to R's built-in connections for files.
-They differ from archive_read and archive_write because they do not
-put the file in an archive, they just use one or more of the filters." />
+<meta property="og:description" content="They are functionally equivalent to calling archive_read or
+archive_write using format = &quot;raw&quot;, archive = file." />
 
 
 
@@ -119,14 +118,13 @@ put the file in an archive, they just use one or more of the filters." />
     </div>
 
     <div class="ref-description">
-    <p>These work similar to R's built-in <a href='https://rdrr.io/r/base/connections.html'>connections</a> for files.
-They differ from <a href='archive_read.html'>archive_read</a> and <a href='archive_write.html'>archive_write</a> because they do <em>not</em>
-put the file in an archive, they just use one or more of the filters.</p>
+    <p>They are functionally equivalent to calling <a href='archive_read.html'>archive_read</a> or
+<a href='archive_write.html'>archive_write</a> using <code>format = "raw", archive = file</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>file_read</span><span class='op'>(</span><span class='va'>file</span>, mode <span class='op'>=</span> <span class='st'>"r"</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>file_read</span><span class='op'>(</span><span class='va'>file</span>, mode <span class='op'>=</span> <span class='st'>"r"</span>, filter <span class='op'>=</span> <span class='cn'>NULL</span>, options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>file_write</span><span class='op'>(</span><span class='va'>file</span>, filter <span class='op'>=</span> <span class='cn'>NULL</span>, options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
+<span class='fu'>file_write</span><span class='op'>(</span><span class='va'>file</span>, mode <span class='op'>=</span> <span class='st'>"w"</span>, filter <span class='op'>=</span> <span class='cn'>NULL</span>, options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,16 +171,13 @@ See <a href='https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>They are functionally equivalent to calling <a href='archive_read.html'>archive_read</a> or
-<a href='archive_write.html'>archive_write</a> using `format = "raw", but can be a little more efficient in
-some cases.</p>
-<p><code>file_write()</code> returns an writable output connection,
+    <p><code>file_write()</code> returns an writable output connection,
 <code>file_read()</code> returns a readable input connection.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'>archive</span><span class='fu'>:::</span><span class='fu'>libarchive_version</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&gt;</span> <span class='st'>"3.2.0"</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># Write bzip2, base 64 encoded data and use high compression</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='fu'>file_write</span><span class='op'>(</span><span class='st'>"mtcars.bz2"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"uuencode"</span>, <span class='st'>"bzip2"</span><span class='op'>)</span>, options <span class='op'>=</span> <span class='st'>"compression-level=9"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='op'>(</span><span class='va'>mtcars</span>, <span class='fu'>file_write</span><span class='op'>(</span><span class='st'>"mtcars.bz2"</span>, filter <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"uuencode"</span>, <span class='st'>"bzip2"</span><span class='op'>)</span>, options <span class='op'>=</span> <span class='st'>"compression-level=9"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Read it back</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='fu'>file_read</span><span class='op'>(</span><span class='st'>"mtcars.bz2"</span><span class='op'>)</span>, row.names <span class='op'>=</span> <span class='fl'>1</span>, nrows <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>

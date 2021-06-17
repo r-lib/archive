@@ -61,6 +61,7 @@ void rchive_write_close(Rconnection con) {
   call(archive_write_free, con);
   archive_entry_free(r->entry);
   con->isopen = FALSE;
+  con->incomplete = FALSE;
 
   /* Write scratch file to archive */
   struct archive* in;

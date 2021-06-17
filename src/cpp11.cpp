@@ -103,13 +103,6 @@ extern "C" SEXP _archive_libarchive_libzstd_version() {
     return cpp11::as_sexp(libarchive_libzstd_version());
   END_CPP11
 }
-// file_write.cpp
-SEXP file_write_(const std::string& filename, cpp11::integers filters, cpp11::strings options);
-extern "C" SEXP _archive_file_write_(SEXP filename, SEXP filters, SEXP options) {
-  BEGIN_CPP11
-    return cpp11::as_sexp(file_write_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options)));
-  END_CPP11
-}
 // r_archive.h
 void rchive_init(SEXP xptr);
 extern "C" SEXP _archive_rchive_init(SEXP xptr) {
@@ -129,7 +122,6 @@ extern SEXP _archive_archive_read_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_archive_write_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_archive_write_direct_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _archive_archive_write_files_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _archive_file_write_(SEXP, SEXP, SEXP);
 extern SEXP _archive_libarchive_bzlib_version_();
 extern SEXP _archive_libarchive_liblz4_version_();
 extern SEXP _archive_libarchive_liblzma_version_();
@@ -147,7 +139,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_archive_archive_write_",              (DL_FUNC) &_archive_archive_write_,              7},
     {"_archive_archive_write_direct_",       (DL_FUNC) &_archive_archive_write_direct_,       7},
     {"_archive_archive_write_files_",        (DL_FUNC) &_archive_archive_write_files_,        6},
-    {"_archive_file_write_",                 (DL_FUNC) &_archive_file_write_,                 3},
     {"_archive_libarchive_bzlib_version_",   (DL_FUNC) &_archive_libarchive_bzlib_version_,   0},
     {"_archive_libarchive_liblz4_version_",  (DL_FUNC) &_archive_libarchive_liblz4_version_,  0},
     {"_archive_libarchive_liblzma_version_", (DL_FUNC) &_archive_libarchive_liblzma_version_, 0},

@@ -48,7 +48,12 @@ template <typename F, typename... Args>
 inline void call(F f, rchive* r, Args... args) {
   r->last_response = f(r->ar, args...);
   if (r->last_response != ARCHIVE_OK) {
-    Rf_errorcall(R_NilValue, archive_error_string(r->ar));
+    const char* msg = archive_error_string(r->ar);
+    if (msg) {
+      Rf_errorcall(R_NilValue, msg);
+    } else {
+      Rf_errorcall(R_NilValue, "unknown libarchive error");
+    }
   }
 }
 

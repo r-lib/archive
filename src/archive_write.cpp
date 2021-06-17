@@ -14,7 +14,10 @@ rchive_write_data(const void* contents, size_t sz, size_t n, Rconnection ctx) {
   rchive* r = (rchive*)ctx->private_ptr;
 
   size_t realsize = sz * n;
-  archive_write_data(r->ar, contents, realsize);
+  ssize_t bytes_out = archive_write_data(r->ar, contents, realsize);
+  if (bytes_out < 0) {
+    Rf_error("Error writing to '%s'", r->archive_filename.c_str());
+  }
   r->size += realsize;
 
   return n;
@@ -38,7 +41,7 @@ static Rboolean rchive_write_open(Rconnection con) {
       r->entry, scratch_file(r->filename.c_str()).c_str());
   archive_entry_set_filetype(r->entry, AE_IFREG);
   archive_entry_set_perm(r->entry, 0644);
-  archive_write_header(r->ar, r->entry);
+  call(archive_write_header, r, r->entry);
 
   con->isopen = TRUE;
   return TRUE;
@@ -57,9 +60,9 @@ void rchive_write_close(Rconnection con) {
     return;
   }
   /* Close scratch file */
-  archive_write_finish_entry(r->ar);
-  archive_write_close(r->ar);
-  archive_write_free(r->ar);
+  call(archive_write_finish_entry, r);
+  call(archive_write_close, r);
+  call(archive_write_free, r);
   archive_entry_free(r->entry);
 
   /* Write scratch file to archive */
@@ -118,7 +121,7 @@ void rchive_write_close(Rconnection con) {
   }
 
   while ((bytes_read = read(fd, buf, sizeof(buf))) > 0) {
-    int bytes_out = archive_write_data(out, buf, bytes_read);
+    ssize_t bytes_out = archive_write_data(out, buf, bytes_read);
     if (bytes_out < 0) {
       con->isopen = FALSE;
       Rf_error("Error writing to '%s'", r->archive_filename.c_str());

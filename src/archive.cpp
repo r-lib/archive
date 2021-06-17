@@ -12,23 +12,16 @@ archive_(const std::string& path, cpp11::strings options) {
 
   struct archive* a;
   struct archive_entry* entry;
-  int r;
 
   a = archive_read_new();
   call(archive_read_support_filter_all, a);
   call(archive_read_support_format_all, a);
 
   if (options.size() > 0) {
-    r = archive_read_set_options(a, std::string(options[0]).c_str());
-    if (r != ARCHIVE_OK) {
-      Rf_error(archive_error_string(a));
-    }
+    call(archive_read_set_options, a, std::string(options[0]).c_str());
   }
 
-  r = archive_read_open_filename(a, path.c_str(), 10240);
-  if (r != ARCHIVE_OK) {
-    cpp11::stop(archive_error_string(a));
-  }
+  call(archive_read_open_filename, a, path.c_str(), 10240);
   while (archive_read_next_header(a, &entry) == ARCHIVE_OK) {
     paths.push_back(archive_entry_pathname(entry));
     sizes.push_back(archive_entry_size(entry));
@@ -36,9 +29,6 @@ archive_(const std::string& path, cpp11::strings options) {
     call(archive_read_data_skip, a);
   }
   call(archive_read_free, a);
-  if (r != ARCHIVE_OK) {
-    cpp11::stop(archive_error_string(a));
-  }
 
   static auto as_tibble = cpp11::package("tibble")["as_tibble"];
   cpp11::writable::doubles d(dates);

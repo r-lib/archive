@@ -31,7 +31,7 @@
     call(archive_write_set_options, a, std::string(options[0]).c_str());
   }
 
-  archive_write_open_filename(a, archive_filename.c_str());
+  call(archive_write_open_filename, a, archive_filename.c_str());
   for (std::string file : files) {
     stat(file.c_str(), &st);
     entry = archive_entry_new();

@@ -54,12 +54,9 @@ bool any_matches(const char* filename, cpp11::strings filenames) {
   call(archive_write_disk_set_standard_lookup, ext);
   call(archive_read_open_filename, a, archive_filename.c_str(), sz);
   for (;;) {
-    r = archive_read_next_header(a, &entry);
+    r = call(archive_read_next_header, a, &entry);
     if (r == ARCHIVE_EOF)
       break;
-    if (r != ARCHIVE_OK) {
-      cpp11::stop("archive_read_next_header(): %s", archive_error_string(a));
-    }
     const char* filename = archive_entry_pathname(entry);
     if (filenames.size() == 0 || any_matches(filename, filenames)) {
       call(archive_write_header, ext, entry);

@@ -9,10 +9,7 @@ static size_t rchive_write_direct_data(
   rchive* r = (rchive*)ctx->private_ptr;
 
   size_t realsize = sz * n;
-  ssize_t bytes_out = archive_write_data(r->ar, contents, realsize);
-  if (bytes_out < 0) {
-    Rf_errorcall(R_NilValue, archive_error_string(r->ar));
-  }
+  call(archive_write_data, r, contents, realsize);
   r->size += realsize;
 
   return n;

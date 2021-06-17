@@ -5,11 +5,9 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/jimhester/archive/workflows/R-CMD-check/badge.svg)](https://github.com/jimhester/archive/actions)
+[![R-CMD-check](https://github.com/r-lib/archive/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/archive/actions)
 [![Coverage
-Status](https://img.shields.io/codecov/c/github/jimhester/archive/master.svg)](https://codecov.io/github/jimhester/archive?branch=master)
-[![Codecov test
-coverage](https://codecov.io/gh/jimhester/archive/branch/master/graph/badge.svg)](https://codecov.io/gh/jimhester/archive?branch=master)
+Status](https://img.shields.io/codecov/c/github/r-lib/archive/master.svg)](https://codecov.io/github/r-lib/archive?branch=master)
 <!-- badges: end -->
 
 R bindings to libarchive <http://www.libarchive.org>. Supports many
@@ -26,7 +24,7 @@ You can install archive from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("jimhester/archive")
+devtools::install_github("r-lib/archive")
 ```
 
 ## Example
@@ -73,7 +71,7 @@ read_csv(archive_read("mtcars.tar.gz"), col_types = cols())
 
 # Archive file sizes
 file.size(c("mtcars.zip", "mtcars.tar.gz"))
-#> [1] 738 649
+#> [1] 742 647
 ```
 
 ### Multi file archives
@@ -96,9 +94,9 @@ a
 #> # A tibble: 3 x 3
 #>   path            size date               
 #>   <chr>          <int> <dttm>             
-#> 1 iris.csv        3716 2021-06-14 10:58:10
-#> 2 mtcars.csv      1281 2021-06-14 10:58:10
-#> 3 airquality.csv  2890 2021-06-14 10:58:10
+#> 1 iris.csv        3716 2021-06-17 15:58:22
+#> 2 mtcars.csv      1281 2021-06-17 15:58:22
+#> 3 airquality.csv  2890 2021-06-17 15:58:22
 
 # By default `archive_read()` will read the first file from a multi-file archive.
 read_csv(archive_read(a), col_types = cols())
@@ -142,7 +140,7 @@ automatically detecting the compression used.
 
 ``` r
 # Write bzip2, uuencoded data
-write_csv(mtcars, file_write("mtcars.bz2", c("uuencode", "bzip2")))
+write_csv(mtcars, file_write("mtcars.bz2", filter = c("uuencode", "bzip2")))
 
 # Read it back, the formats are automatically detected
 read_csv(file_read("mtcars.bz2"), col_types = cols())

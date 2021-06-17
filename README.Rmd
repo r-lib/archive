@@ -19,9 +19,8 @@ library(archive)
 # archive
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/jimhester/archive/workflows/R-CMD-check/badge.svg)](https://github.com/jimhester/archive/actions)
-[![Coverage Status](https://img.shields.io/codecov/c/github/jimhester/archive/master.svg)](https://codecov.io/github/jimhester/archive?branch=master)
-[![Codecov test coverage](https://codecov.io/gh/jimhester/archive/branch/master/graph/badge.svg)](https://codecov.io/gh/jimhester/archive?branch=master)
+[![R-CMD-check](https://github.com/r-lib/archive/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/archive/actions)
+[![Coverage Status](https://img.shields.io/codecov/c/github/r-lib/archive/master.svg)](https://codecov.io/github/r-lib/archive?branch=master)
 <!-- badges: end -->
 
 R bindings to libarchive <http://www.libarchive.org>.
@@ -37,7 +36,7 @@ You can install archive from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("jimhester/archive")
+devtools::install_github("r-lib/archive")
 ```
 
 ## Example
@@ -102,7 +101,7 @@ compression used.
 
 ```{r}
 # Write bzip2, uuencoded data
-write_csv(mtcars, file_write("mtcars.bz2", c("uuencode", "bzip2")))
+write_csv(mtcars, file_write("mtcars.bz2", filter = c("uuencode", "bzip2")))
 
 # Read it back, the formats are automatically detected
 read_csv(file_read("mtcars.bz2"), col_types = cols())

@@ -24,47 +24,34 @@ static Rboolean rchive_read_open(Rconnection con) {
  */
 #if ARCHIVE_VERSION_NUMBER >= 3001000
   if (r->filters[0] == -1) {
-    r->last_response = archive_read_support_filter_all(r->ar);
+    call(archive_read_support_filter_all, r);
   } else {
     for (int i = 0; i < FILTER_MAX && r->filters[i] != -1; ++i) {
-      r->last_response = archive_read_append_filter(r->ar, r->filters[i]);
-      if (r->last_response != ARCHIVE_OK) {
-        Rf_error(archive_error_string(r->ar));
-      }
+      call(archive_read_append_filter, r, r->filters[i]);
     }
   }
 
   if (r->format == -1) {
-    r->last_response = archive_read_support_format_all(r->ar);
+    call(archive_read_support_format_all, r);
   } else if (is_raw_format) {
-    archive_read_support_format_raw(r->ar);
+    call(archive_read_support_format_raw, r);
   } else {
-    r->last_response = archive_read_set_format(r->ar, r->format);
-    if (r->last_response != ARCHIVE_OK) {
-      Rf_error(archive_error_string(r->ar));
-    }
+    call(archive_read_set_format, r, r->format);
   }
 #else
-  r->last_response = archive_read_support_filter_all(r->ar);
-  r->last_response = archive_read_support_format_all(r->ar);
+  call(archive_read_support_filter_all, r);
+  call(archive_read_support_format_all, r);
 #endif
 
   if (!r->options.empty()) {
-    r->last_response = archive_read_set_options(r->ar, r->options.c_str());
-    if (r->last_response != ARCHIVE_OK) {
-      con->isopen = FALSE;
-      Rf_error(archive_error_string(r->ar));
-    }
+    call(archive_read_set_options, r, r->options.c_str());
   }
 
-  r->last_response = archive_read_open_filename(
-      r->ar, r->archive_filename.c_str(), r->buf.size());
-
-  if (r->last_response != ARCHIVE_OK) {
-    con->isopen = FALSE;
-    con->incomplete = FALSE;
-    Rf_error(archive_error_string(r->ar));
-  }
+  call(
+      archive_read_open_filename,
+      r,
+      r->archive_filename.c_str(),
+      r->buf.size());
 
   /* Find entry to extract */
   while (archive_read_next_header(r->ar, &r->entry) == ARCHIVE_OK) {
@@ -75,7 +62,7 @@ static Rboolean rchive_read_open(Rconnection con) {
       push(r);
       return TRUE;
     }
-    archive_read_data_skip(r->ar);
+    call(archive_read_data_skip, r);
   }
   Rf_error("'%s' not found in archive", r->filename.c_str());
   return FALSE;
@@ -83,7 +70,7 @@ static Rboolean rchive_read_open(Rconnection con) {
 
 void rchive_read_close(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
-  archive_read_close(r->ar);
+  call(archive_read_close, r);
 
   con->isopen = FALSE;
   con->incomplete = FALSE;
@@ -94,7 +81,7 @@ void rchive_read_destroy(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
   /* free the handle connection */
-  archive_read_free(r->ar);
+  call(archive_read_free, r);
 
   delete r;
 }

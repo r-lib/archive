@@ -44,4 +44,12 @@ size_t push(rchive* r);
 int archive_write_add_filter(struct archive* a, int code);
 #endif
 
+template <typename F, typename... Args>
+inline void call(F f, rchive* r, Args... args) {
+  r->last_response = f(r->ar, args...);
+  if (r->last_response != ARCHIVE_OK) {
+    Rf_errorcall(R_NilValue, archive_error_string(r->ar));
+  }
+}
+
 [[cpp11::register]] void rchive_init(SEXP xptr);

@@ -14,7 +14,7 @@ rchive_write_data(const void* contents, size_t sz, size_t n, Rconnection ctx) {
   rchive* r = (rchive*)ctx->private_ptr;
 
   size_t realsize = sz * n;
-  call(archive_write_data, r, contents, realsize);
+  call(archive_write_data, ctx, contents, realsize);
   r->size += realsize;
 
   return n;
@@ -38,7 +38,7 @@ static Rboolean rchive_write_open(Rconnection con) {
       r->entry, scratch_file(r->filename.c_str()).c_str());
   archive_entry_set_filetype(r->entry, AE_IFREG);
   archive_entry_set_perm(r->entry, 0644);
-  call(archive_write_header, r, r->entry);
+  call(archive_write_header, con, r->entry);
 
   con->isopen = TRUE;
   return TRUE;
@@ -56,10 +56,11 @@ void rchive_write_close(Rconnection con) {
     return;
   }
   /* Close scratch file */
-  call(archive_write_finish_entry, r);
-  call(archive_write_close, r);
-  call(archive_write_free, r);
+  call(archive_write_finish_entry, con);
+  call(archive_write_close, con);
+  call(archive_write_free, con);
   archive_entry_free(r->entry);
+  con->isopen = FALSE;
 
   /* Write scratch file to archive */
   struct archive* in;
@@ -72,7 +73,6 @@ void rchive_write_close(Rconnection con) {
   std::string scratch = scratch_file(r->filename.c_str());
   int fd = open(scratch.c_str(), O_RDONLY);
   if (fd < 0) {
-    con->isopen = FALSE;
     Rf_error("Could not open scratch file");
   }
   archive_entry_copy_pathname(entry, r->filename.c_str());
@@ -107,7 +107,6 @@ void rchive_write_close(Rconnection con) {
   call(archive_read_free, in);
 
   unlink(scratch.c_str());
-  con->isopen = FALSE;
 }
 
 void rchive_write_destroy(Rconnection con) {

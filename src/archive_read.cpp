@@ -24,32 +24,32 @@ static Rboolean rchive_read_open(Rconnection con) {
  */
 #if ARCHIVE_VERSION_NUMBER >= 3001000
   if (r->filters[0] == -1) {
-    call(archive_read_support_filter_all, r);
+    call(archive_read_support_filter_all, con);
   } else {
     for (int i = 0; i < FILTER_MAX && r->filters[i] != -1; ++i) {
-      call(archive_read_append_filter, r, r->filters[i]);
+      call(archive_read_append_filter, con, r->filters[i]);
     }
   }
 
   if (r->format == -1) {
-    call(archive_read_support_format_all, r);
+    call(archive_read_support_format_all, con);
   } else if (is_raw_format) {
-    call(archive_read_support_format_raw, r);
+    call(archive_read_support_format_raw, con);
   } else {
-    call(archive_read_set_format, r, r->format);
+    call(archive_read_set_format, con, r->format);
   }
 #else
-  call(archive_read_support_filter_all, r);
-  call(archive_read_support_format_all, r);
+  call(archive_read_support_filter_all, con);
+  call(archive_read_support_format_all, con);
 #endif
 
   if (!r->options.empty()) {
-    call(archive_read_set_options, r, r->options.c_str());
+    call(archive_read_set_options, con, r->options.c_str());
   }
 
   call(
       archive_read_open_filename,
-      r,
+      con,
       r->archive_filename.c_str(),
       r->buf.size());
 
@@ -62,26 +62,24 @@ static Rboolean rchive_read_open(Rconnection con) {
       push(r);
       return TRUE;
     }
-    call(archive_read_data_skip, r);
+    call(archive_read_data_skip, con);
   }
   Rf_error("'%s' not found in archive", r->filename.c_str());
   return FALSE;
 }
 
 void rchive_read_close(Rconnection con) {
-  rchive* r = (rchive*)con->private_ptr;
-  call(archive_read_close, r);
+  call(archive_read_close, con);
 
   con->isopen = FALSE;
   con->incomplete = FALSE;
 }
 
 void rchive_read_destroy(Rconnection con) {
-  // Rprintf("Destroying connection.\n");
   rchive* r = (rchive*)con->private_ptr;
 
   /* free the handle connection */
-  call(archive_read_free, r);
+  call(archive_read_free, con);
 
   delete r;
 }

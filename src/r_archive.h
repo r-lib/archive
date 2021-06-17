@@ -45,9 +45,11 @@ int archive_write_add_filter(struct archive* a, int code);
 #endif
 
 template <typename F, typename... Args>
-inline int call(F f, rchive* r, Args... args) {
+inline int call(F f, Rconnection con, Args... args) {
+  rchive* r = (rchive*)con->private_ptr;
   r->last_response = f(r->ar, args...);
   if (r->last_response < ARCHIVE_OK) {
+    con->isopen = FALSE;
     const char* msg = archive_error_string(r->ar);
     if (msg) {
       Rf_errorcall(R_NilValue, msg);

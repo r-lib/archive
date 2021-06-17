@@ -5,11 +5,11 @@
 
 /* callback function to store received data */
 static size_t rchive_write_direct_data(
-    const void* contents, size_t sz, size_t n, Rconnection ctx) {
-  rchive* r = (rchive*)ctx->private_ptr;
+    const void* contents, size_t sz, size_t n, Rconnection con) {
+  rchive* r = (rchive*)con->private_ptr;
 
   size_t realsize = sz * n;
-  call(archive_write_data, r, contents, realsize);
+  call(archive_write_data, con, contents, realsize);
   r->size += realsize;
 
   return n;
@@ -21,16 +21,16 @@ static Rboolean rchive_write_direct_open(Rconnection con) {
   r->ar = archive_write_new();
 
   for (int i = 0; i < FILTER_MAX && r->filters[i] != -1; ++i) {
-    call(archive_write_add_filter, r, r->filters[i]);
+    call(archive_write_add_filter, con, r->filters[i]);
   }
 
-  call(archive_write_set_format, r, r->format);
+  call(archive_write_set_format, con, r->format);
 
   if (!r->options.empty()) {
-    call(archive_write_set_options, r, r->options.c_str());
+    call(archive_write_set_options, con, r->options.c_str());
   }
 
-  call(archive_write_open_filename, r, r->archive_filename.c_str());
+  call(archive_write_open_filename, con, r->archive_filename.c_str());
 
   r->entry = archive_entry_new();
 
@@ -38,7 +38,7 @@ static Rboolean rchive_write_direct_open(Rconnection con) {
   archive_entry_set_filetype(r->entry, AE_IFREG);
   archive_entry_set_perm(r->entry, 0644);
   archive_entry_unset_size(r->entry);
-  call(archive_write_header, r, r->entry);
+  call(archive_write_header, con, r->entry);
 
   archive_entry_free(r->entry);
 
@@ -50,14 +50,12 @@ static Rboolean rchive_write_direct_open(Rconnection con) {
  * archive file based on the archive filename given and then unlinks the
  * scratch file */
 void rchive_write_direct_close(Rconnection con) {
-  rchive* r = (rchive*)con->private_ptr;
-
   if (!con->isopen) {
     return;
   }
   /* Close scratch file */
-  call(archive_write_close, r);
-  call(archive_write_free, r);
+  call(archive_write_close, con);
+  call(archive_write_free, con);
 
   con->isopen = FALSE;
 }

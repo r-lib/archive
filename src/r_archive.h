@@ -44,10 +44,16 @@ size_t push(rchive* r);
 int archive_write_add_filter(struct archive* a, int code);
 #endif
 
-#define call(f, ...) call_(#f, f, __VA_ARGS__)
+#define call(f, ...) call_(__FILE__, __LINE__, #f, f, __VA_ARGS__)
 
 template <typename F, typename... Args>
-inline int call_(const char* f_name, F f, Rconnection con, Args... args) {
+inline int call_(
+    const char* file_name,
+    int line,
+    const char* function_name,
+    F f,
+    Rconnection con,
+    Args... args) {
   rchive* r = (rchive*)con->private_ptr;
   if (!r->ar) {
     return ARCHIVE_OK;
@@ -57,23 +63,41 @@ inline int call_(const char* f_name, F f, Rconnection con, Args... args) {
     con->isopen = FALSE;
     const char* msg = archive_error_string(r->ar);
     if (msg) {
-      Rf_errorcall(R_NilValue, "%s(): %s", f_name, msg);
+      Rf_errorcall(
+          R_NilValue, "%s:%i %s(): %s", file_name, line, function_name, msg);
     } else {
-      Rf_errorcall(R_NilValue, "%s(): unknown libarchive error", f_name);
+      Rf_errorcall(
+          R_NilValue,
+          "%s:%i %s(): unknown libarchive error",
+          file_name,
+          line,
+          function_name);
     }
   }
   return r->last_response;
 }
 
 template <typename F, typename... Args>
-inline int call_(const char* f_name, F f, archive* ar, Args... args) {
+inline int call_(
+    const char* file_name,
+    int line,
+    const char* function_name,
+    F f,
+    archive* ar,
+    Args... args) {
   ssize_t response = f(ar, args...);
   if (response < ARCHIVE_OK) {
     const char* msg = archive_error_string(ar);
     if (msg) {
-      Rf_errorcall(R_NilValue, "%s(): %s", f_name, msg);
+      Rf_errorcall(
+          R_NilValue, "%s:%i %s(): %s", file_name, line, function_name, msg);
     } else {
-      Rf_errorcall(R_NilValue, "%s(): unknown libarchive error", f_name);
+      Rf_errorcall(
+          R_NilValue,
+          "%s:%i %s(): unknown libarchive error",
+          file_name,
+          line,
+          function_name);
     }
   }
   return response;

@@ -30,6 +30,9 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sek
 See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
 }
+\value{
+An 'archive' object which describes the archive.
+}
 \description{
 This function retrieves metadata about files in an archive, it can be passed
 to \code{\link[=archive_read]{archive_read()}} or \link{archive_write} to create a connection to read or

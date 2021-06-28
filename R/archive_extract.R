@@ -5,6 +5,7 @@
 #' if it does not exist.
 #' @details
 #' If `file` is `NULL` (the default) all files will be extracted.
+#' @returns An 'archive' object describing the archive (invisibly).
 #' @examples
 #' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 #' d <- tempfile()

@@ -36,6 +36,9 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sek
 See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
 }
+\value{
+An 'archive' object describing the archive (invisibly).
+}
 \description{
 Extract contents of an archive to a directory
 }

@@ -64,6 +64,11 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&se
 
 \item{files}{\code{character()} One or more files to add to the archive.}
 }
+\value{
+An 'archive' object representing the new archive (invisibly).
+
+An 'archive' object representing the new archive (invisibly).
+}
 \description{
 \code{archive_write_files()} adds one or more files to a new archive.
 \code{archive_write_dir()} adds all the file(s) in a directory to a new archive.

@@ -14,6 +14,7 @@
 #' the file size must be known when the archive is created, so the data is
 #' first written to a scratch file on disk and then added to the archive. This
 #' scratch file is automatically removed when writing is complete.
+#' @returns An 'archive_write' connection to the file within the archive to be written.
 #' @examples
 #' # Archive format and filters can be set automatically from the file extensions.
 #' f1 <- tempfile(fileext = ".tar.gz")

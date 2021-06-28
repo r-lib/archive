@@ -41,6 +41,9 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sek
 See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
 }
+\value{
+An 'archive_read' connection (for \code{file_read()}) or an 'archive_write' connection (for \code{file_write()}) to the file.
+}
 \description{
 They are functionally equivalent to calling \link{archive_read} or
 \link{archive_write} using \verb{format = "raw", archive = file}.

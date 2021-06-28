@@ -8,7 +8,7 @@
 #' @inheritParams archive_read
 #' @inheritParams archive_write
 #' @name file_connections
-#' @export
+#' @returns An 'archive_read' connection (for `file_read()`) or an 'archive_write' connection (for `file_write()`) to the file.
 #' @examples
 #' if (archive:::libarchive_version() > "3.2.0") {
 #' # Write bzip2, base 64 encoded data and use high compression
@@ -23,6 +23,7 @@
 #' read.csv(file_read("mtcars.bz2"), row.names = 1, nrows = 3)
 #' unlink("mtcars.bz2")
 #' }
+#' @export
 file_write <- function(file, mode = "w", filter = NULL, options = character()) {
 
   if (is.null(filter)) {

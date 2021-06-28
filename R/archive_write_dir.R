@@ -2,6 +2,7 @@
 #' @param ... additional parameters passed to `base::dir`.
 #' @param dir `character(1)` The directory of files to add.
 #' @inheritParams base::list.files
+#' @returns An 'archive' object representing the new archive (invisibly).
 #' @export
 archive_write_dir <- function(archive, dir, format = NULL, filter = NULL, options = character(), ..., recursive = TRUE, full.names = FALSE) {
   assert("`dir` {dir} is not readable",

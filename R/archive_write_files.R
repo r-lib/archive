@@ -4,6 +4,7 @@
 #' `archive_write_dir()` adds all the file(s) in a directory to a new archive.
 #' @param files `character()` One or more files to add to the archive.
 #' @inheritParams archive_write
+#' @returns An 'archive' object representing the new archive (invisibly).
 #' @examples
 #' if (archive:::libarchive_version() > "3.2.0") {
 #' # write some files to a directory

@@ -1,5 +1,4 @@
 #' @rdname file_connections
-#' @inheritParams archive_read
 #' @export
 file_read <- function(file, mode = "r", filter = NULL, options = character()) {
   assert("{file} is not a readable file path",

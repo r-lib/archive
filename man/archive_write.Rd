@@ -48,6 +48,9 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sek
 See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
 }
+\value{
+An 'archive_write' connection to the file within the archive to be written.
+}
 \description{
 Create a writable connection to a file in an archive.
 }

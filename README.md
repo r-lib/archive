@@ -35,7 +35,7 @@ Use `archive_read()` and `archive_write()` to read and write single
 files to an archive. These files return connections, which can be passed
 to any R interface which can take a connection. Most base R file system
 functions use connections, as well as some packages like
-[readr](http://readr.tidyverse.org/).
+[readr](https://readr.tidyverse.org/).
 
 ``` r
 library(readr) # read_csv(), write_csv(), cols()

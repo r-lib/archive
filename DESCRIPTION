@@ -29,6 +29,6 @@ RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 SystemRequirements: C++11, libarchive: libarchive-dev (deb), libarchive-devel (rpm), libarchive
   (homebrew), libarchive_dev (csw)
-URL: https://github.com/r-lib/archive
+URL: https://r-lib.github.io/archive/, https://github.com/r-lib/archive
 ByteCompile: true
 BugReports: https://github.com/r-lib/archive/issues

@@ -21,3 +21,4 @@
 ^\.github$
 ^.cache$
 ^compile_commands\.json$
+^LICENSE\.md$

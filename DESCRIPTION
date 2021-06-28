@@ -5,7 +5,18 @@ Description: Bindings to 'libarchive' <http://www.libarchive.org> the
   archive formats including 'tar', 'ZIP', '7-zip', 'RAR', 'CAB' and compression
   formats including 'gzip', 'bzip2', 'compress', 'lzma' and 'xz'.
 Version: 1.0.0
-Authors@R: person("Jim", "Hester", email = "james.f.hester@gmail.com", role = c("aut", "cre"))
+Authors@R:
+    c(person(given = "Jim",
+             family = "Hester",
+             role = c("aut", "cre"),
+             email = "jim.hester@rstudio.com",
+             comment = c(ORCID = "0000-0002-2739-7082")),
+      person(given = "Ondrej",
+             family = "Holy",
+             role = "cph",
+             comment = "archive_write_add_filter implementation"),
+        person(given = "RStudio",
+          role = c("cph", "fnd")))
 Depends: R (>= 3.1.0)
 Imports: tibble, glue, rlang
 Suggests: testthat,

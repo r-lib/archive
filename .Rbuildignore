@@ -22,3 +22,4 @@
 ^.cache$
 ^compile_commands\.json$
 ^LICENSE\.md$
+^CRAN-RELEASE$

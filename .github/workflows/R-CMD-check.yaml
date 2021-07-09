@@ -35,18 +35,18 @@ jobs:
           - {os: ubuntu-18.04,   r: '3.6',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
           - {os: ubuntu-18.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
           - {os: ubuntu-18.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          - {os: ubuntu-16.04,   r: 'release', rspm: "https://demo.rstudiopm.com/all/__linux__/bionic/latest", locale: 'en_US'}
+          - {os: ubuntu-18.04,   r: 'release', rspm: "https://demo.rstudiopm.com/all/__linux__/bionic/latest", locale: 'en_US.ISO-8859-15'}
 
     env:
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-       - name: Set locale
-        if: matrix.config.locale == 'en_US'
+      - name: Set locale
+        if: matrix.config.locale != ''
         run: |
-          sudo locale-gen en_US
-          echo "::set-env name=LC_ALL::en_US"
+          sudo locale-gen ${{ matrix.config.locale }}
+          echo "LC_ALL=${{ matrix.config.locale }}" >> $GITHUB_ENV
 
       - uses: actions/checkout@v2
 

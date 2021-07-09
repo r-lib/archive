@@ -8,6 +8,8 @@
 [![R-CMD-check](https://github.com/r-lib/archive/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/archive/actions)
 [![Coverage
 Status](https://img.shields.io/codecov/c/github/r-lib/archive/master.svg)](https://codecov.io/github/r-lib/archive?branch=master)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/archive)](https://CRAN.R-project.org/package=archive)
 <!-- badges: end -->
 
 R bindings to libarchive <http://www.libarchive.org>. Supports many
@@ -20,11 +22,10 @@ as well as efficiently reading and writing archives directly to disk.
 
 ## Installation
 
-You can install archive from github with:
+You can install archive from CRAN with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("r-lib/archive")
+# install.packages("archive")
 ```
 
 ## Example
@@ -71,7 +72,7 @@ read_csv(archive_read("mtcars.tar.gz"), col_types = cols())
 
 # Archive file sizes
 file.size(c("mtcars.zip", "mtcars.tar.gz"))
-#> [1] 742 649
+#> [1] 742 648
 ```
 
 ### Multi file archives
@@ -94,9 +95,9 @@ a
 #> # A tibble: 3 x 3
 #>   path            size date               
 #>   <chr>          <int> <dttm>             
-#> 1 iris.csv        3716 2021-06-29 08:30:53
-#> 2 mtcars.csv      1281 2021-06-29 08:30:53
-#> 3 airquality.csv  2890 2021-06-29 08:30:53
+#> 1 iris.csv        3716 2021-07-09 12:55:56
+#> 2 mtcars.csv      1281 2021-07-09 12:55:56
+#> 3 airquality.csv  2890 2021-07-09 12:55:56
 
 # By default `archive_read()` will read the first file from a multi-file archive.
 read_csv(archive_read(a), col_types = cols())

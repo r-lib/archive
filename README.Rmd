@@ -21,6 +21,7 @@ library(archive)
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/r-lib/archive/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/archive/actions)
 [![Coverage Status](https://img.shields.io/codecov/c/github/r-lib/archive/master.svg)](https://codecov.io/github/r-lib/archive?branch=master)
+[![CRAN status](https://www.r-pkg.org/badges/version/archive)](https://CRAN.R-project.org/package=archive)
 <!-- badges: end -->
 
 R bindings to libarchive <http://www.libarchive.org>.
@@ -32,11 +33,10 @@ well as efficiently reading and writing archives directly to disk.
 
 ## Installation
 
-You can install archive from github with:
+You can install archive from CRAN with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("r-lib/archive")
+# install.packages("archive")
 ```
 
 ## Example

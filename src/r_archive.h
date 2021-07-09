@@ -103,6 +103,13 @@ inline int call_(
 }
 
 class local_utf8_locale {
+  // In the future once R is using the windows runtime that supports UTF-8 we
+  // could set the UTF-8 locale here for windows as well with ".UTF-8"
+  // https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/setlocale-wsetlocale?view=msvc-160#utf-8-support
+  // But for now just do nothing
+#ifdef __MINGW32__
+  local_utf8_lcoale() {}
+#else
 private:
   std::string old_locale_;
 
@@ -119,6 +126,7 @@ public:
     }
   }
   ~local_utf8_locale() { std::setlocale(LC_CTYPE, old_locale_.c_str()); }
+#endif
 };
 
 [[cpp11::register]] void rchive_init(SEXP xptr);

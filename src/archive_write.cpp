@@ -30,12 +30,7 @@ std::string scratch_file(const char* filename) {
 static Rboolean rchive_write_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
-  std::string old_locale(std::setlocale(LC_ALL, ""));
-  if (nullptr == std::setlocale(LC_ALL, "en_US.UTF-8")) {
-    cpp11::warning(
-        "Unable to set a UTF-8 locale!\n  archive paths with unicode "
-        "characters may not be handled properly");
-  }
+  local_utf8_locale ll;
 
   r->ar = archive_write_disk_new();
 
@@ -49,7 +44,6 @@ static Rboolean rchive_write_open(Rconnection con) {
 
   con->isopen = TRUE;
 
-  std::setlocale(LC_ALL, old_locale.c_str());
   return TRUE;
 }
 
@@ -61,12 +55,7 @@ void rchive_write_close(Rconnection con) {
   size_t bytes_read;
   rchive* r = (rchive*)con->private_ptr;
 
-  std::string old_locale(std::setlocale(LC_ALL, ""));
-  if (nullptr == std::setlocale(LC_ALL, "en_US.UTF-8")) {
-    cpp11::warning(
-        "Unable to set a UTF-8 locale!\n  archive paths with unicode "
-        "characters may not be handled properly");
-  }
+  local_utf8_locale ll;
 
   if (!con->isopen) {
     return;
@@ -126,8 +115,6 @@ void rchive_write_close(Rconnection con) {
   call(archive_read_free, in);
 
   unlink(scratch.c_str());
-
-  std::setlocale(LC_ALL, old_locale.c_str());
 }
 
 void rchive_write_destroy(Rconnection con) {

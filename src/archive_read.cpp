@@ -13,12 +13,7 @@
 static Rboolean rchive_read_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
-  std::string old_locale(std::setlocale(LC_ALL, ""));
-  if (nullptr == std::setlocale(LC_ALL, "en_US.UTF-8")) {
-    cpp11::warning(
-        "Unable to set a UTF-8 locale!\n  archive paths with unicode "
-        "characters may not be handled properly");
-  }
+  local_utf8_locale ll;
 
   r->ar = archive_read_new();
 
@@ -67,15 +62,11 @@ static Rboolean rchive_read_open(Rconnection con) {
       r->has_more = 1;
       con->isopen = TRUE;
       push(r);
-      std::setlocale(LC_ALL, old_locale.c_str());
       return TRUE;
     }
     call(archive_read_data_skip, con);
   }
 
-  std::setlocale(LC_ALL, old_locale.c_str());
-
-  Rf_error("'%s' not found in archive", r->filename.c_str());
   return FALSE;
 }
 

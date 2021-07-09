@@ -18,12 +18,7 @@ static size_t rchive_write_direct_data(
 static Rboolean rchive_write_direct_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
-  std::string old_locale(std::setlocale(LC_ALL, ""));
-  if (nullptr == std::setlocale(LC_ALL, "en_US.UTF-8")) {
-    cpp11::warning(
-        "Unable to set a UTF-8 locale!\n  archive paths with unicode "
-        "characters may not be handled properly");
-  }
+  local_utf8_locale ll;
 
   r->ar = archive_write_new();
 
@@ -50,8 +45,6 @@ static Rboolean rchive_write_direct_open(Rconnection con) {
   archive_entry_free(r->entry);
 
   con->isopen = TRUE;
-
-  std::setlocale(LC_ALL, old_locale.c_str());
 
   return TRUE;
 }

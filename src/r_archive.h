@@ -13,7 +13,7 @@
 #undef FALSE
 #include <R_ext/Boolean.h>
 
-#include <locale>
+#include <clocale>
 #include <vector>
 
 #define R_EOF -1
@@ -101,5 +101,24 @@ inline int call_(
   }
   return response;
 }
+
+class local_utf8_locale {
+private:
+  std::string old_locale_;
+
+public:
+  local_utf8_locale() : old_locale_(std::setlocale(LC_CTYPE, NULL)) {
+#ifdef __APPLE__
+    const char* locale = "UTF-8";
+#else
+    const char* locale = "C.UTF-8";
+#endif
+    const char* new_locale = std::setlocale(LC_CTYPE, locale);
+    if (nullptr == new_locale) {
+      cpp11::warning("Setting UTF-8 locale failed");
+    }
+  }
+  ~local_utf8_locale() { std::setlocale(LC_CTYPE, old_locale_.c_str()); }
+};
 
 [[cpp11::register]] void rchive_init(SEXP xptr);

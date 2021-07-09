@@ -16,8 +16,6 @@
 #include <locale>
 #include <vector>
 
-#define min(a, b) (((a) < (b)) ? (a) : (b))
-
 #define R_EOF -1
 
 #define FILTER_MAX 8

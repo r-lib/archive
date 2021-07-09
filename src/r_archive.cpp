@@ -19,7 +19,7 @@ SEXP new_connection(
 }
 
 size_t pop(void* target, size_t max, rchive* r) {
-  size_t copy_size = min(r->size, max);
+  size_t copy_size = r->size < max ? r->size : max;
   memcpy(target, r->cur, copy_size);
   r->cur += copy_size;
   r->size -= copy_size;

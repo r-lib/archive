@@ -6,6 +6,9 @@ using namespace cpp11::literals;
 
 [[cpp11::register]] cpp11::sexp
 archive_(const std::string& path, cpp11::strings options) {
+
+  local_utf8_locale ll;
+
   std::vector<std::string> paths;
   std::vector<__LA_INT64_T> sizes;
   std::vector<time_t> dates;

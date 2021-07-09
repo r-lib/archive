@@ -30,6 +30,8 @@ std::string scratch_file(const char* filename) {
 static Rboolean rchive_write_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
+  local_utf8_locale ll;
+
   r->ar = archive_write_disk_new();
 
   r->entry = archive_entry_new();
@@ -41,6 +43,7 @@ static Rboolean rchive_write_open(Rconnection con) {
   call(archive_write_header, con, r->entry);
 
   con->isopen = TRUE;
+
   return TRUE;
 }
 
@@ -51,6 +54,8 @@ void rchive_write_close(Rconnection con) {
   char buf[8192];
   size_t bytes_read;
   rchive* r = (rchive*)con->private_ptr;
+
+  local_utf8_locale ll;
 
   if (!con->isopen) {
     return;

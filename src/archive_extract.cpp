@@ -35,6 +35,8 @@ bool any_matches(const char* filename, cpp11::strings filenames) {
   int flags;
   int r;
 
+  local_utf8_locale ll;
+
   /* Select which attributes we want to restore. */
   flags = ARCHIVE_EXTRACT_TIME;
   flags |= ARCHIVE_EXTRACT_PERM;

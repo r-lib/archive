@@ -18,6 +18,8 @@ static size_t rchive_write_direct_data(
 static Rboolean rchive_write_direct_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
+  local_utf8_locale ll;
+
   r->ar = archive_write_new();
 
   for (int i = 0; i < FILTER_MAX && r->filters[i] != -1; ++i) {
@@ -43,6 +45,7 @@ static Rboolean rchive_write_direct_open(Rconnection con) {
   archive_entry_free(r->entry);
 
   con->isopen = TRUE;
+
   return TRUE;
 }
 

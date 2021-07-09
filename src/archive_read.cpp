@@ -13,6 +13,8 @@
 static Rboolean rchive_read_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
+  local_utf8_locale ll;
+
   r->ar = archive_read_new();
 
   bool is_raw_format = r->format == ARCHIVE_FORMAT_RAW;
@@ -64,7 +66,7 @@ static Rboolean rchive_read_open(Rconnection con) {
     }
     call(archive_read_data_skip, con);
   }
-  Rf_error("'%s' not found in archive", r->filename.c_str());
+
   return FALSE;
 }
 

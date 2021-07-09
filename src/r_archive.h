@@ -13,9 +13,8 @@
 #undef FALSE
 #include <R_ext/Boolean.h>
 
+#include <clocale>
 #include <vector>
-
-#define min(a, b) (((a) < (b)) ? (a) : (b))
 
 #define R_EOF -1
 
@@ -102,5 +101,31 @@ inline int call_(
   }
   return response;
 }
+
+class local_utf8_locale {
+  // In the future once R is using the windows runtime that supports UTF-8 we
+  // could set the UTF-8 locale here for windows as well with ".UTF-8"
+  // https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/setlocale-wsetlocale?view=msvc-160#utf-8-support
+  // But for now just do nothing
+#ifdef __MINGW32__
+#else
+private:
+  std::string old_locale_;
+
+public:
+  local_utf8_locale() : old_locale_(std::setlocale(LC_CTYPE, NULL)) {
+#ifdef __APPLE__
+    const char* locale = "UTF-8";
+#else
+    const char* locale = "C.UTF-8";
+#endif
+    const char* new_locale = std::setlocale(LC_CTYPE, locale);
+    if (nullptr == new_locale) {
+      cpp11::warning("Setting UTF-8 locale failed");
+    }
+  }
+  ~local_utf8_locale() { std::setlocale(LC_CTYPE, old_locale_.c_str()); }
+#endif
+};
 
 [[cpp11::register]] void rchive_init(SEXP xptr);

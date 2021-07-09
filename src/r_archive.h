@@ -108,7 +108,6 @@ class local_utf8_locale {
   // https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/setlocale-wsetlocale?view=msvc-160#utf-8-support
   // But for now just do nothing
 #ifdef __MINGW32__
-  local_utf8_lcoale() {}
 #else
 private:
   std::string old_locale_;

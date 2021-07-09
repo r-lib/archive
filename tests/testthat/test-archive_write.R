@@ -87,5 +87,35 @@ describe("archive_write", {
 
     expect_gt(file.size(f), file.size(f2))
   })
+
+  it("can translate character sets with a cpio archive", {
+    skip_on_os("windows")
+    skip_on_os("solaris")
+
+    f <- tempfile(fileext = ".cpio")
+
+    filename <- "\u0401\u0404\u0449\u045e\u0445\u0407"
+    write.csv(mtcars,
+      archive_write(f, filename, options = "hdrcharset=CP866")
+    )
+    a <- archive(f, options = "hdrcharset=CP866")
+
+    expect_equal(a$path, filename)
+  })
+
+  it("can translate character sets with a zip archive", {
+    skip_on_os("windows")
+    skip_on_os("solaris")
+
+    f <- tempfile(fileext = ".zip")
+
+    filename <- "\u0401\u0404\u0449\u045e\u0445\u0407"
+    write.csv(mtcars,
+      archive_write(f, filename, options = "hdrcharset=CP866")
+    )
+    a <- archive(f, options = "hdrcharset=CP866")
+
+    expect_equal(a$path, filename)
+  })
 })
 

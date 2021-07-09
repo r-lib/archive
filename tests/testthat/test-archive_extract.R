@@ -34,13 +34,20 @@ describe("archive_extract", {
     expect_equal(file.size(f), a[a$path == "mtcars.csv", ][["size"]])
   })
   it("can take options", {
+    skip_on_os("windows")
+    skip_on_os("solaris")
+
     out_dir <- tempfile()
     dir.create(out_dir)
     on.exit(unlink(out_dir, recursive = TRUE))
 
     filename <- "\u043f\u0440\u0438\u0432\u0435\u0442"
     archive_extract(test_path("cp866.tar.Z.uu"), out_dir, filename, options = "hdrcharset=CP866")
-    file.exists(file.path(out_dir, filename))
+
+    files <- list.files(out_dir)
+    Encoding(files) <- "UTF-8"
+
+    expect_equal(files, filename)
   })
 })
 

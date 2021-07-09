@@ -1,11 +1,20 @@
 #include "r_archive.h"
 
+#include <locale>
 #include <vector>
 
 using namespace cpp11::literals;
 
 [[cpp11::register]] cpp11::sexp
 archive_(const std::string& path, cpp11::strings options) {
+  // Set a UTF-8 locale
+  std::string old_locale(std::setlocale(LC_ALL, ""));
+  if (nullptr == std::setlocale(LC_ALL, "en_US.UTF-8")) {
+    cpp11::warning(
+        "Unable to set a UTF-8 locale!\n  archive paths with unicode "
+        "characters may not be handled properly");
+  }
+
   std::vector<std::string> paths;
   std::vector<__LA_INT64_T> sizes;
   std::vector<time_t> dates;
@@ -38,6 +47,8 @@ archive_(const std::string& path, cpp11::strings options) {
       {"path"_nm = paths, "size"_nm = sizes, "date"_nm = d});
 
   out.attr("path") = path;
+
+  std::setlocale(LC_ALL, old_locale.c_str());
 
   return as_tibble(out);
 }

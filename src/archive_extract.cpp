@@ -35,6 +35,13 @@ bool any_matches(const char* filename, cpp11::strings filenames) {
   int flags;
   int r;
 
+  std::string old_locale(std::setlocale(LC_ALL, ""));
+  if (nullptr == std::setlocale(LC_ALL, "en_US.UTF-8")) {
+    cpp11::warning(
+        "Unable to set a UTF-8 locale!\n  archive paths with unicode "
+        "characters may not be handled properly");
+  }
+
   /* Select which attributes we want to restore. */
   flags = ARCHIVE_EXTRACT_TIME;
   flags |= ARCHIVE_EXTRACT_PERM;
@@ -71,4 +78,6 @@ bool any_matches(const char* filename, cpp11::strings filenames) {
   call(archive_read_free, a);
   call(archive_write_close, ext);
   call(archive_write_free, ext);
+
+  std::setlocale(LC_ALL, old_locale.c_str());
 }

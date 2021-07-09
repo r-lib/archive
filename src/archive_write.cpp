@@ -79,7 +79,7 @@ void rchive_write_close(Rconnection con) {
   con->isopen = FALSE;
   con->incomplete = FALSE;
 
-  /* WrEADMEcratch file to archive */
+  /* Write scratch file to archive */
   struct archive* in;
   struct archive* out;
   struct archive_entry* entry;

@@ -1,6 +1,5 @@
 #include "r_archive.h"
 
-#include <locale>
 #include <vector>
 
 using namespace cpp11::literals;

@@ -13,6 +13,7 @@
 #undef FALSE
 #include <R_ext/Boolean.h>
 
+#include <locale>
 #include <vector>
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))

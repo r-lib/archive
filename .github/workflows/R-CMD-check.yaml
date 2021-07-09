@@ -42,7 +42,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-       - name: Set locale
+      - name: Set locale
         if: matrix.config.locale == 'en_US'
         run: |
           sudo locale-gen en_US

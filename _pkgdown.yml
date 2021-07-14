@@ -1,3 +1,12 @@
+url: https://archive.r-lib.org
+
+authors:
+  "Jim Hester":
+    href: http://jimhester.com
+
+development:
+  mode: auto
+
 reference:
   - title: Read and write archives using R connections.
     desc: These functions deal with archive formats such as zip, 7zip, rar and

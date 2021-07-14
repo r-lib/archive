@@ -1,4 +1,4 @@
-# archive (development version)
+# archive 1.0.2
 
 * skip tests failing on non-UTF-8 systems
 

@@ -54,6 +54,7 @@ describe("archive_read", {
   it("takes options", {
     skip_on_os("windows")
     skip_on_os("solaris")
+    skip_if(l10n_info()$`UTF-8` == FALSE)
 
     con <- archive_read(test_path("cp866.tar.Z.uu"), "\u043f\u0440\u0438\u0432\u0435\u0442", mode = "rb", options = "hdrcharset=CP866")
     on.exit(close(con))

@@ -36,6 +36,7 @@ describe("archive_extract", {
   it("can take options", {
     skip_on_os("windows")
     skip_on_os("solaris")
+    skip_if(l10n_info()$`UTF-8` == FALSE)
 
     out_dir <- tempfile()
     dir.create(out_dir)

@@ -20,19 +20,16 @@
 #' read.csv(archive_read(a, format = "zip"), nrows = 3)
 #' @export
 archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter = NULL, options = character()) {
-  #archive <- as_archive(archive, options)
-  #if (is_number(file)) {
-    #file <- archive$path[[file]]
-  #}
+  assert("`file` must be a length one character vector or numeric",
+    length(file) == 1 && (is.character(file) || is.numeric(file)))
 
-  #assert("`file` must be a length one character vector or numeric",
-    #length(file) == 1 && (is.character(file) || is.numeric(file)))
+  options <- validate_options(options)
 
-  #assert(paste0("`file` {file} not found in `archive` {archive}"),
-    #file %in% archive$path)
+  if (!inherits(archive, "connection")) {
+    archive <- file(archive)
+  }
 
-  #options <- validate_options(options)
+  description <- glue::glue("archive_read({desc})[{file}]", desc = summary(archive)$description)
 
-  #con <- file(archive)
-  archive_read_(con, file, mode, archive_formats()[format], archive_filters()[filter], options, sz = 2^14)
+  archive_read_(archive, file, description, mode, archive_formats()[format], archive_filters()[filter], options, sz = 2^14)
 }

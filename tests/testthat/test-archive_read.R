@@ -9,7 +9,7 @@ describe("archive_read", {
 
     s <- summary(con)
 
-    expect_equal(basename(s[["description"]]), "data.zip[iris.csv]")
+    expect_true(startsWith(s[["description"]], "archive_read"))
     expect_equal(s[["mode"]], "r")
     expect_equal(s[["text"]], "text")
     expect_equal(s[["opened"]], "closed")

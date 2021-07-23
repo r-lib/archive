@@ -4,8 +4,8 @@ archive_extract_ <- function(archive_filename, filenames, options, sz) {
   invisible(.Call(`_archive_archive_extract_`, archive_filename, filenames, options, sz))
 }
 
-archive_read_ <- function(connection, filename, mode, format, filters, options, sz) {
-  .Call(`_archive_archive_read_`, connection, filename, mode, format, filters, options, sz)
+archive_read_ <- function(connection, file, description, mode, format, filters, options, sz) {
+  .Call(`_archive_archive_read_`, connection, file, description, mode, format, filters, options, sz)
 }
 
 archive_write_direct_ <- function(archive_filename, filename, mode, format, filters, options, sz) {

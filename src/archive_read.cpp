@@ -25,6 +25,15 @@ int myclose(struct archive* a, void* client_data) {
   return (ARCHIVE_OK);
 }
 
+bool entry_matches(const std::string& str, archive_entry* entry) {
+  if (str.empty()) {
+    return false;
+  }
+
+  const char* pathname = archive_entry_pathname(entry);
+  return str == pathname;
+}
+
 static Rboolean rchive_read_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
@@ -72,15 +81,25 @@ static Rboolean rchive_read_open(Rconnection con) {
   archive_read_open(r->ar, r, NULL, myread, myclose);
 
   /* Find entry to extract */
+  int file_offset = -1;
+  std::string file;
+
+  if (TYPEOF(r->file) == INTSXP || TYPEOF(r->file) == REALSXP) {
+    file_offset = cpp11::as_cpp<int>(r->file) - 1;
+  } else {
+    file = cpp11::as_cpp<std::string>(r->file);
+  }
+
+  int itr = 0;
   while (archive_read_next_header(r->ar, &r->entry) == ARCHIVE_OK) {
-    const char* str = archive_entry_pathname(r->entry);
-    if (is_raw_format || strcmp(r->filename.c_str(), str) == 0) {
+    if (is_raw_format || entry_matches(file, r->entry) || itr == file_offset) {
       r->has_more = 1;
       con->isopen = TRUE;
       push(r);
       return TRUE;
     }
     call(archive_read_data_skip, con);
+    ++itr;
   }
 
   return FALSE;
@@ -131,7 +150,8 @@ static int rchive_fgetc(Rconnection con) {
 
 [[cpp11::register]] SEXP archive_read_(
     const cpp11::sexp connection,
-    const std::string& filename,
+    const cpp11::sexp file,
+    const std::string& description,
     const std::string& mode,
     cpp11::integers format,
     cpp11::integers filters,
@@ -139,9 +159,8 @@ static int rchive_fgetc(Rconnection con) {
     size_t sz = 16384) {
   Rconnection con;
 
-  std::string desc = std::string("connection") + '[' + filename + ']';
-  SEXP rc =
-      PROTECT(new_connection(desc.c_str(), mode.c_str(), "archive_read", &con));
+  SEXP rc = PROTECT(
+      new_connection(description.c_str(), mode.c_str(), "archive_read", &con));
 
   /* Setup archive */
   rchive* r = new rchive;
@@ -168,7 +187,7 @@ static int rchive_fgetc(Rconnection con) {
     r->filters[i] = filters[i];
   }
 
-  r->filename = filename;
+  r->file = file;
 
   /* set connection properties */
   con->incomplete = TRUE;

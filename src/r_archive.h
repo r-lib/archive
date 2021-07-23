@@ -24,6 +24,7 @@ struct rchive {
   std::string archive_filename;
   int format;
   std::string filename;
+  cpp11::sexp con;
   std::vector<char> buf;
   char* cur;
   archive* ar = nullptr;

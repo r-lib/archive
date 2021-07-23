@@ -10,6 +10,21 @@
  * Source: https://github.com/libarchive/libarchive/wiki/Examples
  */
 
+ssize_t myread(struct archive* a, void* client_data, const void** buff) {
+  struct rchive* mydata = static_cast<rchive*>(client_data);
+  *buff = mydata->buf.data();
+  return R_ReadConnection(
+      R_GetConnection(mydata->con), mydata->buf.data(), mydata->buf.size());
+}
+
+int myclose(struct archive* a, void* client_data) {
+  struct rchive* mydata = static_cast<rchive*>(client_data);
+  static auto close = cpp11::package("base")["close"];
+
+  close(mydata->con);
+  return (ARCHIVE_OK);
+}
+
 static Rboolean rchive_read_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
@@ -49,11 +64,12 @@ static Rboolean rchive_read_open(Rconnection con) {
     call(archive_read_set_options, con, r->options.c_str());
   }
 
-  call(
-      archive_read_open_filename,
-      con,
-      r->archive_filename.c_str(),
-      r->buf.size());
+  static auto open = cpp11::package("base")["open"];
+  static auto isOpen = cpp11::package("base")["isOpen"];
+  if (!isOpen(r->con)) {
+    open(r->con, "rb");
+  }
+  archive_read_open(r->ar, r, NULL, myread, myclose);
 
   /* Find entry to extract */
   while (archive_read_next_header(r->ar, &r->entry) == ARCHIVE_OK) {
@@ -114,7 +130,7 @@ static int rchive_fgetc(Rconnection con) {
 }
 
 [[cpp11::register]] SEXP archive_read_(
-    const std::string& archive_filename,
+    const cpp11::sexp connection,
     const std::string& filename,
     const std::string& mode,
     cpp11::integers format,
@@ -123,7 +139,7 @@ static int rchive_fgetc(Rconnection con) {
     size_t sz = 16384) {
   Rconnection con;
 
-  std::string desc = archive_filename + '[' + filename + ']';
+  std::string desc = std::string("connection") + '[' + filename + ']';
   SEXP rc =
       PROTECT(new_connection(desc.c_str(), mode.c_str(), "archive_read", &con));
 
@@ -133,7 +149,7 @@ static int rchive_fgetc(Rconnection con) {
   r->size = 0;
   r->cur = NULL;
 
-  r->archive_filename = archive_filename;
+  r->con = connection;
 
   if (options.size() > 0) {
     r->options = options[0];

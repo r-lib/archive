@@ -17,6 +17,24 @@ ssize_t myread(struct archive* a, void* client_data, const void** buff) {
       R_GetConnection(mydata->con), mydata->buf.data(), mydata->buf.size());
 }
 
+int64_t myseek(struct archive*, void* client_data, int64_t offset, int whence) {
+  struct rchive* mydata = static_cast<rchive*>(client_data);
+  static auto seek = cpp11::package("base")["seek"];
+
+  seek(
+      mydata->con,
+      offset,
+      whence == SEEK_END ? "end" : whence == SEEK_CUR ? "current" : "start");
+  /* need to call seek again to get the current position */
+  int64_t value = cpp11::as_cpp<int64_t>(seek(mydata->con));
+  // REprintf(
+  //"seek(%i,\"%s\") == %i\n",
+  // offset,
+  // whence == SEEK_END ? "end" : whence == SEEK_CUR ? "current" : "start",
+  // value);
+  return value;
+}
+
 int myclose(struct archive* a, void* client_data) {
   struct rchive* mydata = static_cast<rchive*>(client_data);
   static auto close = cpp11::package("base")["close"];
@@ -78,7 +96,14 @@ static Rboolean rchive_read_open(Rconnection con) {
   if (!isOpen(r->con)) {
     open(r->con, "rb");
   }
-  archive_read_open(r->ar, r, NULL, myread, myclose);
+  call(archive_read_set_read_callback, r->ar, myread);
+  call(archive_read_set_close_callback, r->ar, myclose);
+  static auto isSeekable = cpp11::package("base")["isSeekable"];
+  if (isSeekable(r->con)) {
+    call(archive_read_set_seek_callback, r->ar, myseek);
+  }
+  call(archive_read_set_callback_data, r->ar, r);
+  call(archive_read_open1, r->ar);
 
   /* Find entry to extract */
   int file_offset = -1;
@@ -91,7 +116,8 @@ static Rboolean rchive_read_open(Rconnection con) {
   }
 
   int itr = 0;
-  while (archive_read_next_header(r->ar, &r->entry) == ARCHIVE_OK) {
+  int res;
+  while ((res = archive_read_next_header(r->ar, &r->entry)) == ARCHIVE_OK) {
     if (is_raw_format || entry_matches(file, r->entry) || itr == file_offset) {
       r->has_more = 1;
       con->isopen = TRUE;
@@ -102,6 +128,9 @@ static Rboolean rchive_read_open(Rconnection con) {
     ++itr;
   }
 
+  con->isopen = FALSE;
+  const char* msg = archive_error_string(r->ar);
+  Rf_errorcall(R_NilValue, "%s", msg);
   return FALSE;
 }
 

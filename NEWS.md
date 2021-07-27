@@ -1,5 +1,7 @@
 # archive 1.0.2
 
+# archive 1.0.2
+
 * skip tests failing on non-UTF-8 systems
 
 # archive 1.0.1

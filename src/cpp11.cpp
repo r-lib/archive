@@ -113,23 +113,6 @@ extern "C" SEXP _archive_rchive_init(SEXP xptr) {
 }
 
 extern "C" {
-/* .Call calls */
-extern SEXP _archive_archive_(SEXP, SEXP);
-extern SEXP _archive_archive_extract_(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _archive_archive_filters();
-extern SEXP _archive_archive_formats();
-extern SEXP _archive_archive_read_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _archive_archive_write_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _archive_archive_write_direct_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _archive_archive_write_files_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _archive_libarchive_bzlib_version_();
-extern SEXP _archive_libarchive_liblz4_version_();
-extern SEXP _archive_libarchive_liblzma_version_();
-extern SEXP _archive_libarchive_libzstd_version();
-extern SEXP _archive_libarchive_version_();
-extern SEXP _archive_libarchive_zlib_version_();
-extern SEXP _archive_rchive_init(SEXP);
-
 static const R_CallMethodDef CallEntries[] = {
     {"_archive_archive_",                    (DL_FUNC) &_archive_archive_,                    2},
     {"_archive_archive_extract_",            (DL_FUNC) &_archive_archive_extract_,            4},

@@ -104,10 +104,10 @@ extern "C" SEXP _archive_libarchive_libzstd_version() {
   END_CPP11
 }
 // r_archive.h
-void rchive_init(SEXP xptr);
-extern "C" SEXP _archive_rchive_init(SEXP xptr) {
+void rchive_init(SEXP nc_xptr, SEXP rc_xptr);
+extern "C" SEXP _archive_rchive_init(SEXP nc_xptr, SEXP rc_xptr) {
   BEGIN_CPP11
-    rchive_init(cpp11::as_cpp<cpp11::decay_t<SEXP>>(xptr));
+    rchive_init(cpp11::as_cpp<cpp11::decay_t<SEXP>>(nc_xptr), cpp11::as_cpp<cpp11::decay_t<SEXP>>(rc_xptr));
     return R_NilValue;
   END_CPP11
 }
@@ -128,7 +128,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_archive_libarchive_libzstd_version",  (DL_FUNC) &_archive_libarchive_libzstd_version,  0},
     {"_archive_libarchive_version_",         (DL_FUNC) &_archive_libarchive_version_,         0},
     {"_archive_libarchive_zlib_version_",    (DL_FUNC) &_archive_libarchive_zlib_version_,    0},
-    {"_archive_rchive_init",                 (DL_FUNC) &_archive_rchive_init,                 1},
+    {"_archive_rchive_init",                 (DL_FUNC) &_archive_rchive_init,                 2},
     {NULL, NULL, 0}
 };
 }

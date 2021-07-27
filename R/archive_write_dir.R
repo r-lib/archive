@@ -18,5 +18,5 @@ archive_write_dir <- function(archive, dir, format = NULL, filter = NULL, option
 
   archive_write_files(archive, files, format = format, filter = filter, options = options)
 
-  invisible(as_archive(archive, options = character()))
+  invisible(archive(archive, options = character()))
 }

@@ -27,6 +27,8 @@ SEXP new_connection(
     const char* class_name,
     Rconnection* ptr);
 
+size_t read_connection(SEXP connection, void* buf, size_t n);
+
 #ifdef __cplusplus
 }
 #endif

@@ -163,4 +163,4 @@ public:
   operator cpp11::sexp() const { return connection_; }
 };
 
-[[cpp11::register]] void rchive_init(SEXP xptr);
+[[cpp11::register]] void rchive_init(SEXP nc_xptr, SEXP rc_xptr);

@@ -13,8 +13,7 @@
 ssize_t myread(struct archive* a, void* client_data, const void** buff) {
   struct rchive* mydata = static_cast<rchive*>(client_data);
   *buff = mydata->buf.data();
-  return R_ReadConnection(
-      R_GetConnection(mydata->con), mydata->buf.data(), mydata->buf.size());
+  return read_connection(mydata->con, mydata->buf.data(), mydata->buf.size());
 }
 
 int64_t myseek(struct archive*, void* client_data, int64_t offset, int whence) {

@@ -1,13 +1,15 @@
 #' Extract contents of an archive to a directory
 #'
 #' @inheritParams archive_read
+#' @param files `character() || integer() || NULL` One or more files within the archive,
+#'   specified either by filename or by position.
 #' @param dir `character(1)` Directory location to extract archive contents, will be created
 #' if it does not exist.
 #' @details
 #' If `files` is `NULL` (the default) all files will be extracted.
 #' @returns An 'archive' object describing the archive (invisibly).
 #' @examples
-#' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
+#' a <- system.file(package = "archive", "extdata", "data.zip")
 #' d <- tempfile()
 #'
 #' # When called with default arguments extracts all files in the archive.

@@ -20,15 +20,18 @@ NULL
 #' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 #' a
 #' @export
-archive <- function(path, options = character()) {
-  assert("{path} is not a readable file path",
-    is_readable(path))
+archive <- function(archive, options = character()) {
+  if (!inherits(archive, "connection")) {
+    archive <- file(archive)
+  }
 
-  path <- normalizePath(path)
+  if (!isOpen(archive)) {
+    open(archive, "rb")
+  }
 
   options <- validate_options(options)
 
-  res <- archive_(path, options)
+  res <- archive_(archive, options)
 
   class(res) <- c("archive", class(res))
 

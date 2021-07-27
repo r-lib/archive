@@ -42,6 +42,10 @@ size_t pop(void* target, size_t max, rchive* r);
 
 size_t push(rchive* r);
 
+ssize_t myread(struct archive* a, void* client_data, const void** buff);
+int64_t myseek(struct archive*, void* client_data, int64_t offset, int whence);
+int myclose(struct archive* a, void* client_data);
+
 #if ARCHIVE_VERSION_NUMBER < 3000004
 int archive_write_add_filter(struct archive* a, int code);
 #endif
@@ -129,6 +133,34 @@ public:
   }
   ~local_utf8_locale() { std::setlocale(LC_CTYPE, old_locale_.c_str()); }
 #endif
+};
+
+class local_connection {
+private:
+  cpp11::sexp connection_;
+  std::string mode_;
+  bool opened_;
+
+  cpp11::function close = cpp11::package("base")["close"];
+
+public:
+  local_connection(
+      const cpp11::sexp& connection, const std::string& mode = "rb")
+      : connection_(connection), mode_(mode), opened_(false) {
+    static auto isOpen = cpp11::package("base")["isOpen"];
+    opened_ = !isOpen(connection);
+    if (opened_) {
+      static auto open = cpp11::package("base")["open"];
+      open(connection_, mode.c_str());
+    }
+  }
+  ~local_connection() {
+    if (opened_) {
+      close(connection_);
+    }
+  }
+  operator SEXP() const { return connection_; }
+  operator cpp11::sexp() const { return connection_; }
 };
 
 [[cpp11::register]] void rchive_init(SEXP xptr);

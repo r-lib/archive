@@ -15,9 +15,19 @@ static int copy_data(struct archive* ar, struct archive* aw) {
   }
 }
 
-bool any_matches(const char* filename, cpp11::strings filenames) {
-  for (std::string f : filenames) {
-    if (strcmp(filename, f.c_str()) == 0) {
+template <typename C> std::vector<R_xlen_t> as_file_index(const C& in) {
+  std::vector<R_xlen_t> out;
+  out.reserve(in.size());
+  for (R_xlen_t value : in) {
+    out.push_back(value);
+  }
+  return out;
+}
+
+template <typename T, typename C>
+bool any_matches(const T& needle, const std::vector<C>& haystack) {
+  for (const C& n : haystack) {
+    if (n == needle) {
       return true;
     }
   }
@@ -25,17 +35,21 @@ bool any_matches(const char* filename, cpp11::strings filenames) {
 }
 
 [[cpp11::register]] void archive_extract_(
-    const std::string& archive_filename,
-    cpp11::strings filenames,
+    const cpp11::sexp& connection,
+    cpp11::sexp file,
     cpp11::strings options,
     size_t sz = 16384) {
   struct archive* a;
   struct archive* ext;
   struct archive_entry* entry;
   int flags;
-  int r;
+  int res;
 
   local_utf8_locale ll;
+
+  std::unique_ptr<rchive> r(new rchive);
+  r->buf.resize(16384);
+  r->con = connection;
 
   /* Select which attributes we want to restore. */
   flags = ARCHIVE_EXTRACT_TIME;
@@ -51,19 +65,41 @@ bool any_matches(const char* filename, cpp11::strings filenames) {
     call(archive_read_set_options, a, std::string(options[0]).c_str());
   }
 
+  call(archive_read_set_read_callback, a, myread);
+  call(archive_read_set_close_callback, a, myclose);
+  static auto isSeekable = cpp11::package("base")["isSeekable"];
+  if (isSeekable(connection)) {
+    call(archive_read_set_seek_callback, a, myseek);
+  }
+  call(archive_read_set_callback_data, a, r.get());
+  call(archive_read_open1, a);
+
   ext = archive_write_disk_new();
   call(archive_write_disk_set_options, ext, flags);
 #ifndef __MINGW32__
   /* set_standard_lookup is not available on windows */
   call(archive_write_disk_set_standard_lookup, ext);
 #endif
-  call(archive_read_open_filename, a, archive_filename.c_str(), sz);
-  for (;;) {
-    r = call(archive_read_next_header, a, &entry);
-    if (r == ARCHIVE_EOF)
+
+  std::vector<R_xlen_t> file_indexes;
+  std::vector<std::string> file_names;
+
+  if (TYPEOF(file) == INTSXP) {
+    file_indexes = as_file_index(cpp11::integers(file));
+  } else if (TYPEOF(file) == REALSXP) {
+    file_indexes = as_file_index(cpp11::doubles(file));
+  } else if (TYPEOF(file) == STRSXP) {
+    file_names = cpp11::as_cpp<std::vector<std::string>>(file);
+  }
+
+  for (R_xlen_t index = 1;; ++index) {
+    res = call(archive_read_next_header, a, &entry);
+    if (res == ARCHIVE_EOF)
       break;
     const char* filename = archive_entry_pathname(entry);
-    if (filenames.size() == 0 || any_matches(filename, filenames)) {
+    if (file == R_NilValue ||
+        (!file_indexes.empty() && any_matches(index, file_indexes)) ||
+        (!file_names.empty() && any_matches(filename, file_names))) {
       call(archive_write_header, ext, entry);
       copy_data(a, ext);
       call(archive_write_finish_entry, ext);

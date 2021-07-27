@@ -22,16 +22,15 @@
 #' unlink(d)
 #' @export
 archive_extract <- function(archive, dir = ".", file = NULL, options = character()) {
-  archive <- as_archive(archive, character())
   assert("`file` must be a character or numeric vector or `NULL`",
     is.null(file) || is.numeric(file) || is.character(file))
 
-  if (is.numeric(file)) {
-    file <- archive$path[file]
+  if (!inherits(archive, "connection")) {
+    archive <- file(archive)
   }
 
-  if (is.null(file)) {
-    file <- character()
+  if (!isOpen(archive)) {
+    open(archive, "rb")
   }
 
   if (!identical(dir, ".")) {
@@ -43,8 +42,7 @@ archive_extract <- function(archive, dir = ".", file = NULL, options = character
   }
   options <- validate_options(options)
 
-  archive_extract_(attr(archive, "path"), file, options, sz = 2^14)
+  archive_extract_(archive, file, options, sz = 2^14)
 
-  invisible(archive)
+  invisible()
 }
-

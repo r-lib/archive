@@ -5,32 +5,32 @@ describe("archive_extract", {
     a <- archive(data_file)
     d <- tempfile()
     on.exit(unlink(d, recursive = TRUE))
-    archive_extract(a, d)
+    archive_extract(data_file, d)
 
     f <- list.files(d, full.names = TRUE)
     expect_equal(length(f), 3)
     expect_equal(file.size(f), a[order(a[["path"]]), ][["size"]])
   })
   it("extracts given files in the archive, indexed by number", {
-    a <- archive(data_file)
-
     d <- tempfile()
     on.exit(unlink(d, recursive = TRUE))
-    archive_extract(a, d, file = 1)
+    archive_extract(data_file, d, file = 1L)
 
     f <- list.files(d, full.names = TRUE)
     expect_equal(length(f), 1)
+
+    a <- archive(data_file)
     expect_equal(file.size(f), a[a$path == a$path[[1]], ][["size"]])
   })
   it("extracts given files in the archive, indexed by name", {
-    a <- archive(data_file)
-
     d <- tempfile()
     on.exit(unlink(d, recursive = TRUE))
-    archive_extract(a, d, file = "mtcars.csv")
+    archive_extract(data_file, d, file = "mtcars.csv")
 
     f <- list.files(d, full.names = TRUE)
     expect_equal(length(f), 1)
+
+    a <- archive(data_file)
     expect_equal(file.size(f), a[a$path == "mtcars.csv", ][["size"]])
   })
   it("can take options", {

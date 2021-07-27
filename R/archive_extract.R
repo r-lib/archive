@@ -4,7 +4,7 @@
 #' @param dir `character(1)` Directory location to extract archive contents, will be created
 #' if it does not exist.
 #' @details
-#' If `file` is `NULL` (the default) all files will be extracted.
+#' If `files` is `NULL` (the default) all files will be extracted.
 #' @returns An 'archive' object describing the archive (invisibly).
 #' @examples
 #' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
@@ -21,9 +21,9 @@
 #' list.files(d)
 #' unlink(d)
 #' @export
-archive_extract <- function(archive, dir = ".", file = NULL, options = character()) {
-  assert("`file` must be a character or numeric vector or `NULL`",
-    is.null(file) || is.numeric(file) || is.character(file))
+archive_extract <- function(archive, dir = ".", files = NULL, options = character()) {
+  assert("`files` must be a character or numeric vector or `NULL`",
+    is.null(files) || is.numeric(files) || is.character(files))
 
   if (!inherits(archive, "connection")) {
     archive <- file(archive)
@@ -42,7 +42,7 @@ archive_extract <- function(archive, dir = ".", file = NULL, options = character
   }
   options <- validate_options(options)
 
-  archive_extract_(archive, file, options, sz = 2^14)
+  archive_extract_(archive, files, options, sz = 2^14)
 
   invisible()
 }

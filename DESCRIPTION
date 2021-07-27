@@ -5,7 +5,7 @@ Description: Bindings to 'libarchive' <http://www.libarchive.org> the
   extraction for many archive formats including 'tar', 'ZIP', '7-zip', 'RAR',
   'CAB' and compression formats including 'gzip', 'bzip2', 'compress', 'lzma'
   and 'xz'.
-Version: 1.0.2
+Version: 1.0.2.9000
 Authors@R:
     c(person(given = "Jim",
              family = "Hester",

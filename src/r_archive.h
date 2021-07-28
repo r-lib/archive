@@ -30,10 +30,9 @@ struct rchive {
   int format;
   std::string filename;
   cpp11::sexp file;
-  int file_offset;
   input_data input;
   std::vector<char> buf;
-  char* cur;
+  char* cur = nullptr;
   archive* ar = nullptr;
   archive_entry* entry = nullptr;
   ssize_t last_response = 0;

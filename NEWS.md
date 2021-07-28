@@ -1,5 +1,8 @@
 # archive (development version)
 
+* `archive()`, `archive_read()`, `archive_extract()` and `file_read()` now all accept R connections in addition to file paths.
+  This allows you to do things like read remote archives with a `url()` or `curl::curl()` connection like you would a file on disk (#7)
+
 # archive 1.0.2
 
 * skip tests failing on non-UTF-8 systems

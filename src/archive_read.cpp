@@ -10,6 +10,44 @@
  * Source: https://github.com/libarchive/libarchive/wiki/Examples
  */
 
+ssize_t input_read(struct archive* a, void* client_data, const void** buff) {
+  struct input_data* data = static_cast<input_data*>(client_data);
+  *buff = data->buf.data();
+  return read_connection(data->connection, data->buf.data(), data->buf.size());
+}
+
+int64_t
+input_seek(struct archive*, void* client_data, int64_t offset, int whence) {
+  struct input_data* data = static_cast<input_data*>(client_data);
+  static auto seek = cpp11::package("base")["seek"];
+
+  seek(
+      data->connection,
+      offset,
+      whence == SEEK_END ? "end" : whence == SEEK_CUR ? "current" : "start");
+  /* need to call seek again to get the current position */
+  int64_t value = cpp11::as_cpp<int64_t>(seek(data->connection));
+
+  return value;
+}
+
+int input_close(struct archive* a, void* client_data) {
+  struct input_data* data = static_cast<input_data*>(client_data);
+  static auto close = cpp11::package("base")["close"];
+
+  close(data->connection);
+  return (ARCHIVE_OK);
+}
+
+bool entry_matches(const std::string& str, archive_entry* entry) {
+  if (str.empty()) {
+    return false;
+  }
+
+  const char* pathname = archive_entry_pathname(entry);
+  return str == pathname;
+}
+
 static Rboolean rchive_read_open(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
@@ -49,24 +87,46 @@ static Rboolean rchive_read_open(Rconnection con) {
     call(archive_read_set_options, con, r->options.c_str());
   }
 
-  call(
-      archive_read_open_filename,
-      con,
-      r->archive_filename.c_str(),
-      r->buf.size());
+  static auto open = cpp11::package("base")["open"];
+  static auto isOpen = cpp11::package("base")["isOpen"];
+  if (!isOpen(r->input.connection)) {
+    open(r->input.connection, "rb");
+  }
+  call(archive_read_set_read_callback, r->ar, input_read);
+  call(archive_read_set_close_callback, r->ar, input_close);
+  static auto isSeekable = cpp11::package("base")["isSeekable"];
+  if (isSeekable(r->input.connection)) {
+    call(archive_read_set_seek_callback, r->ar, input_seek);
+  }
+  call(archive_read_set_callback_data, r->ar, &r->input);
+  call(archive_read_open1, r->ar);
 
   /* Find entry to extract */
-  while (archive_read_next_header(r->ar, &r->entry) == ARCHIVE_OK) {
-    const char* str = archive_entry_pathname(r->entry);
-    if (is_raw_format || strcmp(r->filename.c_str(), str) == 0) {
+  int file_offset = -1;
+  std::string file;
+
+  if (TYPEOF(r->file) == INTSXP || TYPEOF(r->file) == REALSXP) {
+    file_offset = cpp11::as_cpp<int>(r->file) - 1;
+  } else {
+    file = cpp11::as_cpp<std::string>(r->file);
+  }
+
+  int itr = 0;
+  int res;
+  while ((res = archive_read_next_header(r->ar, &r->entry)) == ARCHIVE_OK) {
+    if (is_raw_format || entry_matches(file, r->entry) || itr == file_offset) {
       r->has_more = 1;
       con->isopen = TRUE;
       push(r);
       return TRUE;
     }
     call(archive_read_data_skip, con);
+    ++itr;
   }
 
+  con->isopen = FALSE;
+  const char* msg = archive_error_string(r->ar);
+  Rf_errorcall(R_NilValue, "%s", msg);
   return FALSE;
 }
 
@@ -114,8 +174,9 @@ static int rchive_fgetc(Rconnection con) {
 }
 
 [[cpp11::register]] SEXP archive_read_(
-    const std::string& archive_filename,
-    const std::string& filename,
+    const cpp11::sexp connection,
+    const cpp11::sexp file,
+    const std::string& description,
     const std::string& mode,
     cpp11::integers format,
     cpp11::integers filters,
@@ -123,9 +184,8 @@ static int rchive_fgetc(Rconnection con) {
     size_t sz = 16384) {
   Rconnection con;
 
-  std::string desc = archive_filename + '[' + filename + ']';
-  SEXP rc =
-      PROTECT(new_connection(desc.c_str(), mode.c_str(), "archive_read", &con));
+  SEXP rc = PROTECT(
+      new_connection(description.c_str(), mode.c_str(), "archive_read", &con));
 
   /* Setup archive */
   rchive* r = new rchive;
@@ -133,7 +193,8 @@ static int rchive_fgetc(Rconnection con) {
   r->size = 0;
   r->cur = NULL;
 
-  r->archive_filename = archive_filename;
+  r->input.connection = connection;
+  r->input.buf.resize(sz);
 
   if (options.size() > 0) {
     r->options = options[0];
@@ -152,7 +213,7 @@ static int rchive_fgetc(Rconnection con) {
     r->filters[i] = filters[i];
   }
 
-  r->filename = filename;
+  r->file = file;
 
   /* set connection properties */
   con->incomplete = TRUE;

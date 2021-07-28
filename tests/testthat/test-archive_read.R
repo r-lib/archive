@@ -2,14 +2,15 @@ data_file <- system.file(package = "archive", "extdata", "data.zip")
 
 describe("archive_read", {
   it("creates a read only connection", {
-    con <- archive_read(data_file)
-    on.exit(close(con))
+    in_con <- file(data_file)
+    con <- archive_read(in_con)
+    on.exit({close(in_con); close(con)})
     expect_is(con, "connection")
     expect_is(con, "archive_read")
 
     s <- summary(con)
 
-    expect_equal(basename(s[["description"]]), "data.zip[iris.csv]")
+    expect_true(startsWith(s[["description"]], "archive_read"))
     expect_equal(s[["mode"]], "r")
     expect_equal(s[["text"]], "text")
     expect_equal(s[["opened"]], "closed")

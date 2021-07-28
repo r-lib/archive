@@ -20,12 +20,19 @@
 
 #define FILTER_MAX 8
 
+struct input_data {
+  cpp11::sexp connection;
+  std::vector<char> buf;
+};
+
 struct rchive {
   std::string archive_filename;
   int format;
   std::string filename;
+  cpp11::sexp file;
+  input_data input;
   std::vector<char> buf;
-  char* cur;
+  char* cur = nullptr;
   archive* ar = nullptr;
   archive_entry* entry = nullptr;
   ssize_t last_response = 0;
@@ -38,6 +45,11 @@ struct rchive {
 size_t pop(void* target, size_t max, rchive* r);
 
 size_t push(rchive* r);
+
+ssize_t input_read(struct archive* a, void* client_data, const void** buff);
+int64_t
+input_seek(struct archive*, void* client_data, int64_t offset, int whence);
+int input_close(struct archive* a, void* client_data);
 
 #if ARCHIVE_VERSION_NUMBER < 3000004
 int archive_write_add_filter(struct archive* a, int code);
@@ -128,4 +140,32 @@ public:
 #endif
 };
 
-[[cpp11::register]] void rchive_init(SEXP xptr);
+class local_connection {
+private:
+  cpp11::sexp connection_;
+  std::string mode_;
+  bool opened_;
+
+  cpp11::function close = cpp11::package("base")["close"];
+
+public:
+  local_connection(
+      const cpp11::sexp& connection, const std::string& mode = "rb")
+      : connection_(connection), mode_(mode), opened_(false) {
+    static auto isOpen = cpp11::package("base")["isOpen"];
+    opened_ = !isOpen(connection);
+    if (opened_) {
+      static auto open = cpp11::package("base")["open"];
+      open(connection_, mode.c_str());
+    }
+  }
+  ~local_connection() {
+    if (opened_) {
+      close(connection_);
+    }
+  }
+  operator SEXP() const { return connection_; }
+  operator cpp11::sexp() const { return connection_; }
+};
+
+[[cpp11::register]] void rchive_init(SEXP nc_xptr, SEXP rc_xptr);

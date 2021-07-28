@@ -5,7 +5,7 @@
 using namespace cpp11::literals;
 
 [[cpp11::register]] cpp11::sexp
-archive_(const std::string& path, cpp11::strings options) {
+archive_(cpp11::sexp connection, cpp11::strings options) {
 
   local_utf8_locale ll;
 
@@ -23,8 +23,19 @@ archive_(const std::string& path, cpp11::strings options) {
   if (options.size() > 0) {
     call(archive_read_set_options, a, std::string(options[0]).c_str());
   }
+  std::unique_ptr<input_data> r(new input_data);
+  r->buf.resize(16384);
+  r->connection = connection;
 
-  call(archive_read_open_filename, a, path.c_str(), 10240);
+  call(archive_read_set_read_callback, a, input_read);
+  call(archive_read_set_close_callback, a, input_close);
+  static auto isSeekable = cpp11::package("base")["isSeekable"];
+  if (isSeekable(connection)) {
+    call(archive_read_set_seek_callback, a, input_seek);
+  }
+  call(archive_read_set_callback_data, a, r.get());
+  call(archive_read_open1, a);
+
   while (archive_read_next_header(a, &entry) == ARCHIVE_OK) {
     paths.push_back(archive_entry_pathname(entry));
     sizes.push_back(archive_entry_size(entry));
@@ -40,7 +51,7 @@ archive_(const std::string& path, cpp11::strings options) {
   cpp11::writable::list out(
       {"path"_nm = paths, "size"_nm = sizes, "date"_nm = d});
 
-  out.attr("path") = path;
+  // out.attr("connection") = static_cast<SEXP>(connection);
 
   return as_tibble(out);
 }

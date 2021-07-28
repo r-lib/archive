@@ -55,7 +55,7 @@ An 'archive_read' connection to the file within the archive to be read.
 Create a readable connection to a file in an archive.
 }
 \examples{
-a <- archive(system.file(package = "archive", "extdata", "data.zip"))
+a <- system.file(package = "archive", "extdata", "data.zip")
 # Show files in archive
 a
 

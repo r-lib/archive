@@ -2,7 +2,7 @@
   lib_path <- system.file("lib", .Platform$r_arch, paste0("libconnection", .Platform$dynlib.ext), package = "archive")
   res <- dyn.load(lib_path)
 
-  rchive_init(res$new_connection$address)
+  rchive_init(res$new_connection$address, res$read_connection$address)
 }
 
 .onUnload <- function(libname) {

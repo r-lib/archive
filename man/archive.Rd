@@ -4,10 +4,10 @@
 \alias{archive}
 \title{Construct a new archive}
 \usage{
-archive(path, options = character())
+archive(file, options = character())
 }
 \arguments{
-\item{path}{File path to the archive.}
+\item{file}{File path to the archive.}
 
 \item{options}{\code{character()} default: \code{character(0)} Options to pass to the filter or format.
 The list of available options are documented in
@@ -31,7 +31,7 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&se
 }}
 }
 \value{
-An 'archive' object which describes the archive.
+@return A \link[tibble:tibble-package]{tibble} with details about files in the archive.
 }
 \description{
 This function retrieves metadata about files in an archive, it can be passed

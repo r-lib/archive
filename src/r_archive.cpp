@@ -2,9 +2,13 @@
 
 SEXP new_connection_xptr;
 
-void rchive_init(SEXP xptr) {
-  new_connection_xptr = xptr;
-  R_PreserveObject(xptr);
+SEXP read_connection_xptr;
+
+void rchive_init(SEXP nc_xptr, SEXP rc_xptr) {
+  new_connection_xptr = nc_xptr;
+  R_PreserveObject(nc_xptr);
+  read_connection_xptr = rc_xptr;
+  R_PreserveObject(rc_xptr);
 }
 
 SEXP new_connection(
@@ -16,6 +20,12 @@ SEXP new_connection(
       const char*, const char*, const char*, Rconnection*)>(
       R_ExternalPtrAddr(new_connection_xptr));
   return new_connection_ptr(description, mode, class_name, ptr);
+}
+
+size_t read_connection(SEXP connection, void* buf, size_t n) {
+  auto read_connection_ptr = reinterpret_cast<size_t (*)(SEXP, void*, size_t)>(
+      R_ExternalPtrAddr(read_connection_xptr));
+  return read_connection_ptr(connection, buf, n);
 }
 
 size_t pop(void* target, size_t max, rchive* r) {

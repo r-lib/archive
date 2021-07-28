@@ -4,7 +4,7 @@
 \alias{archive_extract}
 \title{Extract contents of an archive to a directory}
 \usage{
-archive_extract(archive, dir = ".", file = NULL, options = character())
+archive_extract(archive, dir = ".", files = NULL, options = character())
 }
 \arguments{
 \item{archive}{\code{character(1)} The archive filename or an \code{archive} object.}
@@ -12,7 +12,7 @@ archive_extract(archive, dir = ".", file = NULL, options = character())
 \item{dir}{\code{character(1)} Directory location to extract archive contents, will be created
 if it does not exist.}
 
-\item{file}{\code{character(1) || integer(1)} The filename within the archive,
+\item{files}{\code{character() || integer() || NULL} One or more files within the archive,
 specified either by filename or by position.}
 
 \item{options}{\code{character()} default: \code{character(0)} Options to pass to the filter or format.
@@ -43,10 +43,10 @@ An 'archive' object describing the archive (invisibly).
 Extract contents of an archive to a directory
 }
 \details{
-If \code{file} is \code{NULL} (the default) all files will be extracted.
+If \code{files} is \code{NULL} (the default) all files will be extracted.
 }
 \examples{
-a <- archive(system.file(package = "archive", "extdata", "data.zip"))
+a <- system.file(package = "archive", "extdata", "data.zip")
 d <- tempfile()
 
 # When called with default arguments extracts all files in the archive.

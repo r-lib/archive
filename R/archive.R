@@ -10,39 +10,33 @@ NULL
 #' to [archive_read()] or [archive_write] to create a connection to read or
 #' write a specific file from the archive.
 #'
-#' @param path File path to the archive.
+#' @param file File path to the archive.
 #' @inheritParams archive_read
 #' @seealso [archive_read()], [archive_write()] to read and write archive files
 #' using R connections, [archive_extract()], [archive_write_files()],
 #' [archive_write_dir()] to add or extract files from an archive.
-#' @returns An 'archive' object which describes the archive.
+#' @returns @return A [tibble][tibble::tibble-package] with details about files in the archive.
 #' @examples
 #' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 #' a
 #' @export
-archive <- function(path, options = character()) {
-  assert("{path} is not a readable file path",
-    is_readable(path))
+archive <- function(file, options = character()) {
+  if (!inherits(file, "connection")) {
+    file <- file(file)
+  }
 
-  path <- normalizePath(path)
+  if (!isOpen(file)) {
+    open(file, "rb")
+  }
 
   options <- validate_options(options)
 
-  res <- archive_(path, options)
-
-  class(res) <- c("archive", class(res))
+  res <- archive_(file, options)
 
   res
 }
 
-as_archive <- function(x, options) {
-  if (inherits(x, "archive")) {
-    return(x)
-  }
-  archive(x, options)
-}
-
-filter_by_extension <- function(path) {
+filter_by_extension <- function(file) {
 
   extension_to_filter <- function(ext) {
     switch(ext,
@@ -65,13 +59,13 @@ filter_by_extension <- function(path) {
       NULL)
   }
 
-  extensions <- sub("^[^.][.]", "", basename(path))
+  extensions <- sub("^[^.][.]", "", basename(file))
 
   Reduce(`c`, Map(extension_to_filter, strsplit(extensions, "[.]")[[1]]))
 }
 
-format_and_filter_by_extension <- function(path) {
-  ext <- sub("^[^.]*[.]", "", basename(path))
+format_and_filter_by_extension <- function(file) {
+  ext <- sub("^[^.]*[.]", "", basename(file))
   switch(ext,
     "7z" = list("7zip", "none"),
 

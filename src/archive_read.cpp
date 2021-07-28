@@ -10,35 +10,32 @@
  * Source: https://github.com/libarchive/libarchive/wiki/Examples
  */
 
-ssize_t myread(struct archive* a, void* client_data, const void** buff) {
-  struct rchive* mydata = static_cast<rchive*>(client_data);
-  *buff = mydata->buf.data();
-  return read_connection(mydata->con, mydata->buf.data(), mydata->buf.size());
+ssize_t input_read(struct archive* a, void* client_data, const void** buff) {
+  struct input_data* data = static_cast<input_data*>(client_data);
+  *buff = data->buf.data();
+  return read_connection(data->connection, data->buf.data(), data->buf.size());
 }
 
-int64_t myseek(struct archive*, void* client_data, int64_t offset, int whence) {
-  struct rchive* mydata = static_cast<rchive*>(client_data);
+int64_t
+input_seek(struct archive*, void* client_data, int64_t offset, int whence) {
+  struct input_data* data = static_cast<input_data*>(client_data);
   static auto seek = cpp11::package("base")["seek"];
 
   seek(
-      mydata->con,
+      data->connection,
       offset,
       whence == SEEK_END ? "end" : whence == SEEK_CUR ? "current" : "start");
   /* need to call seek again to get the current position */
-  int64_t value = cpp11::as_cpp<int64_t>(seek(mydata->con));
-  // REprintf(
-  //"seek(%i,\"%s\") == %i\n",
-  // offset,
-  // whence == SEEK_END ? "end" : whence == SEEK_CUR ? "current" : "start",
-  // value);
+  int64_t value = cpp11::as_cpp<int64_t>(seek(data->connection));
+
   return value;
 }
 
-int myclose(struct archive* a, void* client_data) {
-  struct rchive* mydata = static_cast<rchive*>(client_data);
+int input_close(struct archive* a, void* client_data) {
+  struct input_data* data = static_cast<input_data*>(client_data);
   static auto close = cpp11::package("base")["close"];
 
-  close(mydata->con);
+  close(data->connection);
   return (ARCHIVE_OK);
 }
 
@@ -92,16 +89,16 @@ static Rboolean rchive_read_open(Rconnection con) {
 
   static auto open = cpp11::package("base")["open"];
   static auto isOpen = cpp11::package("base")["isOpen"];
-  if (!isOpen(r->con)) {
-    open(r->con, "rb");
+  if (!isOpen(r->input.connection)) {
+    open(r->input.connection, "rb");
   }
-  call(archive_read_set_read_callback, r->ar, myread);
-  call(archive_read_set_close_callback, r->ar, myclose);
+  call(archive_read_set_read_callback, r->ar, input_read);
+  call(archive_read_set_close_callback, r->ar, input_close);
   static auto isSeekable = cpp11::package("base")["isSeekable"];
-  if (isSeekable(r->con)) {
-    call(archive_read_set_seek_callback, r->ar, myseek);
+  if (isSeekable(r->input.connection)) {
+    call(archive_read_set_seek_callback, r->ar, input_seek);
   }
-  call(archive_read_set_callback_data, r->ar, r);
+  call(archive_read_set_callback_data, r->ar, &r->input);
   call(archive_read_open1, r->ar);
 
   /* Find entry to extract */
@@ -196,7 +193,8 @@ static int rchive_fgetc(Rconnection con) {
   r->size = 0;
   r->cur = NULL;
 
-  r->con = connection;
+  r->input.connection = connection;
+  r->input.buf.resize(sz);
 
   if (options.size() > 0) {
     r->options = options[0];

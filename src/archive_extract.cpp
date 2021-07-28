@@ -47,9 +47,9 @@ bool any_matches(const T& needle, const std::vector<C>& haystack) {
 
   local_utf8_locale ll;
 
-  std::unique_ptr<rchive> r(new rchive);
+  std::unique_ptr<input_data> r(new input_data);
   r->buf.resize(16384);
-  r->con = connection;
+  r->connection = connection;
 
   /* Select which attributes we want to restore. */
   flags = ARCHIVE_EXTRACT_TIME;
@@ -65,11 +65,11 @@ bool any_matches(const T& needle, const std::vector<C>& haystack) {
     call(archive_read_set_options, a, std::string(options[0]).c_str());
   }
 
-  call(archive_read_set_read_callback, a, myread);
-  call(archive_read_set_close_callback, a, myclose);
+  call(archive_read_set_read_callback, a, input_read);
+  call(archive_read_set_close_callback, a, input_close);
   static auto isSeekable = cpp11::package("base")["isSeekable"];
   if (isSeekable(connection)) {
-    call(archive_read_set_seek_callback, a, myseek);
+    call(archive_read_set_seek_callback, a, input_seek);
   }
   call(archive_read_set_callback_data, a, r.get());
   call(archive_read_open1, a);

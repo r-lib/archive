@@ -20,13 +20,18 @@
 
 #define FILTER_MAX 8
 
+struct input_data {
+  cpp11::sexp connection;
+  std::vector<char> buf;
+};
+
 struct rchive {
   std::string archive_filename;
   int format;
   std::string filename;
   cpp11::sexp file;
   int file_offset;
-  cpp11::sexp con;
+  input_data input;
   std::vector<char> buf;
   char* cur;
   archive* ar = nullptr;
@@ -42,9 +47,10 @@ size_t pop(void* target, size_t max, rchive* r);
 
 size_t push(rchive* r);
 
-ssize_t myread(struct archive* a, void* client_data, const void** buff);
-int64_t myseek(struct archive*, void* client_data, int64_t offset, int whence);
-int myclose(struct archive* a, void* client_data);
+ssize_t input_read(struct archive* a, void* client_data, const void** buff);
+int64_t
+input_seek(struct archive*, void* client_data, int64_t offset, int whence);
+int input_close(struct archive* a, void* client_data);
 
 #if ARCHIVE_VERSION_NUMBER < 3000004
 int archive_write_add_filter(struct archive* a, int code);

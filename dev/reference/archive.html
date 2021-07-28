@@ -124,13 +124,13 @@ to <code><a href='archive_read.html'>archive_read()</a></code> or <a href='archi
 write a specific file from the archive.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>archive</span><span class='op'>(</span><span class='va'>path</span>, options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>archive</span><span class='op'>(</span><span class='va'>file</span>, options <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>path</th>
+      <th>file</th>
       <td><p>File path to the archive.</p></td>
     </tr>
     <tr>
@@ -159,7 +159,7 @@ See <a href='https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An 'archive' object which describes the archive.</p>
+    <p>@return A <a href='https://tibble.tidyverse.org/reference/tibble-package.html'>tibble</a> with details about files in the archive.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='archive_read.html'>archive_read()</a></code>, <code><a href='archive_write.html'>archive_write()</a></code> to read and write archive files

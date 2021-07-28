@@ -118,6 +118,10 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#archive-development-version" class="anchor"></a>archive (development version)<small> Unreleased </small>
 </h1>
+<ul>
+<li>
+<code><a href="../reference/archive.html">archive()</a></code>, <code><a href="../reference/archive_read.html">archive_read()</a></code>, <code><a href="../reference/archive_extract.html">archive_extract()</a></code> and <code><a href="../reference/file_read.html">file_read()</a></code> now all accept R connections in addition to file paths. This allows you to do things like read remote archives with a <code><a href="https://rdrr.io/r/base/connections.html">url()</a></code> or <code><a href="https://rdrr.io/pkg/curl/man/curl.html">curl::curl()</a></code> connection like you would a file on disk (<a href='https://github.com/r-lib/archive/issues/7'>#7</a>)</li>
+</ul>
 </div>
     <div id="archive-102" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.2">

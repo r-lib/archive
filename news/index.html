@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">archive</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -114,9 +114,18 @@
       <small>Source: <a href='https://github.com/r-lib/archive/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="archive-development-version" class="section level1">
-<h1 class="page-header" data-toc-text="development version">
-<a href="#archive-development-version" class="anchor"></a>archive (development version)<small> Unreleased </small>
+    <div id="archive-110" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.0">
+<a href="#archive-110" class="anchor"></a>archive 1.1.0<small> Unreleased </small>
+</h1>
+<ul>
+<li><p><code><a href="../reference/archive_extract.html">archive_extract()</a></code> gains a <code>strip_components</code> argument to strip leading pathname components if desired (<a href='https://github.com/r-lib/archive/issues/27'>#27</a>)</p></li>
+<li><p><code><a href="../reference/archive.html">archive()</a></code>, <code><a href="../reference/archive_read.html">archive_read()</a></code>, <code><a href="../reference/archive_extract.html">archive_extract()</a></code> and <code><a href="../reference/file_read.html">file_read()</a></code> now all accept R connections in addition to file paths. This allows you to do things like read remote archives with a <code><a href="https://rdrr.io/r/base/connections.html">url()</a></code> or <code><a href="https://rdrr.io/pkg/curl/man/curl.html">curl::curl()</a></code> connection like you would a file on disk (<a href='https://github.com/r-lib/archive/issues/7'>#7</a>)</p></li>
+</ul>
+</div>
+    <div id="archive-102" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.2">
+<a href="#archive-102" class="anchor"></a>archive 1.0.2<small> 2021-07-16 </small>
 </h1>
 <ul>
 <li>skip tests failing on non-UTF-8 systems</li>
@@ -151,7 +160,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jim Hester, <a href='https://www.rstudio.com'><img src='https://www.tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>.</p>
+  <p>Developed by <a href='http://jimhester.com'>Jim Hester</a>, <a href='https://www.rstudio.com'><img src='https://www.tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>.</p>
 </div>
 
 <div class="pkgdown">

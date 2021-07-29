@@ -103,7 +103,7 @@
 
 <span class="co"># Read the data back, by default the first file is read from the archive.</span>
 <span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"mtcars.zip"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; # A tibble: 32 × 11</span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
@@ -118,7 +118,7 @@
 
 <span class="co"># Read the data back</span>
 <span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"mtcars.tar.gz"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; # A tibble: 32 × 11</span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
@@ -147,16 +147,16 @@
 <span class="co"># View archive contents</span>
 <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/archive.html">archive</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span><span class="op">)</span>
 <span class="va">a</span>
-<span class="co">#&gt; # A tibble: 3 x 3</span>
+<span class="co">#&gt; # A tibble: 3 × 3</span>
 <span class="co">#&gt;   path            size date               </span>
 <span class="co">#&gt;   &lt;chr&gt;          &lt;int&gt; &lt;dttm&gt;             </span>
-<span class="co">#&gt; 1 iris.csv        3716 2021-07-09 12:55:56</span>
-<span class="co">#&gt; 2 mtcars.csv      1281 2021-07-09 12:55:56</span>
-<span class="co">#&gt; 3 airquality.csv  2890 2021-07-09 12:55:56</span>
+<span class="co">#&gt; 1 iris.csv        3716 2021-07-29 13:52:38</span>
+<span class="co">#&gt; 2 mtcars.csv      1281 2021-07-29 13:52:38</span>
+<span class="co">#&gt; 3 airquality.csv  2890 2021-07-29 13:52:38</span>
 
 <span class="co"># By default `archive_read()` will read the first file from a multi-file archive.</span>
-<span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 150 x 5</span>
+<span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 150 × 5</span>
 <span class="co">#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span>
 <span class="co">#&gt;          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;  </span>
 <span class="co">#&gt; 1          5.1         3.5          1.4         0.2 setosa </span>
@@ -166,8 +166,8 @@
 <span class="co">#&gt; # … with 146 more rows</span>
 
 <span class="co"># Use a number to read a different file</span>
-<span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="va">a</span>, file <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span>, file <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 32 × 11</span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
@@ -177,8 +177,8 @@
 <span class="co">#&gt; # … with 28 more rows</span>
 
 <span class="co"># Or a filename to read a specific file</span>
-<span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="va">a</span>, file <span class="op">=</span> <span class="st">"mtcars.csv"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span>, file <span class="op">=</span> <span class="st">"mtcars.csv"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 32 × 11</span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
@@ -197,7 +197,7 @@
 
 <span class="co"># Read it back, the formats are automatically detected</span>
 <span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/file_read.html">file_read</a></span><span class="op">(</span><span class="st">"mtcars.bz2"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 32 x 11</span>
+<span class="co">#&gt; # A tibble: 32 × 11</span>
 <span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>

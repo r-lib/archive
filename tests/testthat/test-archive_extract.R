@@ -72,7 +72,7 @@ describe("archive_extract", {
     write.csv(iris, file.path(in_dir, "foo", "bar", "iris.csv"))
     write.csv(mtcars, file.path(in_dir, "foo", "mtcars.csv"))
 
-    ar <- tempfile(fileext = ".zip")
+    ar <- tempfile(fileext = ".tar")
     archive_write_dir(ar, in_dir)
 
     archive_extract(ar, out_dir, strip_components = 1)

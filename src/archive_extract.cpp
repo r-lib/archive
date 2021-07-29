@@ -34,9 +34,50 @@ bool any_matches(const T& needle, const std::vector<C>& haystack) {
   return false;
 }
 
+/* From
+https://github.com/libarchive/libarchive/blob/0fd2ed25d78e9f4505de5dcb6208c6c0ff8d2edb/tar/util.c#L338-L375
+*/
+static const char* strip_components(const char* p, int elements) {
+  /* Skip as many elements as necessary. */
+  while (elements > 0) {
+    switch (*p++) {
+    case '/':
+#if defined(_WIN32)
+    case '\\': /* Support \ path sep on Windows ONLY. */
+#endif
+      elements--;
+      break;
+    case '\0':
+      /* Path is too short, skip it. */
+      return (NULL);
+    }
+  }
+
+  /* Skip any / characters.  This handles short paths that have
+   * additional / termination.  This also handles the case where
+   * the logic above stops in the middle of a duplicate //
+   * sequence (which would otherwise get converted to an
+   * absolute path). */
+  for (;;) {
+    switch (*p) {
+    case '/':
+#if defined(_WIN32)
+    case '\\': /* Support \ path sep on Windows ONLY. */
+#endif
+      ++p;
+      break;
+    case '\0':
+      return (NULL);
+    default:
+      return (p);
+    }
+  }
+}
+
 [[cpp11::register]] void archive_extract_(
     const cpp11::sexp& connection,
     cpp11::sexp file,
+    int num_strip_components,
     cpp11::strings options,
     size_t sz = 16384) {
   struct archive* a;
@@ -97,6 +138,14 @@ bool any_matches(const T& needle, const std::vector<C>& haystack) {
     if (res == ARCHIVE_EOF)
       break;
     const char* filename = archive_entry_pathname(entry);
+    if (num_strip_components > 0) {
+      filename = strip_components(filename, num_strip_components);
+      if (filename == nullptr) {
+        continue;
+      }
+      archive_entry_copy_pathname(entry, filename);
+    }
+
     if (file == R_NilValue ||
         (!file_indexes.empty() && any_matches(index, file_indexes)) ||
         (!file_names.empty() && any_matches(filename, file_names))) {

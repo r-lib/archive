@@ -5,10 +5,10 @@
 #include "cpp11/declarations.hpp"
 
 // archive_extract.cpp
-void archive_extract_(const cpp11::sexp& connection, cpp11::sexp file, cpp11::strings options, size_t sz);
-extern "C" SEXP _archive_archive_extract_(SEXP connection, SEXP file, SEXP options, SEXP sz) {
+void archive_extract_(const cpp11::sexp& connection, cpp11::sexp file, int num_strip_components, cpp11::strings options, size_t sz);
+extern "C" SEXP _archive_archive_extract_(SEXP connection, SEXP file, SEXP num_strip_components, SEXP options, SEXP sz) {
   BEGIN_CPP11
-    archive_extract_(cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(connection), cpp11::as_cpp<cpp11::decay_t<cpp11::sexp>>(file), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz));
+    archive_extract_(cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(connection), cpp11::as_cpp<cpp11::decay_t<cpp11::sexp>>(file), cpp11::as_cpp<cpp11::decay_t<int>>(num_strip_components), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz));
     return R_NilValue;
   END_CPP11
 }
@@ -115,7 +115,7 @@ extern "C" SEXP _archive_rchive_init(SEXP nc_xptr, SEXP rc_xptr) {
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
     {"_archive_archive_",                    (DL_FUNC) &_archive_archive_,                    2},
-    {"_archive_archive_extract_",            (DL_FUNC) &_archive_archive_extract_,            4},
+    {"_archive_archive_extract_",            (DL_FUNC) &_archive_archive_extract_,            5},
     {"_archive_archive_filters",             (DL_FUNC) &_archive_archive_filters,             0},
     {"_archive_archive_formats",             (DL_FUNC) &_archive_archive_formats,             0},
     {"_archive_archive_read_",               (DL_FUNC) &_archive_archive_read_,               8},

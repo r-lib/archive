@@ -5,6 +5,8 @@
 #'   specified either by filename or by position.
 #' @param dir `character(1)` Directory location to extract archive contents, will be created
 #' if it does not exist.
+#' @param strip_components Remove the specified number of leading path
+#'   elements. Pathnames with fewer elements will be silently skipped.
 #' @details
 #' If `files` is `NULL` (the default) all files will be extracted.
 #' @returns An 'archive' object describing the archive (invisibly).
@@ -23,7 +25,7 @@
 #' list.files(d)
 #' unlink(d)
 #' @export
-archive_extract <- function(archive, dir = ".", files = NULL, options = character()) {
+archive_extract <- function(archive, dir = ".", files = NULL, options = character(), strip_components = 0L) {
   assert("`files` must be a character or numeric vector or `NULL`",
     is.null(files) || is.numeric(files) || is.character(files))
 
@@ -44,7 +46,7 @@ archive_extract <- function(archive, dir = ".", files = NULL, options = characte
   }
   options <- validate_options(options)
 
-  archive_extract_(archive, files, options, sz = 2^14)
+  archive_extract_(archive, files, as.integer(strip_components), options, sz = 2^14)
 
   invisible()
 }

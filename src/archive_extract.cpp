@@ -135,15 +135,19 @@ static const char* strip_components(const char* p, int elements) {
 
   for (R_xlen_t index = 1;; ++index) {
     res = call(archive_read_next_header, a, &entry);
-    if (res == ARCHIVE_EOF)
+    if (res == ARCHIVE_EOF) {
       break;
+    }
     const char* filename = archive_entry_pathname(entry);
+    const char* original_filename = filename;
     if (num_strip_components > 0) {
       filename = strip_components(filename, num_strip_components);
       if (filename == nullptr) {
         continue;
       }
-      archive_entry_copy_pathname(entry, filename);
+      if (filename != original_filename) {
+        archive_entry_copy_pathname(entry, filename);
+      }
     }
 
     if (file == R_NilValue ||

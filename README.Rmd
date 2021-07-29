@@ -85,13 +85,13 @@ a <- archive("data.tar.xz")
 a
 
 # By default `archive_read()` will read the first file from a multi-file archive.
-read_csv(archive_read(a), col_types = cols())
+read_csv(archive_read("data.tar.xz"), col_types = cols())
 
 # Use a number to read a different file
-read_csv(archive_read(a, file = 2), col_types = cols())
+read_csv(archive_read("data.tar.xz", file = 2), col_types = cols())
 
 # Or a filename to read a specific file
-read_csv(archive_read(a, file = "mtcars.csv"), col_types = cols())
+read_csv(archive_read("data.tar.xz", file = "mtcars.csv"), col_types = cols())
 ```
 
 ### Regular files (with compression)

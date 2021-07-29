@@ -22,7 +22,7 @@ NULL
 #' @export
 archive <- function(file, options = character()) {
   if (!inherits(file, "connection")) {
-    file <- file(file)
+    file <- file(file, "rb")
   }
 
   if (!isOpen(file)) {

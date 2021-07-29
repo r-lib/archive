@@ -30,7 +30,7 @@ archive_extract <- function(archive, dir = ".", files = NULL, options = characte
     is.null(files) || is.numeric(files) || is.character(files))
 
   if (!inherits(archive, "connection")) {
-    archive <- file(archive)
+    archive <- file(archive, "rb")
   }
 
   if (!isOpen(archive)) {

@@ -1,8 +1,9 @@
 describe("archive_write", {
   it("creates a writable connection", {
-    out_con <- archive_write("mtcars.zip", "mtcars.csv")
+    a <- tempfile(fileext = ".zip")
+    out_con <- archive_write(a, "mtcars.csv")
     on.exit({
-      unlink("mtcars.zip")
+      unlink(a)
     })
 
     expect_is(out_con, "connection")
@@ -10,7 +11,7 @@ describe("archive_write", {
 
     write.csv(file = out_con, mtcars)
 
-    in_con <- unz("mtcars.zip", "mtcars.csv")
+    in_con <- unz(a, "mtcars.csv")
     data <- read.csv(in_con, row.names = 1)
 
     expect_equal(data, mtcars)
@@ -46,7 +47,7 @@ describe("archive_write", {
     }
 
     test_extension <- function(ext) {
-      filename <- paste0("mtcars", ".", ext)
+      filename <- tempfile(fileext = paste0(".", ext))
       on.exit(unlink(filename))
 
       expect_error(write.csv(mtcars, archive_write(filename, "mtcars.csv")), NA, info = ext)

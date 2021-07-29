@@ -26,7 +26,7 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
   options <- validate_options(options)
 
   if (!inherits(archive, "connection")) {
-    archive <- file(archive)
+    archive <- file(archive, "rb")
   }
 
   description <- glue::glue("archive_read({desc})[{file}]", desc = summary(archive)$description)

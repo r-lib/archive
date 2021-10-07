@@ -2,7 +2,7 @@ choices_rd <- function(x) {
   paste0(collapse = ", ", paste0("\\sQuote{", x, "}")) # nocov
 }
 
-#' @importFrom glue collapse single_quote
+#' @importFrom glue glue_collapse single_quote
 collapse_quote_transformer <- function(code, envir) {
   collapse_re <- "[*]$"
   quote_re <- "^[|]"
@@ -14,7 +14,7 @@ collapse_quote_transformer <- function(code, envir) {
     res <- single_quote(res)
   }
   if (should_collapse) {
-    res <- collapse(res, sep = ", ", last = " and ")
+    res <- glue_collapse(res, sep = ", ", last = " and ")
   }
   res
 }
@@ -37,7 +37,7 @@ validate_options <- function(options) {
   )
 
   if (length(options) > 1) {
-    options <- glue::glue_collapse(options, ",")
+    options <- glue_collapse(options, ",")
   }
 
   options

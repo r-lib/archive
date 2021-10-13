@@ -3,6 +3,7 @@
 
 
 #include "cpp11/declarations.hpp"
+#include <R_ext/Visibility.h>
 
 // archive_extract.cpp
 void archive_extract_(const cpp11::sexp& connection, cpp11::sexp file, int num_strip_components, cpp11::strings options, size_t sz);
@@ -133,7 +134,7 @@ static const R_CallMethodDef CallEntries[] = {
 };
 }
 
-extern "C" void R_init_archive(DllInfo* dll){
+extern "C" attribute_visible void R_init_archive(DllInfo* dll){
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
   R_forceSymbols(dll, TRUE);

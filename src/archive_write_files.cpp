@@ -1,5 +1,11 @@
 #include "r_archive.h"
+#include <cli/progress.h>
 #include <fcntl.h>
+
+const char* const pb_format =
+    "{cli::pb_spin} %zu added | {cli::pb_current_bytes} "
+    "({cli::pb_rate_bytes}) | "
+    "{cli::pb_elapsed}";
 
 // Write files already on disk to a new archive
 [[cpp11::register]] SEXP archive_write_files_(
@@ -31,6 +37,14 @@
     call(archive_write_set_options, a, std::string(options[0]).c_str());
   }
 
+  size_t num_written = 0;
+  size_t total_written = 0;
+
+  using namespace cpp11::literals;
+  cpp11::writable::list pb_config({"clear"_nm = false});
+
+  cpp11::sexp progress_bar(cli_progress_bar(NA_REAL, pb_config));
+
   call(archive_write_open_filename, a, archive_filename.c_str());
   for (std::string file : files) {
     stat(file.c_str(), &st);
@@ -42,11 +56,18 @@
       len = read(fd, buf.data(), buf.size());
       while (len > 0) {
         call(archive_write_data, a, buf.data(), len);
+        total_written += len;
+        if (CLI_SHOULD_TICK) {
+          cli_progress_set_format(progress_bar, pb_format, num_written);
+
+          cli_progress_set(progress_bar, total_written);
+        }
         len = read(fd, buf.data(), buf.size());
       }
       close(fd);
     }
     archive_entry_free(entry);
+    ++num_written;
   }
   call(archive_write_free, a);
 

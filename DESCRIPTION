@@ -19,14 +19,15 @@ Authors@R:
         person(given = "RStudio",
           role = c("cph", "fnd")))
 Depends: R (>= 3.1.0)
-Imports: tibble, glue, rlang
+Imports: cli, glue, tibble, rlang
 Suggests: testthat,
     covr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LinkingTo: 
+    cli,
     cpp11
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 SystemRequirements: C++11, libarchive: libarchive-dev (deb), libarchive-devel (rpm), libarchive
   (homebrew), libarchive_dev (csw)

@@ -95,9 +95,9 @@ a
 #> # A tibble: 3 × 3
 #>   path            size date               
 #>   <chr>          <int> <dttm>             
-#> 1 iris.csv        3716 2021-07-29 13:52:38
-#> 2 mtcars.csv      1281 2021-07-29 13:52:38
-#> 3 airquality.csv  2890 2021-07-29 13:52:38
+#> 1 iris.csv        3716 2021-10-13 15:32:41
+#> 2 mtcars.csv      1281 2021-10-13 15:32:41
+#> 3 airquality.csv  2890 2021-10-13 15:32:41
 
 # By default `archive_read()` will read the first file from a multi-file archive.
 read_csv(archive_read("data.tar.xz"), col_types = cols())

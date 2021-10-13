@@ -9,7 +9,7 @@
 #'   elements. Pathnames with fewer elements will be silently skipped.
 #' @details
 #' If `files` is `NULL` (the default) all files will be extracted.
-#' @returns An 'archive' object describing the archive (invisibly).
+#' @returns The filenames extracted (invisibly).
 #' @examples
 #' a <- system.file(package = "archive", "extdata", "data.zip")
 #' d <- tempfile()

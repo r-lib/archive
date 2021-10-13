@@ -1,5 +1,7 @@
 # archive (development version)
 
+* `archive_extract()` now returns the extracted files (invisibly) (#50)
+
 * `archive_extract()`, `archive_write_files()` and `archive_write_dir()` gain progress bars using the cli package (#49)
 
 # archive 1.1.0

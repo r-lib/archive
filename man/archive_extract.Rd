@@ -46,7 +46,7 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&se
 elements. Pathnames with fewer elements will be silently skipped.}
 }
 \value{
-An 'archive' object describing the archive (invisibly).
+The filenames extracted (invisibly).
 }
 \description{
 Extract contents of an archive to a directory

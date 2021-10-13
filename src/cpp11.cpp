@@ -6,11 +6,10 @@
 #include <R_ext/Visibility.h>
 
 // archive_extract.cpp
-void archive_extract_(const cpp11::sexp& connection, cpp11::sexp file, int num_strip_components, cpp11::strings options, size_t sz);
+cpp11::strings archive_extract_(const cpp11::sexp& connection, cpp11::sexp file, int num_strip_components, cpp11::strings options, size_t sz);
 extern "C" SEXP _archive_archive_extract_(SEXP connection, SEXP file, SEXP num_strip_components, SEXP options, SEXP sz) {
   BEGIN_CPP11
-    archive_extract_(cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(connection), cpp11::as_cpp<cpp11::decay_t<cpp11::sexp>>(file), cpp11::as_cpp<cpp11::decay_t<int>>(num_strip_components), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz));
-    return R_NilValue;
+    return cpp11::as_sexp(archive_extract_(cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(connection), cpp11::as_cpp<cpp11::decay_t<cpp11::sexp>>(file), cpp11::as_cpp<cpp11::decay_t<int>>(num_strip_components), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
   END_CPP11
 }
 // archive_read.cpp

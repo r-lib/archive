@@ -93,7 +93,7 @@ static const char* strip_components(const char* p, int elements) {
   }
 }
 
-[[cpp11::register]] void archive_extract_(
+[[cpp11::register]] cpp11::strings archive_extract_(
     const cpp11::sexp& connection,
     cpp11::sexp file,
     int num_strip_components,
@@ -160,6 +160,8 @@ static const char* strip_components(const char* p, int elements) {
 
   size_t num_extracted = 0;
 
+  cpp11::writable::strings extracted_files;
+
   for (R_xlen_t index = 1;; ++index) {
     res = call(archive_read_next_header, a, &entry);
     if (res == ARCHIVE_EOF) {
@@ -172,14 +174,17 @@ static const char* strip_components(const char* p, int elements) {
       if (filename == nullptr) {
         continue;
       }
-      if (filename != original_filename) {
-        archive_entry_copy_pathname(entry, filename);
-      }
     }
 
     if (file == R_NilValue ||
         (!file_indexes.empty() && any_matches(index, file_indexes)) ||
         (!file_names.empty() && any_matches(filename, file_names))) {
+      extracted_files.push_back(filename);
+
+      if (filename != original_filename) {
+        archive_entry_copy_pathname(entry, filename);
+      }
+
       call(archive_write_header, ext, entry);
       copy_data(a, ext, progress_bar, total_read, num_extracted);
       call(archive_write_finish_entry, ext);
@@ -194,4 +199,6 @@ static const char* strip_components(const char* p, int elements) {
   call(archive_read_free, a);
   call(archive_write_close, ext);
   call(archive_write_free, ext);
+
+  return extracted_files;
 }

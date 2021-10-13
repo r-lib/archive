@@ -46,7 +46,7 @@ archive_extract <- function(archive, dir = ".", files = NULL, options = characte
   }
   options <- validate_options(options)
 
-  archive_extract_(archive, files, as.integer(strip_components), options, sz = 2^14)
+  files <- archive_extract_(archive, files, as.integer(strip_components), options, sz = 2^14)
 
-  invisible()
+  invisible(files)
 }

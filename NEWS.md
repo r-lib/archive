@@ -1,4 +1,4 @@
-# archive (development version)
+# archive 1.1.1
 
 * `archive_extract()` now returns the extracted files (invisibly) (#50)
 

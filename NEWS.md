@@ -1,3 +1,5 @@
+# archive (development version)
+
 # archive 1.1.0
 
 * `archive_extract()` gains a `strip_components` argument to strip leading pathname components if desired (#27)

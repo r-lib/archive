@@ -1,5 +1,7 @@
 # archive (development version)
 
+* Fix UBSAN error related to the progress bar initialization (#55)
+
 # archive 1.1.1
 
 * `archive_extract()` now returns the extracted files (invisibly) (#50)

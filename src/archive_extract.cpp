@@ -154,7 +154,7 @@ static const char* strip_components(const char* p, int elements) {
 
   using namespace cpp11::literals;
 
-  cpp11::sexp progress_bar(cli_progress_bar(NA_REAL, R_NilValue));
+  cpp11::sexp progress_bar(cli_progress_bar(NA_INTEGER, R_NilValue));
 
   size_t total_read = 0;
 

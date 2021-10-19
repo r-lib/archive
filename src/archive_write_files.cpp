@@ -41,9 +41,8 @@ const char* const pb_format =
   size_t total_written = 0;
 
   using namespace cpp11::literals;
-  cpp11::writable::list pb_config({"clear"_nm = false});
 
-  cpp11::sexp progress_bar(cli_progress_bar(NA_REAL, pb_config));
+  cpp11::sexp progress_bar(cli_progress_bar(NA_INTEGER, R_NilValue));
 
   call(archive_write_open_filename, a, archive_filename.c_str());
   for (std::string file : files) {

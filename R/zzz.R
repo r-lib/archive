@@ -1,4 +1,5 @@
 .onLoad <- function(libname, pkgname) {
+  loadNamespace("cli")
   lib_path <- system.file("lib", .Platform$r_arch, paste0("libconnection", .Platform$dynlib.ext), package = "archive")
   res <- dyn.load(lib_path)
 

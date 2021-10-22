@@ -1,4 +1,4 @@
-# archive (development version)
+# archive 1.1.2
 
 * Fix UBSAN error related to the progress bar initialization (#55)
 

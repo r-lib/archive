@@ -1,6 +1,7 @@
 ## usethis namespace: start
 #' @useDynLib archive, .registration = TRUE
 #' @importFrom tibble as_tibble
+#' @importFrom cli cli_progress_bar
 ## usethis namespace: end
 NULL
 

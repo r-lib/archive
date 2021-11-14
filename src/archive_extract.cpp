@@ -32,8 +32,6 @@ static int copy_data(
 
     call(archive_write_data_block, aw, buff, size, offset);
   }
-
-  cli_progress_done(progress_bar);
 }
 
 template <typename C> std::vector<R_xlen_t> as_file_index(const C& in) {

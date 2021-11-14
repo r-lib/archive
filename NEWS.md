@@ -2,7 +2,7 @@
 
 * Fix UBSAN error related to the progress bar initialization (#55)
 
-* Fix unterminated progress bars in `archive_extract()`, `archive_write()` and friends (#60, @salim-b)
+* Fix unterminated progress bars in `archive_write()` and friends (#60, @salim-b)
 
 # archive 1.1.1
 

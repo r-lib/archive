@@ -70,5 +70,7 @@ const char* const pb_format =
   }
   call(archive_write_free, a);
 
+  cli_progress_done(progress_bar);
+
   return R_NilValue;
 }

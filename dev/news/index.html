@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">archive</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.1.1.9000</span>
       </span>
     </div>
 
@@ -118,13 +118,9 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#archive-development-version" class="anchor"></a>archive (development version)<small> Unreleased </small>
 </h1>
-</div>
-    <div id="archive-112" class="section level1">
-<h1 class="page-header" data-toc-text="1.1.2">
-<a href="#archive-112" class="anchor"></a>archive 1.1.2<small> 2021-10-25 </small>
-</h1>
 <ul>
-<li>Fix UBSAN error related to the progress bar initialization (<a href='https://github.com/r-lib/archive/issues/55'>#55</a>)</li>
+<li><p>Fix UBSAN error related to the progress bar initialization (<a href='https://github.com/r-lib/archive/issues/55'>#55</a>)</p></li>
+<li><p>Fix unterminated progress bars in <code><a href="../reference/archive_write.html">archive_write()</a></code> and friends (<a href='https://github.com/r-lib/archive/issues/60'>#60</a>, <a href='https://github.com/salim-b'>@salim-b</a>)</p></li>
 </ul>
 </div>
     <div id="archive-111" class="section level1">
@@ -134,7 +130,7 @@
 <ul>
 <li><p><code><a href="../reference/archive_extract.html">archive_extract()</a></code> now returns the extracted files (invisibly) (<a href='https://github.com/r-lib/archive/issues/50'>#50</a>)</p></li>
 <li><p><code><a href="../reference/archive_extract.html">archive_extract()</a></code>, <code><a href="../reference/archive_write_dir.html">archive_write_files()</a></code> and <code><a href="../reference/archive_write_dir.html">archive_write_dir()</a></code> gain progress bars using the cli package (<a href='https://github.com/r-lib/archive/issues/49'>#49</a>)</p></li>
-<li><p>Remove uses of deprecated function <code><a href="https://glue.tidyverse.org/reference/glue-deprecated.html">glue::collapse()</a></code>.</p></li>
+<li><p>Remove uses of deprecated function <code>glue::collapse()</code>.</p></li>
 </ul>
 </div>
     <div id="archive-110" class="section level1">

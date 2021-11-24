@@ -23,3 +23,4 @@
 ^compile_commands\.json$
 ^LICENSE\.md$
 ^CRAN-RELEASE$
+^MAINTENANCE\.md$

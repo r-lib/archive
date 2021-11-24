@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • archive</title>
+<title>NA • archive</title>
 
 
 <!-- jquery -->
@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script>
+<link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -33,13 +33,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="NA" />
 
 
 <meta name="robots" content="noindex">
@@ -58,7 +58,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-news">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -70,7 +70,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">archive</a>
+        <a class="navbar-link" href="index.html">archive</a>
         <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.1.2.9000</span>
       </span>
     </div>
@@ -78,16 +78,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="index.html">
     <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -108,69 +108,29 @@
       </header>
 
 <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/r-lib/archive/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+      <h1>NA</h1>
     </div>
 
-    <div id="archive-development-version" class="section level1">
-<h1 class="page-header" data-toc-text="development version">
-<a href="#archive-development-version" class="anchor"></a>archive (development version)<small> Unreleased </small>
-</h1>
+
+<div id="current-state" class="section level2">
+<h2 class="hasAnchor">
+<a href="#current-state" class="anchor"></a>Current state</h2>
+<p>archive is pretty stable, I think it wraps enough of libarchive for our typical use cases. It could probably be used a bit more automatically in readr / vroom, right now archive is used only by vroom if archive happens to be installed by the user, but most users are not going to know about it and have it installed.</p>
 </div>
-    <div id="archive-112" class="section level1">
-<h1 class="page-header" data-toc-text="1.1.2">
-<a href="#archive-112" class="anchor"></a>archive 1.1.2<small> 2021-10-25 </small>
-</h1>
-<ul>
-<li><p>Fix UBSAN error related to the progress bar initialization (<a href='https://github.com/r-lib/archive/issues/55'>#55</a>)</p></li>
-<li><p>Fix unterminated progress bars in <code><a href="../reference/archive_write.html">archive_write()</a></code> and friends (<a href='https://github.com/r-lib/archive/issues/60'>#60</a>, <a href='https://github.com/salim-b'>@salim-b</a>)</p></li>
-</ul>
+<div id="known-outstanding-issues" class="section level2">
+<h2 class="hasAnchor">
+<a href="#known-outstanding-issues" class="anchor"></a>Known outstanding issues</h2>
+<p><a href="https://github.com/r-lib/archive/issues/59" class="uri">https://github.com/r-lib/archive/issues/59</a> mentioned an issue trying to set a C.UTF-8 locale, it seems at least some systems may not have this locale installed, but do have a en_US.UTF-8 locale. archive needs to set the UTF-8 locale to properly read filenames encoded in UTF-8. I don’t know if it is worth adding code to try multiple locales, or just have the current warning is enough.</p>
 </div>
-    <div id="archive-111" class="section level1">
-<h1 class="page-header" data-toc-text="1.1.1">
-<a href="#archive-111" class="anchor"></a>archive 1.1.1<small> 2021-10-13 </small>
-</h1>
-<ul>
-<li><p><code><a href="../reference/archive_extract.html">archive_extract()</a></code> now returns the extracted files (invisibly) (<a href='https://github.com/r-lib/archive/issues/50'>#50</a>)</p></li>
-<li><p><code><a href="../reference/archive_extract.html">archive_extract()</a></code>, <code><a href="../reference/archive_write_dir.html">archive_write_files()</a></code> and <code><a href="../reference/archive_write_dir.html">archive_write_dir()</a></code> gain progress bars using the cli package (<a href='https://github.com/r-lib/archive/issues/49'>#49</a>)</p></li>
-<li><p>Remove uses of deprecated function <code>glue::collapse()</code>.</p></li>
-</ul>
+<div id="future-directions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#future-directions" class="anchor"></a>Future directions</h2>
+<p>In general I don’t think there is a lot that needs to be done. Perhaps we could add nicer support for password protected archives, but I think this is not that common in practice.</p>
 </div>
-    <div id="archive-110" class="section level1">
-<h1 class="page-header" data-toc-text="1.1.0">
-<a href="#archive-110" class="anchor"></a>archive 1.1.0<small> 2021-08-05 </small>
-</h1>
-<ul>
-<li><p><code><a href="../reference/archive_extract.html">archive_extract()</a></code> gains a <code>strip_components</code> argument to strip leading pathname components if desired (<a href='https://github.com/r-lib/archive/issues/27'>#27</a>)</p></li>
-<li><p><code><a href="../reference/archive.html">archive()</a></code>, <code><a href="../reference/archive_read.html">archive_read()</a></code>, <code><a href="../reference/archive_extract.html">archive_extract()</a></code> and <code><a href="../reference/file_read.html">file_read()</a></code> now all accept R connections in addition to file paths. This allows you to do things like read remote archives with a <code><a href="https://rdrr.io/r/base/connections.html">url()</a></code> or <code><a href="https://rdrr.io/pkg/curl/man/curl.html">curl::curl()</a></code> connection like you would a file on disk (<a href='https://github.com/r-lib/archive/issues/7'>#7</a>)</p></li>
-</ul>
-</div>
-    <div id="archive-102" class="section level1">
-<h1 class="page-header" data-toc-text="1.0.2">
-<a href="#archive-102" class="anchor"></a>archive 1.0.2<small> 2021-07-16 </small>
-</h1>
-<ul>
-<li>skip tests failing on non-UTF-8 systems</li>
-</ul>
-</div>
-    <div id="archive-101" class="section level1">
-<h1 class="page-header" data-toc-text="1.0.1">
-<a href="#archive-101" class="anchor"></a>archive 1.0.1<small> 2021-07-09 </small>
-</h1>
-<ul>
-<li>Fix encoding issues with non-UTF-8 linux systems.</li>
-</ul>
-</div>
-    <div id="archive-100" class="section level1">
-<h1 class="page-header" data-toc-text="1.0.0">
-<a href="#archive-100" class="anchor"></a>archive 1.0.0<small> 2021-06-30 </small>
-</h1>
-<ul>
-<li>Initial release</li>
-</ul>
-</div>
+
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -180,6 +140,7 @@
   </div>
 
 </div>
+
 
 
       <footer>

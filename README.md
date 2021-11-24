@@ -7,7 +7,7 @@
 
 [![R-CMD-check](https://github.com/r-lib/archive/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/archive/actions)
 [![Coverage
-Status](https://img.shields.io/codecov/c/github/r-lib/archive/master.svg)](https://codecov.io/github/r-lib/archive?branch=master)
+Status](https://img.shields.io/codecov/c/github/r-lib/archive/main.svg)](https://codecov.io/github/r-lib/archive?branch=main)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/archive)](https://CRAN.R-project.org/package=archive)
 <!-- badges: end -->

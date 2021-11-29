@@ -7,7 +7,7 @@
 
 [![R-CMD-check](https://github.com/r-lib/archive/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/archive/actions)
 [![Coverage
-Status](https://img.shields.io/codecov/c/github/r-lib/archive/main.svg)](https://codecov.io/github/r-lib/archive?branch=main)
+Status](https://img.shields.io/codecov/c/github/r-lib/archive/main)](https://codecov.io/github/r-lib/archive?branch=main)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/archive)](https://CRAN.R-project.org/package=archive)
 <!-- badges: end -->
@@ -95,9 +95,9 @@ a
 #> # A tibble: 3 × 3
 #>   path            size date               
 #>   <chr>          <int> <dttm>             
-#> 1 iris.csv        3716 2021-10-22 10:10:49
-#> 2 mtcars.csv      1281 2021-10-22 10:10:49
-#> 3 airquality.csv  2890 2021-10-22 10:10:49
+#> 1 iris.csv        3716 2021-11-29 18:09:35
+#> 2 mtcars.csv      1281 2021-11-29 18:09:35
+#> 3 airquality.csv  2890 2021-11-29 18:09:35
 
 # By default `archive_read()` will read the first file from a multi-file archive.
 read_csv(archive_read("data.tar.xz"), col_types = cols())

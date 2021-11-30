@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Authors • archive</title>
+<title>NA • archive</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Authors" />
+<meta property="og:title" content="NA" />
 
 
 
@@ -58,7 +58,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-authors">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -110,28 +110,33 @@
 <div class="row">
   <div class="contents col-md-9">
     <div class="page-header">
-      <h1>Authors</h1>
+      <h1>NA</h1>
     </div>
 
-    <ul class="list-unstyled">
-      <li>
-        <p><strong><a href='http://jimhester.com'>Jim Hester</a></strong>. Author. <a href='https://orcid.org/0000-0002-2739-7082' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
-        </p>
-      </li>
-      <li>
-        <p><strong>Gábor Csárdi</strong>. Author, maintainer. 
-        </p>
-      </li>
-      <li>
-        <p><strong>Ondrej Holy</strong>. Copyright holder. 
-        <br /><small>archive_write_add_filter implementation</small></p>
-      </li>
-      <li>
-        <p><strong><a href='https://www.rstudio.com'><img src='https://www.tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a></strong>. Copyright holder, funder. 
-        </p>
-      </li>
-    </ul>
 
+<div id="current-state" class="section level2">
+<h2 class="hasAnchor">
+<a href="#current-state" class="anchor"></a>Current state</h2>
+<p>archive is pretty stable, I think it wraps enough of libarchive for our typical use cases. It could probably be used a bit more automatically in readr / vroom, right now archive is used only by vroom if archive happens to be installed by the user, but most users are not going to know about it and have it installed.</p>
+</div>
+<div id="known-outstanding-issues" class="section level2">
+<h2 class="hasAnchor">
+<a href="#known-outstanding-issues" class="anchor"></a>Known outstanding issues</h2>
+<p><a href="https://github.com/r-lib/archive/issues/59" class="uri">https://github.com/r-lib/archive/issues/59</a> mentioned an issue trying to set a C.UTF-8 locale, it seems at least some systems may not have this locale installed, but do have a en_US.UTF-8 locale. archive needs to set the UTF-8 locale to properly read filenames encoded in UTF-8. I don’t know if it is worth adding code to try multiple locales, or just have the current warning is enough.</p>
+</div>
+<div id="future-directions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#future-directions" class="anchor"></a>Future directions</h2>
+<p>In general I don’t think there is a lot that needs to be done. Perhaps we could add nicer support for password protected archives, but I think this is not that common in practice.</p>
+</div>
+
+
+  </div>
+
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>

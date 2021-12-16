@@ -68,3 +68,5 @@ jobs:
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
+        env:
+          _R_INSTALL_TIME_PATCHES_: no

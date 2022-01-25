@@ -31,7 +31,7 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&se
 }}
 }
 \value{
-@return A \link[tibble:tibble-package]{tibble} with details about files in the archive.
+A \link[tibble:tibble-package]{tibble} with details about files in the archive.
 }
 \description{
 This function retrieves metadata about files in an archive, it can be passed

@@ -1,16 +1,18 @@
+VERSION=3.5.2
+RWINLIB=../windows/libarchive-$(VERSION)
 PKG_CPPFLAGS= \
-  -I../windows/libarchive-3.2.2/include -I.
+  -I$(RWINLIB)/include -I.
 
 PKG_LIBS = \
-  -L../windows/libarchive-3.2.2/lib${R_ARCH}${CRT} \
-  -larchive -lcrypto -lnettle -lregex -lexpat -llzo2 -llzma -llz4 -lbz2 -lz -liconv -lbcrypt
+  -L$(RWINLIB)/lib${R_ARCH}${CRT} \
+  -larchive -lcrypto -lnettle -lregex -lexpat -llzo2 -llzma -llz4 -lbz2 -lzstd -lz -liconv -lbcrypt
 
 
 # Originally from https://github.com/cran/curl/blob/3897ba5203dee940e2ce40ac23a0d1106da93df6/src/Makevars.win
 
 LIB_CON = ../inst/lib$(R_ARCH)/libconnection.dll
 
-all: winlibs $(OBJECTS) $(SHLIB) $(LIB_CON)
+all: clean winlibs $(OBJECTS) $(SHLIB) $(LIB_CON)
 
 $(LIB_CON): connection/connection.o
 	mkdir -p $(dir $(LIB_CON))

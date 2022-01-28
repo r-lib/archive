@@ -1,0 +1,4 @@
+#! /usr/bin/env sh
+
+echo "CRT=-ucrt" > src/Makevars.ucrt
+echo "include Makevars.win" >> src/Makevars.ucrt

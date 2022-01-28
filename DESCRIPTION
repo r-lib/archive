@@ -36,3 +36,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 SystemRequirements: C++11, libarchive: libarchive-dev (deb),
     libarchive-devel (rpm), libarchive (homebrew), libarchive_dev (csw)
+Biarch: true

@@ -1,4 +1,5 @@
 #! /usr/bin/env sh
-
 echo "CRT=-ucrt" > src/Makevars.ucrt
 echo "include Makevars.win" >> src/Makevars.ucrt
+echo "CXX_STD=CXX11" >> src/Makevars.ucrt
+

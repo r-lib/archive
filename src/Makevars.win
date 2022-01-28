@@ -7,6 +7,7 @@ PKG_LIBS = \
   -L$(RWINLIB)/lib${R_ARCH}${CRT} \
   -larchive -lcrypto -lnettle -lregex -lexpat -llzo2 -llzma -llz4 -lbz2 -lzstd -lz -liconv -lbcrypt
 
+CXX_STD=CXX11
 
 # Originally from https://github.com/cran/curl/blob/3897ba5203dee940e2ce40ac23a0d1106da93df6/src/Makevars.win
 

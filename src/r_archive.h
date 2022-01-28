@@ -119,15 +119,17 @@ class local_utf8_locale {
   // could set the UTF-8 locale here for windows as well with ".UTF-8"
   // https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/setlocale-wsetlocale?view=msvc-160#utf-8-support
   // But for now just do nothing
-#ifdef __MINGW32__
+#if defined(__MINGW32__) && !defined(_UCRT)
 #else
 private:
   std::string old_locale_;
 
 public:
-  local_utf8_locale() : old_locale_(std::setlocale(LC_CTYPE, NULL)) {
+  local_utf8_locale() : old_locale_(std::setlocale(LC_CTYPE, nullptr)) {
 #ifdef __APPLE__
     const char* locale = "UTF-8";
+#elif defined(_WIN32)
+    const char* locale = ".UTF-8";
 #else
     const char* locale = "C.UTF-8";
 #endif

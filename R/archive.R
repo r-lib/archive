@@ -157,3 +157,12 @@ libarchive_libzstd_version <- function() {
   }
   package_version("0.0.0")
 }
+
+print_versions <- function(){
+  cat("Linked to:\n")
+  cat("libarchive", as.character(libarchive_version()), '\n')
+  cat("zlib", as.character(libarchive_zlib_version()), '\n')
+  cat("lzma", as.character(libarchive_liblzma_version()), '\n')
+  cat("bzlib", as.character(libarchive_bzlib_version()), '\n')
+  cat("zsstd", as.character(libarchive_libzstd_version()), '\n')
+}

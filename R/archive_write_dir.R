@@ -14,7 +14,7 @@ archive_write_dir <- function(archive, dir, format = NULL, filter = NULL, option
 
   old <- setwd(dir)
   on.exit(setwd(old))
-  files <- dir(dir, ..., recursive = recursive, full.names = full.names)
+  files <- dir(".", ..., recursive = recursive, full.names = full.names)
 
   archive_write_files(archive, files, format = format, filter = filter, options = options)
 

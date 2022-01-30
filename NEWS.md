@@ -1,5 +1,7 @@
 # archive (development version)
 
+* `archive_write_dir()` now works with relative paths (#69).
+
 # archive 1.1.3
 
 * Gábor Csárdi is now the maintainer.

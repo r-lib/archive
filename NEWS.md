@@ -1,4 +1,4 @@
-# archive (development version)
+# archive 1.1.4
 
 * `archive_write_dir()` now works with relative paths (#69).
 

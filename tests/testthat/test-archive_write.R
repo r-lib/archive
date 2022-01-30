@@ -139,4 +139,23 @@ describe("archive_write", {
       c("airquality.csv", "iris.csv", "mtcars.csv")
     )
   })
+
+  it("works with absolute paths", {
+    dir.create(d <- tempfile())
+    old <- getwd()
+    on.exit(setwd(old), add = TRUE)
+    setwd(d)
+
+    dir.create("files")
+    write.csv(iris, file.path("files", "iris.csv"))
+    write.csv(mtcars, file.path("files", "mtcars.csv"))
+    write.csv(airquality, file.path("files", "airquality.csv"))
+
+    # Add some to a new archive
+    a <- archive_write_dir("data.tar.gz", normalizePath("files"))
+    expect_equal(
+      sort(a$path),
+      c("airquality.csv", "iris.csv", "mtcars.csv")
+    )
+  })
 })

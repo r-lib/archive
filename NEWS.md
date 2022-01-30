@@ -2,6 +2,8 @@
 
 * `archive_write_dir()` now works with relative paths (#69).
 
+* archive now works properly on UCRT Windows R.
+
 # archive 1.1.3
 
 * Gábor Csárdi is now the maintainer.

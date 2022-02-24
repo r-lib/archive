@@ -1,4 +1,4 @@
-VERSION=3.3.3
+VERSION=3.5.2
 RWINLIB=../windows/libarchive-$(VERSION)
 PKG_CPPFLAGS= \
   -I$(RWINLIB)/include -I.

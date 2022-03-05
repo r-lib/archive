@@ -29,7 +29,7 @@ static Rboolean rchive_write_direct_open(Rconnection con) {
   call(archive_write_set_format, con, r->format);
 
   if (r->password.size() > 0) {
-    call(archive_write_set_passphrase, con, r->password);
+    call(archive_write_set_passphrase, con, r->password.c_str());
   }
 
   if (!r->options.empty()) {

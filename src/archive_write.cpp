@@ -100,7 +100,7 @@ void rchive_write_close(Rconnection con) {
   }
 
   if (r->password.size() > 0) {
-    call(archive_write_set_passphrase, out, r->password);
+    call(archive_write_set_passphrase, out, r->password.c_str());
   }
 
   if (!r->options.empty()) {

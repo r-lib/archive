@@ -127,7 +127,7 @@ static const char* strip_components(const char* p, int elements) {
   }
 
   if (password.size() > 0) {
-    call(archive_read_add_passphrase, a, password);
+    call(archive_read_add_passphrase, a, password.c_str());
   }
 
   call(archive_read_set_read_callback, a, input_read);

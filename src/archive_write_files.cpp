@@ -39,7 +39,7 @@ const char* const pb_format =
   }
 
   if (password.size() > 0) {
-    call(archive_write_set_passphrase, a, password);
+    call(archive_write_set_passphrase, a, password.c_str());
   }
 
   size_t num_written = 0;

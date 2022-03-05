@@ -88,7 +88,7 @@ static Rboolean rchive_read_open(Rconnection con) {
   }
 
   if (r->password.size() > 0) {
-    call(archive_read_add_passphrase, con, r->password);
+    call(archive_read_add_passphrase, con, r->password.c_str());
   }
 
   static auto open = cpp11::package("base")["open"];

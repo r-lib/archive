@@ -41,10 +41,10 @@ extern "C" SEXP _archive_archive_write_(SEXP archive_filename, SEXP filename, SE
   END_CPP11
 }
 // archive.cpp
-cpp11::sexp archive_(cpp11::sexp connection, cpp11::strings options);
-extern "C" SEXP _archive_archive_(SEXP connection, SEXP options) {
+cpp11::sexp archive_(cpp11::sexp connection, cpp11::strings options, const std::string& password);
+extern "C" SEXP _archive_archive_(SEXP connection, SEXP options, SEXP password) {
   BEGIN_CPP11
-    return cpp11::as_sexp(archive_(cpp11::as_cpp<cpp11::decay_t<cpp11::sexp>>(connection), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options)));
+    return cpp11::as_sexp(archive_(cpp11::as_cpp<cpp11::decay_t<cpp11::sexp>>(connection), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(password)));
   END_CPP11
 }
 // archive.cpp

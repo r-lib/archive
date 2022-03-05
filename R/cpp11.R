@@ -20,8 +20,8 @@ archive_write_ <- function(archive_filename, filename, mode, format, filters, op
   .Call(`_archive_archive_write_`, archive_filename, filename, mode, format, filters, options, password, sz)
 }
 
-archive_ <- function(connection, options) {
-  .Call(`_archive_archive_`, connection, options)
+archive_ <- function(connection, options, password) {
+  .Call(`_archive_archive_`, connection, options, password)
 }
 
 archive_filters <- function() {

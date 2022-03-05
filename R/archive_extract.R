@@ -25,7 +25,7 @@
 #' list.files(d)
 #' unlink(d)
 #' @export
-archive_extract <- function(archive, dir = ".", files = NULL, options = character(), strip_components = 0L) {
+archive_extract <- function(archive, dir = ".", files = NULL, options = character(), strip_components = 0L, password = "") {
   assert("`files` must be a character or numeric vector or `NULL`",
     is.null(files) || is.numeric(files) || is.character(files))
 
@@ -46,7 +46,7 @@ archive_extract <- function(archive, dir = ".", files = NULL, options = characte
   }
   options <- validate_options(options)
 
-  files <- archive_extract_(archive, files, as.integer(strip_components), options, sz = 2^14)
+  files <- archive_extract_(archive, files, as.integer(strip_components), options, password, sz = 2^14)
 
   invisible(files)
 }

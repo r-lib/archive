@@ -40,6 +40,7 @@ struct rchive {
   size_t size = 0;
   int filters[FILTER_MAX];
   std::string options;
+  std::string password;
 };
 
 size_t pop(void* target, size_t max, rchive* r);

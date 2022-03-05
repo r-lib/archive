@@ -24,7 +24,7 @@
 #' unlink("mtcars.bz2")
 #' }
 #' @export
-file_write <- function(file, mode = "w", filter = NULL, options = character()) {
+file_write <- function(file, mode = "w", filter = NULL, options = character(), password = "") {
 
   if (is.null(filter)) {
     res <- filter_by_extension(file)
@@ -33,5 +33,5 @@ file_write <- function(file, mode = "w", filter = NULL, options = character()) {
     filter <- res
   }
 
-  archive_write(archive = file, file = file, mode = mode, format = "raw", filter = filter, options = options)
+  archive_write(archive = file, file = file, mode = mode, format = "raw", filter = filter, options = options, password = password)
 }

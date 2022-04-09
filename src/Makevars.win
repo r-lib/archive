@@ -1,10 +1,12 @@
-VERSION=3.5.2
+VERSION=3.6.1
 RWINLIB=../windows/libarchive-$(VERSION)
+TARGET = lib$(subst gcc,,$(COMPILED_BY))$(R_ARCH)
 PKG_CPPFLAGS= \
   -I$(RWINLIB)/include -I.
 
 PKG_LIBS = \
-  -L$(RWINLIB)/lib${R_ARCH}${CRT} \
+	-L$(RWINLIB)/$(TARGET) \
+	-L$(RWINLIB)/lib$(R_ARCH) \
   -larchive -lcrypto -lnettle -lregex -lexpat -llzo2 -llzma -llz4 -lbz2 -lzstd -lz -liconv -lbcrypt
 
 
@@ -22,6 +24,6 @@ clean:
 	rm -f $(OBJECTS) $(SHLIB) $(LIB_CON) connection/connection.o
 
 winlibs:
-	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
+	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R" $(VERSION)
 
 .PHONY: all winlibs clean

@@ -1,5 +1,7 @@
 # archive (development version)
 
+* archive now does not produce broken archives on Windows (#72, @cielavenir).
+
 # archive 1.1.4
 
 * `archive_write_dir()` now works with relative paths (#69).

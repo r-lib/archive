@@ -24,11 +24,10 @@ jobs:
         config:
           - {os: macOS-latest,   r: 'release'}
 
-          - {os: windows-2022, r: 'devel'}
-          - {os: windows-latest, r: 'next'}
+          - {os: windows-2022, r: 'devel', rtools-version: '42'}
           - {os: windows-latest, r: 'release'}
-          # Use 3.6 to trigger usage of RTools35
-          - {os: windows-latest, r: '3.6'}
+          # Use 4.1 for encoding bugs
+          - {os: windows-latest, r: '4.1'}
 
           # Use older ubuntu to maximise backward compatibility
           - {os: ubuntu-18.04,   r: 'devel', http-user-agent: 'release'}

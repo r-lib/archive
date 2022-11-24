@@ -1,2 +1,17 @@
-CRT=-ucrt
-include Makevars.win
+PKG_CPPFLAGS= -I.
+
+PKG_LIBS = -larchive -lxml2 -lcrypto -lnettle -lregex -lexpat -llzo2 \
+	   -llzma -llz4 -lbz2 -lz -lzstd -liconv -lws2_32
+
+LIB_CON = ../inst/lib$(R_ARCH)/libconnection.dll
+
+all: $(OBJECTS) $(SHLIB) $(LIB_CON)
+
+$(LIB_CON): connection/connection.o
+	mkdir -p $(dir $(LIB_CON))
+	$(SHLIB_LINK) $(LIBR) -o $@ $^
+
+clean:
+	rm -f $(OBJECTS) $(SHLIB) $(LIB_CON) connection/connection.o
+
+.PHONY: all clean

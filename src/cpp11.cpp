@@ -114,14 +114,14 @@ extern "C" SEXP _archive_rchive_init(SEXP nc_xptr, SEXP rc_xptr) {
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
-    {"_archive_archive_",                    (DL_FUNC) &_archive_archive_,                    2},
-    {"_archive_archive_extract_",            (DL_FUNC) &_archive_archive_extract_,            5},
+    {"_archive_archive_",                    (DL_FUNC) &_archive_archive_,                    3},
+    {"_archive_archive_extract_",            (DL_FUNC) &_archive_archive_extract_,            6},
     {"_archive_archive_filters",             (DL_FUNC) &_archive_archive_filters,             0},
     {"_archive_archive_formats",             (DL_FUNC) &_archive_archive_formats,             0},
-    {"_archive_archive_read_",               (DL_FUNC) &_archive_archive_read_,               8},
-    {"_archive_archive_write_",              (DL_FUNC) &_archive_archive_write_,              7},
-    {"_archive_archive_write_direct_",       (DL_FUNC) &_archive_archive_write_direct_,       7},
-    {"_archive_archive_write_files_",        (DL_FUNC) &_archive_archive_write_files_,        6},
+    {"_archive_archive_read_",               (DL_FUNC) &_archive_archive_read_,               9},
+    {"_archive_archive_write_",              (DL_FUNC) &_archive_archive_write_,              8},
+    {"_archive_archive_write_direct_",       (DL_FUNC) &_archive_archive_write_direct_,       8},
+    {"_archive_archive_write_files_",        (DL_FUNC) &_archive_archive_write_files_,        7},
     {"_archive_libarchive_bzlib_version_",   (DL_FUNC) &_archive_libarchive_bzlib_version_,   0},
     {"_archive_libarchive_liblz4_version_",  (DL_FUNC) &_archive_libarchive_liblz4_version_,  0},
     {"_archive_libarchive_liblzma_version_", (DL_FUNC) &_archive_libarchive_liblzma_version_, 0},

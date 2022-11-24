@@ -6,9 +6,21 @@
 \alias{file_write}
 \title{Construct a connections for (possibly compressed) files.}
 \usage{
-file_read(file, mode = "r", filter = NULL, options = character())
+file_read(
+  file,
+  mode = "r",
+  filter = NULL,
+  options = character(),
+  password = ""
+)
 
-file_write(file, mode = "w", filter = NULL, options = character())
+file_write(
+  file,
+  mode = "w",
+  filter = NULL,
+  options = character(),
+  password = ""
+)
 }
 \arguments{
 \item{file}{\code{character(1) || integer(1)} The filename within the archive,
@@ -40,6 +52,8 @@ provided only to modules whose name matches module.
 See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sektion=3&format=html}{read options} for available read options
 See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
+
+\item{password}{\code{character(1)} The password to process the archive, if nchar > 0.}
 }
 \value{
 An 'archive_read' connection (for \code{file_read()}) or an 'archive_write' connection (for \code{file_write()}) to the file.

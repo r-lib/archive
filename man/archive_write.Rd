@@ -10,7 +10,8 @@ archive_write(
   mode = "w",
   format = NULL,
   filter = NULL,
-  options = character()
+  options = character(),
+  password = ""
 )
 }
 \arguments{
@@ -47,6 +48,8 @@ provided only to modules whose name matches module.
 See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sektion=3&format=html}{read options} for available read options
 See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
+
+\item{password}{\code{character(1)} The password to process the archive, if nchar > 0.}
 }
 \value{
 An 'archive_write' connection to the file within the archive to be written.

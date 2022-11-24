@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">archive</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@
 </h2>
 <p>You can install archive from CRAN with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("archive")</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("archive")</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
@@ -91,115 +91,115 @@
 </h3>
 <p>Use <code><a href="reference/archive_read.html">archive_read()</a></code> and <code><a href="reference/archive_write.html">archive_write()</a></code> to read and write single files to an archive. These files return connections, which can be passed to any R interface which can take a connection. Most base R file system functions use connections, as well as some packages like <a href="https://readr.tidyverse.org/" class="external-link">readr</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span> <span class="co"># read_csv(), write_csv(), cols()</span>
-
-<span class="co"># Write a single dataset to zip</span>
-<span class="fu">write_csv</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="reference/archive_write.html">archive_write</a></span><span class="op">(</span><span class="st">"mtcars.zip"</span>, <span class="st">"mtcars.csv"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Read the data back, by default the first file is read from the archive.</span>
-<span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"mtcars.zip"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 32 × 11</span>
-<span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1</span>
-<span class="co">#&gt; # … with 28 more rows</span>
-
-<span class="co"># Also supports things like archiving and compression together</span>
-<span class="co"># Write a single dataset to (gzip compressed) tar</span>
-<span class="fu">write_csv</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="reference/archive_write.html">archive_write</a></span><span class="op">(</span><span class="st">"mtcars.tar.gz"</span>, <span class="st">"mtcars.csv"</span>, options <span class="op">=</span> <span class="st">"compression-level=9"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Read the data back</span>
-<span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"mtcars.tar.gz"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 32 × 11</span>
-<span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1</span>
-<span class="co">#&gt; # … with 28 more rows</span>
-
-<span class="co"># Archive file sizes</span>
-<span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.size</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mtcars.zip"</span>, <span class="st">"mtcars.tar.gz"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] 742 648</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span> <span class="co"># read_csv(), write_csv(), cols()</span></span>
+<span></span>
+<span><span class="co"># Write a single dataset to zip</span></span>
+<span><span class="fu">write_csv</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="reference/archive_write.html">archive_write</a></span><span class="op">(</span><span class="st">"mtcars.zip"</span>, <span class="st">"mtcars.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Read the data back, by default the first file is read from the archive.</span></span>
+<span><span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"mtcars.zip"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 32 × 11</span></span>
+<span><span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span></span>
+<span><span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span></span>
+<span><span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span></span>
+<span><span class="co">#&gt; 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1</span></span>
+<span><span class="co">#&gt; # … with 28 more rows</span></span>
+<span></span>
+<span><span class="co"># Also supports things like archiving and compression together</span></span>
+<span><span class="co"># Write a single dataset to (gzip compressed) tar</span></span>
+<span><span class="fu">write_csv</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="reference/archive_write.html">archive_write</a></span><span class="op">(</span><span class="st">"mtcars.tar.gz"</span>, <span class="st">"mtcars.csv"</span>, options <span class="op">=</span> <span class="st">"compression-level=9"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Read the data back</span></span>
+<span><span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"mtcars.tar.gz"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 32 × 11</span></span>
+<span><span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span></span>
+<span><span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span></span>
+<span><span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span></span>
+<span><span class="co">#&gt; 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1</span></span>
+<span><span class="co">#&gt; # … with 28 more rows</span></span>
+<span></span>
+<span><span class="co"># Archive file sizes</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.size</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mtcars.zip"</span>, <span class="st">"mtcars.tar.gz"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 742 648</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="multi-file-archives">Multi file archives<a class="anchor" aria-label="anchor" href="#multi-file-archives"></a>
 </h3>
 <p><code><a href="reference/archive_write_files.html">archive_write_files()</a></code> is used to create a new archive from multiple files on disk.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Write a few files to the temp directory</span>
-<span class="fu">write_csv</span><span class="op">(</span><span class="va">iris</span>, <span class="st">"iris.csv"</span><span class="op">)</span>
-<span class="fu">write_csv</span><span class="op">(</span><span class="va">mtcars</span>, <span class="st">"mtcars.csv"</span><span class="op">)</span>
-<span class="fu">write_csv</span><span class="op">(</span><span class="va">airquality</span>, <span class="st">"airquality.csv"</span><span class="op">)</span>
-
-<span class="co"># Add them to a new archive</span>
-<span class="fu"><a href="reference/archive_write_files.html">archive_write_files</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iris.csv"</span>, <span class="st">"mtcars.csv"</span>, <span class="st">"airquality.csv"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># View archive contents</span>
-<span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/archive.html">archive</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span><span class="op">)</span>
-<span class="va">a</span>
-<span class="co">#&gt; # A tibble: 3 × 3</span>
-<span class="co">#&gt;   path            size date               </span>
-<span class="co">#&gt;   &lt;chr&gt;          &lt;int&gt; &lt;dttm&gt;             </span>
-<span class="co">#&gt; 1 iris.csv        3716 2021-11-29 18:09:35</span>
-<span class="co">#&gt; 2 mtcars.csv      1281 2021-11-29 18:09:35</span>
-<span class="co">#&gt; 3 airquality.csv  2890 2021-11-29 18:09:35</span>
-
-<span class="co"># By default `archive_read()` will read the first file from a multi-file archive.</span>
-<span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 150 × 5</span>
-<span class="co">#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span>
-<span class="co">#&gt;          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;  </span>
-<span class="co">#&gt; 1          5.1         3.5          1.4         0.2 setosa </span>
-<span class="co">#&gt; 2          4.9         3            1.4         0.2 setosa </span>
-<span class="co">#&gt; 3          4.7         3.2          1.3         0.2 setosa </span>
-<span class="co">#&gt; 4          4.6         3.1          1.5         0.2 setosa </span>
-<span class="co">#&gt; # … with 146 more rows</span>
-
-<span class="co"># Use a number to read a different file</span>
-<span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span>, file <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 32 × 11</span>
-<span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1</span>
-<span class="co">#&gt; # … with 28 more rows</span>
-
-<span class="co"># Or a filename to read a specific file</span>
-<span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span>, file <span class="op">=</span> <span class="st">"mtcars.csv"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 32 × 11</span>
-<span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1</span>
-<span class="co">#&gt; # … with 28 more rows</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Write a few files to the temp directory</span></span>
+<span><span class="fu">write_csv</span><span class="op">(</span><span class="va">iris</span>, <span class="st">"iris.csv"</span><span class="op">)</span></span>
+<span><span class="fu">write_csv</span><span class="op">(</span><span class="va">mtcars</span>, <span class="st">"mtcars.csv"</span><span class="op">)</span></span>
+<span><span class="fu">write_csv</span><span class="op">(</span><span class="va">airquality</span>, <span class="st">"airquality.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Add them to a new archive</span></span>
+<span><span class="fu"><a href="reference/archive_write_files.html">archive_write_files</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iris.csv"</span>, <span class="st">"mtcars.csv"</span>, <span class="st">"airquality.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View archive contents</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/archive.html">archive</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span><span class="op">)</span></span>
+<span><span class="va">a</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   path            size date               </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;          &lt;int&gt; &lt;dttm&gt;             </span></span>
+<span><span class="co">#&gt; 1 iris.csv        3716 2021-11-29 18:09:35</span></span>
+<span><span class="co">#&gt; 2 mtcars.csv      1281 2021-11-29 18:09:35</span></span>
+<span><span class="co">#&gt; 3 airquality.csv  2890 2021-11-29 18:09:35</span></span>
+<span></span>
+<span><span class="co"># By default `archive_read()` will read the first file from a multi-file archive.</span></span>
+<span><span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 150 × 5</span></span>
+<span><span class="co">#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></span>
+<span><span class="co">#&gt;          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt; 1          5.1         3.5          1.4         0.2 setosa </span></span>
+<span><span class="co">#&gt; 2          4.9         3            1.4         0.2 setosa </span></span>
+<span><span class="co">#&gt; 3          4.7         3.2          1.3         0.2 setosa </span></span>
+<span><span class="co">#&gt; 4          4.6         3.1          1.5         0.2 setosa </span></span>
+<span><span class="co">#&gt; # … with 146 more rows</span></span>
+<span></span>
+<span><span class="co"># Use a number to read a different file</span></span>
+<span><span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span>, file <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 32 × 11</span></span>
+<span><span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span></span>
+<span><span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span></span>
+<span><span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span></span>
+<span><span class="co">#&gt; 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1</span></span>
+<span><span class="co">#&gt; # … with 28 more rows</span></span>
+<span></span>
+<span><span class="co"># Or a filename to read a specific file</span></span>
+<span><span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/archive_read.html">archive_read</a></span><span class="op">(</span><span class="st">"data.tar.xz"</span>, file <span class="op">=</span> <span class="st">"mtcars.csv"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 32 × 11</span></span>
+<span><span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span></span>
+<span><span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span></span>
+<span><span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span></span>
+<span><span class="co">#&gt; 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1</span></span>
+<span><span class="co">#&gt; # … with 28 more rows</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="regular-files-with-compression">Regular files (with compression)<a class="anchor" aria-label="anchor" href="#regular-files-with-compression"></a>
 </h3>
 <p><code><a href="reference/file_connections.html">file_write()</a></code> returns a connection to filtered by one or more compressions or encodings. <code><a href="reference/file_connections.html">file_read()</a></code> reads a compressed file, automatically detecting the compression used.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Write bzip2, uuencoded data</span>
-<span class="fu">write_csv</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="reference/file_connections.html">file_write</a></span><span class="op">(</span><span class="st">"mtcars.bz2"</span>, filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"uuencode"</span>, <span class="st">"bzip2"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Read it back, the formats are automatically detected</span>
-<span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/file_connections.html">file_read</a></span><span class="op">(</span><span class="st">"mtcars.bz2"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 32 × 11</span>
-<span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span>
-<span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span>
-<span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span>
-<span class="co">#&gt; 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1</span>
-<span class="co">#&gt; # … with 28 more rows</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Write bzip2, uuencoded data</span></span>
+<span><span class="fu">write_csv</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="reference/file_connections.html">file_write</a></span><span class="op">(</span><span class="st">"mtcars.bz2"</span>, filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"uuencode"</span>, <span class="st">"bzip2"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Read it back, the formats are automatically detected</span></span>
+<span><span class="fu">read_csv</span><span class="op">(</span><span class="fu"><a href="reference/file_connections.html">file_read</a></span><span class="op">(</span><span class="st">"mtcars.bz2"</span><span class="op">)</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 32 × 11</span></span>
+<span><span class="co">#&gt;     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4</span></span>
+<span><span class="co">#&gt; 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4</span></span>
+<span><span class="co">#&gt; 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1</span></span>
+<span><span class="co">#&gt; 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1</span></span>
+<span><span class="co">#&gt; # … with 28 more rows</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -242,14 +242,7 @@
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/r-lib/archive/actions" class="external-link"><img src="https://github.com/r-lib/archive/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/github/r-lib/archive?branch=main" class="external-link"><img src="https://img.shields.io/codecov/c/github/r-lib/archive/main" alt="Coverage Status"></a></li>
-<li><a href="https://CRAN.R-project.org/package=archive" class="external-link"><img src="https://www.r-pkg.org/badges/version/archive" alt="CRAN status"></a></li>
-</ul>
-</div>
+
 
   </div>
 </div>
@@ -262,7 +255,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

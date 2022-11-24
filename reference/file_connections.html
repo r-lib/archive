@@ -18,7 +18,7 @@ archive_write using format = "raw", archive = file.'><!-- mathjax --><script src
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">archive</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
       </span>
     </div>
 
@@ -55,9 +55,9 @@ archive_write using format = "raw", archive = file.'><!-- mathjax --><script src
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">file_read</span><span class="op">(</span><span class="va">file</span>, mode <span class="op">=</span> <span class="st">"r"</span>, filter <span class="op">=</span> <span class="cn">NULL</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">file_write</span><span class="op">(</span><span class="va">file</span>, mode <span class="op">=</span> <span class="st">"w"</span>, filter <span class="op">=</span> <span class="cn">NULL</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">file_read</span><span class="op">(</span><span class="va">file</span>, mode <span class="op">=</span> <span class="st">"r"</span>, filter <span class="op">=</span> <span class="cn">NULL</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">file_write</span><span class="op">(</span><span class="va">file</span>, mode <span class="op">=</span> <span class="st">"w"</span>, filter <span class="op">=</span> <span class="cn">NULL</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -65,13 +65,19 @@ archive_write using format = "raw", archive = file.'><!-- mathjax --><script src
     <dl><dt>file</dt>
 <dd><p><code>character(1) || integer(1)</code> The filename within the archive,
 specified either by filename or by position.</p></dd>
+
+
 <dt>mode</dt>
 <dd><p><code>character(1)</code> A description of how to open the
 connection (if it should be opened initially).  See section
 ‘Modes’ in <code><a href="https://rdrr.io/r/base/connections.html" class="external-link">base::connections()</a></code> for possible values.</p></dd>
+
+
 <dt>filter</dt>
 <dd><p><code>character(1)</code> default: <code>NULL</code> The archive filter, one of ‘none’, ‘gzip’, ‘bzip2’, ‘compress’, ‘lzma’, ‘xz’, ‘uuencode’, ‘lzip’, ‘lrzip’, ‘lzop’, ‘grzip’, ‘lz4’, ‘zstd’
 .</p></dd>
+
+
 <dt>options</dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> default: <code>character(0)</code> Options to pass to the filter or format.
 The list of available options are documented in
@@ -91,10 +97,13 @@ provided only to modules whose name matches module.
 See <a href="https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&amp;sektion=3&amp;format=html" class="external-link">read options</a> for available read options
 See <a href="https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&amp;sektion=3&amp;format=html" class="external-link">write options</a> for available write options</p></li>
 </ul></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An 'archive_read' connection (for <code>file_read()</code>) or an 'archive_write' connection (for <code>file_write()</code>) to the file.</p>
+    
+
+<p>An 'archive_read' connection (for <code>file_read()</code>) or an 'archive_write' connection (for <code>file_write()</code>) to the file.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -104,19 +113,19 @@ See <a href="https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu">archive</span><span class="fu">:::</span><span class="fu">libarchive_version</span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;</span> <span class="st">"3.2.0"</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># Write bzip2, base 64 encoded data and use high compression</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">mtcars</span>,</span>
-<span class="r-in">  <span class="fu">file_write</span><span class="op">(</span><span class="st">"mtcars.bz2"</span>,</span>
-<span class="r-in">    filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"uuencode"</span>, <span class="st">"bzip2"</span><span class="op">)</span>,</span>
-<span class="r-in">    options <span class="op">=</span> <span class="st">"compression-level=9"</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Read it back</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu">file_read</span><span class="op">(</span><span class="st">"mtcars.bz2"</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="fl">1</span>, nrows <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"mtcars.bz2"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">archive</span><span class="fu">:::</span><span class="fu">libarchive_version</span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;</span> <span class="st">"3.2.0"</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Write bzip2, base 64 encoded data and use high compression</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">mtcars</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">file_write</span><span class="op">(</span><span class="st">"mtcars.bz2"</span>,</span></span>
+<span class="r-in"><span>    filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"uuencode"</span>, <span class="st">"bzip2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    options <span class="op">=</span> <span class="st">"compression-level=9"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Read it back</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu">file_read</span><span class="op">(</span><span class="st">"mtcars.bz2"</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="fl">1</span>, nrows <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="st">"mtcars.bz2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -131,7 +140,7 @@ See <a href="https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

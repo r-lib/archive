@@ -73,13 +73,15 @@ void rchive_write_close(Rconnection con) {
   struct archive* out;
   struct archive_entry* entry;
   in = archive_read_disk_new();
-#ifndef __MINGW32__
+#if defined(_WIN32) || (!defined(__GNUC__) && !defined(__clang__))
+  #define O_BINARY 0
+#else
   call(archive_read_disk_set_standard_lookup, in);
 #endif
   entry = archive_entry_new();
 
   std::string scratch = scratch_file(r->filename.c_str());
-  int fd = open(scratch.c_str(), O_RDONLY);
+  int fd = open(scratch.c_str(), O_RDONLY|O_BINARY);
   if (fd < 0) {
     Rf_error("Could not open scratch file");
   }

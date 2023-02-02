@@ -56,11 +56,12 @@ const char* const pb_format =
     archive_entry_set_atime(entry, st.st_atime, 0);
     archive_entry_set_mode(entry, st.st_mode); // seems required as not defaulting to S_IFREG.
 #else
+    #define O_BINARY 0
     archive_entry_copy_stat(entry, &st);
 #endif
     archive_entry_set_pathname(entry, file.c_str());
     call(archive_write_header, a, entry);
-    if ((fd = open(file.c_str(), O_RDONLY)) != -1) {
+    if ((fd = open(file.c_str(), O_RDONLY|O_BINARY)) != -1) {
       len = read(fd, buf.data(), buf.size());
       while (len > 0) {
         call(archive_write_data, a, buf.data(), len);

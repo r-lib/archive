@@ -78,6 +78,7 @@ describe("archive_extract", {
     archive_extract(ar, out_dir, strip_components = 1)
 
     expect_true(all(c("bar/iris.csv", "mtcars.csv") %in% list.files(out_dir, recursive = TRUE)))
+    expect_equal(read.csv(file.path(out_dir, "bar", "iris.csv"), row.names = 1, stringsAsFactors = TRUE), iris)
+    expect_equal(read.csv(file.path(out_dir, "mtcars.csv"), row.names = 1, stringsAsFactors = TRUE), mtcars)
   })
 })
-

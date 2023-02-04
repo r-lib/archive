@@ -48,7 +48,7 @@ const char* const pb_format =
   for (std::string file : files) {
     stat(file.c_str(), &st);
     entry = archive_entry_new();
-#if defined(_WIN32) || (!defined(__GNUC__) && !defined(__clang__))
+#if defined(_WIN32)
     // there are quite many CRT dialects and passing struct stat to 3rdparty library could be unstable.
     archive_entry_set_size(entry, st.st_size);
     archive_entry_set_mtime(entry, st.st_mtime, 0);

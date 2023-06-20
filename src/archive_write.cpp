@@ -73,8 +73,7 @@ void rchive_write_close(Rconnection con) {
   struct archive* out;
   struct archive_entry* entry;
   in = archive_read_disk_new();
-#if defined(_WIN32)
-#else
+#ifndef __MINGW32__
   #define O_BINARY 0
   call(archive_read_disk_set_standard_lookup, in);
 #endif

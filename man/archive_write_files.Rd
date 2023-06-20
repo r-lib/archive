@@ -11,7 +11,7 @@ archive_write_dir(
   format = NULL,
   filter = NULL,
   options = character(),
-  password = "",
+  password = NA_character_,
   ...,
   recursive = TRUE,
   full.names = FALSE
@@ -23,7 +23,7 @@ archive_write_files(
   format = NULL,
   filter = NULL,
   options = character(),
-  password = ""
+  password = NA_character_
 )
 }
 \arguments{
@@ -56,7 +56,7 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sek
 See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
 
-\item{password}{\code{character(1)} The password to process the archive, if nchar > 0.}
+\item{password}{\code{character(1)} The password to process the archive.}
 
 \item{...}{additional parameters passed to \code{base::dir}.}
 

@@ -35,7 +35,7 @@
 #' archive(f3)
 #' unlink(f3)
 #' @export
-archive_write <- function(archive, file, mode = "w", format = NULL, filter = NULL, options = character(), password = "") {
+archive_write <- function(archive, file, mode = "w", format = NULL, filter = NULL, options = character(), password = NA_character_) {
   if (is.null(format) && is.null(filter)) {
     res <- format_and_filter_by_extension(archive)
 

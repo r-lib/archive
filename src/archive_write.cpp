@@ -99,8 +99,8 @@ void rchive_write_close(Rconnection con) {
     call(archive_write_add_filter, out, r->filters[i]);
   }
 
-  if (r->password.size() > 0) {
-    call(archive_write_set_passphrase, out, r->password.c_str());
+  if (!cpp11::is_na(r->password)) {
+    call(archive_write_set_passphrase, out, std::string(r->password).c_str());
   }
 
   if (!r->options.empty()) {
@@ -139,7 +139,7 @@ void rchive_write_destroy(Rconnection con) {
     int format,
     cpp11::integers filters,
     cpp11::strings options,
-    const std::string& password,
+    cpp11::r_string password,
     size_t sz) {
   Rconnection con;
   SEXP rc =

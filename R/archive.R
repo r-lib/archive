@@ -21,7 +21,7 @@ NULL
 #' a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 #' a
 #' @export
-archive <- function(file, options = character(), password = "") {
+archive <- function(file, options = character(), password = NA_character_) {
   if (!inherits(file, "connection")) {
     file <- file(file, "rb")
   }

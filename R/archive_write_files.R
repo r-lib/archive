@@ -28,7 +28,7 @@
 #' unlink("data.zip")
 #' }
 #' @export
-archive_write_files <- function(archive, files, format = NULL, filter = NULL, options = character(), password = "") {
+archive_write_files <- function(archive, files, format = NULL, filter = NULL, options = character(), password = NA_character_) {
   assert("`archive` {archive} must be a writable file path",
     is_writable(dirname(archive)))
 

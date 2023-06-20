@@ -4,7 +4,7 @@
 #' @inheritParams base::list.files
 #' @returns An 'archive' object representing the new archive (invisibly).
 #' @export
-archive_write_dir <- function(archive, dir, format = NULL, filter = NULL, options = character(), password = "", ..., recursive = TRUE, full.names = FALSE) {
+archive_write_dir <- function(archive, dir, format = NULL, filter = NULL, options = character(), password = NA_character_, ..., recursive = TRUE, full.names = FALSE) {
   assert("`dir` {dir} is not readable",
     is_readable(dir))
 

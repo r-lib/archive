@@ -5,7 +5,7 @@
 using namespace cpp11::literals;
 
 [[cpp11::register]] cpp11::sexp
-archive_(cpp11::sexp connection, cpp11::strings options, const std::string& password) {
+archive_(cpp11::sexp connection, cpp11::strings options, cpp11::r_string password) {
 
   local_utf8_locale ll;
 
@@ -23,8 +23,8 @@ archive_(cpp11::sexp connection, cpp11::strings options, const std::string& pass
   if (options.size() > 0) {
     call(archive_read_set_options, a, std::string(options[0]).c_str());
   }
-  if (password.size() > 0) {
-    call(archive_read_add_passphrase, a, password.c_str());
+  if (!cpp11::is_na(password)) {
+    call(archive_read_add_passphrase, a, std::string(password).c_str());
   }
 
   std::unique_ptr<input_data> r(new input_data);

@@ -1,6 +1,6 @@
 #' @rdname file_connections
 #' @export
-file_read <- function(file, mode = "r", filter = NULL, options = character(), password = "") {
+file_read <- function(file, mode = "r", filter = NULL, options = character(), password = NA_character_) {
   options <- validate_options(options)
 
   if (!inherits(archive, "connection")) {

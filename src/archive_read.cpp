@@ -87,8 +87,8 @@ static Rboolean rchive_read_open(Rconnection con) {
     call(archive_read_set_options, con, r->options.c_str());
   }
 
-  if (r->password.size() > 0) {
-    call(archive_read_add_passphrase, con, r->password.c_str());
+  if (!cpp11::is_na(r->password)) {
+    call(archive_read_add_passphrase, con, std::string(r->password).c_str());
   }
 
   static auto open = cpp11::package("base")["open"];
@@ -185,7 +185,7 @@ static int rchive_fgetc(Rconnection con) {
     cpp11::integers format,
     cpp11::integers filters,
     cpp11::strings options,
-    const std::string& password,
+    cpp11::r_string password,
     size_t sz = 16384) {
   Rconnection con;
 

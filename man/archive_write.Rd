@@ -11,7 +11,7 @@ archive_write(
   format = NULL,
   filter = NULL,
   options = character(),
-  password = ""
+  password = NA_character_
 )
 }
 \arguments{
@@ -49,7 +49,7 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sek
 See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
 
-\item{password}{\code{character(1)} The password to process the archive, if nchar > 0.}
+\item{password}{\code{character(1)} The password to process the archive.}
 }
 \value{
 An 'archive_write' connection to the file within the archive to be written.

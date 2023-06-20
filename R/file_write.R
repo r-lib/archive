@@ -24,7 +24,7 @@
 #' unlink("mtcars.bz2")
 #' }
 #' @export
-file_write <- function(file, mode = "w", filter = NULL, options = character(), password = "") {
+file_write <- function(file, mode = "w", filter = NULL, options = character(), password = NA_character_) {
 
   if (is.null(filter)) {
     res <- filter_by_extension(file)

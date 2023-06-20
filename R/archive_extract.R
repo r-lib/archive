@@ -25,7 +25,7 @@
 #' list.files(d)
 #' unlink(d)
 #' @export
-archive_extract <- function(archive, dir = ".", files = NULL, options = character(), strip_components = 0L, password = "") {
+archive_extract <- function(archive, dir = ".", files = NULL, options = character(), strip_components = 0L, password = NA_character_) {
   assert("`files` must be a character or numeric vector or `NULL`",
     is.null(files) || is.numeric(files) || is.character(files))
 

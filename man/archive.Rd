@@ -4,7 +4,7 @@
 \alias{archive}
 \title{Construct a new archive}
 \usage{
-archive(file, options = character(), password = "")
+archive(file, options = character(), password = NA_character_)
 }
 \arguments{
 \item{file}{File path to the archive.}
@@ -30,7 +30,7 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sek
 See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
 
-\item{password}{\code{character(1)} The password to process the archive, if nchar > 0.}
+\item{password}{\code{character(1)} The password to process the archive.}
 }
 \value{
 A \link[tibble:tibble-package]{tibble} with details about files in the archive.

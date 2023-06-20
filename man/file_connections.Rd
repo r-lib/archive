@@ -11,7 +11,7 @@ file_read(
   mode = "r",
   filter = NULL,
   options = character(),
-  password = ""
+  password = NA_character_
 )
 
 file_write(
@@ -19,7 +19,7 @@ file_write(
   mode = "w",
   filter = NULL,
   options = character(),
-  password = ""
+  password = NA_character_
 )
 }
 \arguments{
@@ -53,7 +53,7 @@ See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sek
 See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
 
-\item{password}{\code{character(1)} The password to process the archive, if nchar > 0.}
+\item{password}{\code{character(1)} The password to process the archive.}
 }
 \value{
 An 'archive_read' connection (for \code{file_read()}) or an 'archive_write' connection (for \code{file_write()}) to the file.

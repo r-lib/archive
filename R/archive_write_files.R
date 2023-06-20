@@ -46,7 +46,7 @@ archive_write_files <- function(archive, files, format = NULL, filter = NULL, op
   }
   options <- validate_options(options)
 
-  archive_write_files_(archive, files, archive_formats()[format], archive_filters()[filter], options, password, sz = 2^14)
+  archive_write_files_(archive, files, archive_formats()[format], archive_filters()[filter], options, c(password), sz = 2^14)
 
   invisible(archive(archive, options = character()))
 }

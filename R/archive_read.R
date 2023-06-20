@@ -31,5 +31,5 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
 
   description <- glue::glue("archive_read({desc})[{file}]", desc = summary(archive)$description)
 
-  archive_read_(archive, file, description, mode, archive_formats()[format], archive_filters()[filter], options, password, sz = 2^14)
+  archive_read_(archive, file, description, mode, archive_formats()[format], archive_filters()[filter], options, c(password), sz = 2^14)
 }

@@ -14,7 +14,7 @@ const char* const pb_format =
     int format,
     cpp11::integers filters,
     cpp11::strings options,
-    cpp11::r_string password,
+    cpp11::strings password,
     size_t sz = 16384) {
 
   struct archive* a;
@@ -38,8 +38,8 @@ const char* const pb_format =
     call(archive_write_set_options, a, std::string(options[0]).c_str());
   }
 
-  if (!cpp11::is_na(password)) {
-    call(archive_write_set_passphrase, a, std::string(password).c_str());
+  if (!cpp11::is_na(password[0])) {
+    call(archive_write_set_passphrase, a, std::string(password[0]).c_str());
   }
 
   size_t num_written = 0;

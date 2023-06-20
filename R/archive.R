@@ -32,7 +32,7 @@ archive <- function(file, options = character(), password = NA_character_) {
 
   options <- validate_options(options)
 
-  res <- archive_(file, options, password)
+  res <- archive_(file, options, c(password))
 
   res
 }

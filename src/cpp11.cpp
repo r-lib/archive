@@ -6,45 +6,45 @@
 #include <R_ext/Visibility.h>
 
 // archive_extract.cpp
-cpp11::strings archive_extract_(const cpp11::sexp& connection, cpp11::sexp file, int num_strip_components, cpp11::strings options, cpp11::r_string password, size_t sz);
+cpp11::strings archive_extract_(const cpp11::sexp& connection, cpp11::sexp file, int num_strip_components, cpp11::strings options, cpp11::strings password, size_t sz);
 extern "C" SEXP _archive_archive_extract_(SEXP connection, SEXP file, SEXP num_strip_components, SEXP options, SEXP password, SEXP sz) {
   BEGIN_CPP11
-    return cpp11::as_sexp(archive_extract_(cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(connection), cpp11::as_cpp<cpp11::decay_t<cpp11::sexp>>(file), cpp11::as_cpp<cpp11::decay_t<int>>(num_strip_components), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<cpp11::r_string>>(password), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
+    return cpp11::as_sexp(archive_extract_(cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp&>>(connection), cpp11::as_cpp<cpp11::decay_t<cpp11::sexp>>(file), cpp11::as_cpp<cpp11::decay_t<int>>(num_strip_components), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(password), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
   END_CPP11
 }
 // archive_read.cpp
-SEXP archive_read_(const cpp11::sexp connection, const cpp11::sexp file, const std::string& description, const std::string& mode, cpp11::integers format, cpp11::integers filters, cpp11::strings options, cpp11::r_string password, size_t sz);
+SEXP archive_read_(const cpp11::sexp connection, const cpp11::sexp file, const std::string& description, const std::string& mode, cpp11::integers format, cpp11::integers filters, cpp11::strings options, cpp11::strings password, size_t sz);
 extern "C" SEXP _archive_archive_read_(SEXP connection, SEXP file, SEXP description, SEXP mode, SEXP format, SEXP filters, SEXP options, SEXP password, SEXP sz) {
   BEGIN_CPP11
-    return cpp11::as_sexp(archive_read_(cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp>>(connection), cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp>>(file), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(description), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(mode), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<cpp11::r_string>>(password), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
+    return cpp11::as_sexp(archive_read_(cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp>>(connection), cpp11::as_cpp<cpp11::decay_t<const cpp11::sexp>>(file), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(description), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(mode), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(password), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
   END_CPP11
 }
 // archive_write_direct.cpp
-SEXP archive_write_direct_(const std::string& archive_filename, const std::string& filename, std::string mode, int format, cpp11::integers filters, cpp11::strings options, cpp11::r_string password, size_t sz);
+SEXP archive_write_direct_(const std::string& archive_filename, const std::string& filename, std::string mode, int format, cpp11::integers filters, cpp11::strings options, cpp11::strings password, size_t sz);
 extern "C" SEXP _archive_archive_write_direct_(SEXP archive_filename, SEXP filename, SEXP mode, SEXP format, SEXP filters, SEXP options, SEXP password, SEXP sz) {
   BEGIN_CPP11
-    return cpp11::as_sexp(archive_write_direct_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<std::string>>(mode), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<cpp11::r_string>>(password), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
+    return cpp11::as_sexp(archive_write_direct_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<std::string>>(mode), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(password), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
   END_CPP11
 }
 // archive_write_files.cpp
-SEXP archive_write_files_(const std::string& archive_filename, cpp11::strings files, int format, cpp11::integers filters, cpp11::strings options, cpp11::r_string password, size_t sz);
+SEXP archive_write_files_(const std::string& archive_filename, cpp11::strings files, int format, cpp11::integers filters, cpp11::strings options, cpp11::strings password, size_t sz);
 extern "C" SEXP _archive_archive_write_files_(SEXP archive_filename, SEXP files, SEXP format, SEXP filters, SEXP options, SEXP password, SEXP sz) {
   BEGIN_CPP11
-    return cpp11::as_sexp(archive_write_files_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(files), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<cpp11::r_string>>(password), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
+    return cpp11::as_sexp(archive_write_files_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(files), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(password), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
   END_CPP11
 }
 // archive_write.cpp
-SEXP archive_write_(const std::string& archive_filename, const std::string& filename, const std::string& mode, int format, cpp11::integers filters, cpp11::strings options, cpp11::r_string password, size_t sz);
+SEXP archive_write_(const std::string& archive_filename, const std::string& filename, const std::string& mode, int format, cpp11::integers filters, cpp11::strings options, cpp11::strings password, size_t sz);
 extern "C" SEXP _archive_archive_write_(SEXP archive_filename, SEXP filename, SEXP mode, SEXP format, SEXP filters, SEXP options, SEXP password, SEXP sz) {
   BEGIN_CPP11
-    return cpp11::as_sexp(archive_write_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(mode), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<cpp11::r_string>>(password), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
+    return cpp11::as_sexp(archive_write_(cpp11::as_cpp<cpp11::decay_t<const std::string&>>(archive_filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(filename), cpp11::as_cpp<cpp11::decay_t<const std::string&>>(mode), cpp11::as_cpp<cpp11::decay_t<int>>(format), cpp11::as_cpp<cpp11::decay_t<cpp11::integers>>(filters), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(password), cpp11::as_cpp<cpp11::decay_t<size_t>>(sz)));
   END_CPP11
 }
 // archive.cpp
-cpp11::sexp archive_(cpp11::sexp connection, cpp11::strings options, cpp11::r_string password);
+cpp11::sexp archive_(cpp11::sexp connection, cpp11::strings options, cpp11::strings password);
 extern "C" SEXP _archive_archive_(SEXP connection, SEXP options, SEXP password) {
   BEGIN_CPP11
-    return cpp11::as_sexp(archive_(cpp11::as_cpp<cpp11::decay_t<cpp11::sexp>>(connection), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<cpp11::r_string>>(password)));
+    return cpp11::as_sexp(archive_(cpp11::as_cpp<cpp11::decay_t<cpp11::sexp>>(connection), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(options), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(password)));
   END_CPP11
 }
 // archive.cpp

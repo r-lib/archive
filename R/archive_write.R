@@ -57,8 +57,8 @@ archive_write <- function(archive, file, mode = "w", format = NULL, filter = NUL
   options <- validate_options(options)
 
   if (identical(format, "zip") || identical(format, "raw")) {
-    return(archive_write_direct_(archive, file, mode, archive_formats()[format], archive_filters()[filter], options, password, 2^14))
+    return(archive_write_direct_(archive, file, mode, archive_formats()[format], archive_filters()[filter], options, c(password), 2^14))
   }
 
-  archive_write_(archive, file, mode, archive_formats()[format], archive_filters()[filter], options, password, 2^14)
+  archive_write_(archive, file, mode, archive_formats()[format], archive_filters()[filter], options, c(password), 2^14)
 }

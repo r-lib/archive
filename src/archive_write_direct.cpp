@@ -28,8 +28,8 @@ static Rboolean rchive_write_direct_open(Rconnection con) {
 
   call(archive_write_set_format, con, r->format);
 
-  if (!cpp11::is_na(r->password)) {
-    call(archive_write_set_passphrase, con, std::string(r->password).c_str());
+  if (!cpp11::is_na(r->password[0])) {
+    call(archive_write_set_passphrase, con, std::string(r->password[0]).c_str());
   }
 
   if (!r->options.empty()) {
@@ -84,7 +84,7 @@ void rchive_write_direct_destroy(Rconnection con) {
     int format,
     cpp11::integers filters,
     cpp11::strings options,
-    cpp11::r_string password,
+    cpp11::strings password,
     size_t sz) {
   Rconnection con;
   SEXP rc =

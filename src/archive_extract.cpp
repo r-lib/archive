@@ -61,7 +61,7 @@ static const char* strip_components(const char* p, int elements) {
   while (elements > 0) {
     switch (*p++) {
     case '/':
-#if defined(_WIN32)
+#if defined(__MINGW32__)
     case '\\': /* Support \ path sep on Windows ONLY. */
 #endif
       elements--;
@@ -80,7 +80,7 @@ static const char* strip_components(const char* p, int elements) {
   for (;;) {
     switch (*p) {
     case '/':
-#if defined(_WIN32)
+#if defined(__MINGW32__)
     case '\\': /* Support \ path sep on Windows ONLY. */
 #endif
       ++p;

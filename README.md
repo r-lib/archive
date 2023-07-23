@@ -53,7 +53,7 @@ read_csv(archive_read("mtcars.zip"), col_types = cols())
 #> 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4
 #> 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1
 #> 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1
-#> # … with 28 more rows
+#> # ℹ 28 more rows
 
 # Also supports things like archiving and compression together
 # Write a single dataset to (gzip compressed) tar
@@ -68,7 +68,7 @@ read_csv(archive_read("mtcars.tar.gz"), col_types = cols())
 #> 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4
 #> 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1
 #> 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1
-#> # … with 28 more rows
+#> # ℹ 28 more rows
 
 # Archive file sizes
 file.size(c("mtcars.zip", "mtcars.tar.gz"))
@@ -78,7 +78,8 @@ file.size(c("mtcars.zip", "mtcars.tar.gz"))
 ### Multi file archives
 
 `archive_write_files()` is used to create a new archive from multiple
-files on disk.
+files on disk. `archive_extract()` is used to extract an archive (with
+one or more files) into a local folder.
 
 ``` r
 # Write a few files to the temp directory
@@ -95,9 +96,9 @@ a
 #> # A tibble: 3 × 3
 #>   path            size date               
 #>   <chr>          <int> <dttm>             
-#> 1 iris.csv        3716 2021-11-29 18:09:35
-#> 2 mtcars.csv      1281 2021-11-29 18:09:35
-#> 3 airquality.csv  2890 2021-11-29 18:09:35
+#> 1 iris.csv        3716 2023-07-23 00:53:57
+#> 2 mtcars.csv      1281 2023-07-23 00:53:57
+#> 3 airquality.csv  2890 2023-07-23 00:53:57
 
 # By default `archive_read()` will read the first file from a multi-file archive.
 read_csv(archive_read("data.tar.xz"), col_types = cols())
@@ -108,7 +109,7 @@ read_csv(archive_read("data.tar.xz"), col_types = cols())
 #> 2          4.9         3            1.4         0.2 setosa 
 #> 3          4.7         3.2          1.3         0.2 setosa 
 #> 4          4.6         3.1          1.5         0.2 setosa 
-#> # … with 146 more rows
+#> # ℹ 146 more rows
 
 # Use a number to read a different file
 read_csv(archive_read("data.tar.xz", file = 2), col_types = cols())
@@ -119,7 +120,7 @@ read_csv(archive_read("data.tar.xz", file = 2), col_types = cols())
 #> 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4
 #> 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1
 #> 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1
-#> # … with 28 more rows
+#> # ℹ 28 more rows
 
 # Or a filename to read a specific file
 read_csv(archive_read("data.tar.xz", file = "mtcars.csv"), col_types = cols())
@@ -130,7 +131,30 @@ read_csv(archive_read("data.tar.xz", file = "mtcars.csv"), col_types = cols())
 #> 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4
 #> 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1
 #> 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1
-#> # … with 28 more rows
+#> # ℹ 28 more rows
+
+# # Use `archive_extract()` to extract all the files to a local folder.
+d <- tempfile()
+archive_extract("data.tar.xz", dir = d)
+print(list.files(d))
+#> [1] "airquality.csv" "iris.csv"       "mtcars.csv"
+unlink(d)
+
+# Or combine with `fs::path_filter()` to extract only a subset of the files.
+if(rlang::is_installed("fs")) {
+  d <- tempfile()
+  archive_extract(
+    "data.tar.xz", 
+    dir = d,
+    files = fs::path_filter(
+      archive("data.tar.xz")$path,
+      glob="*s.csv"
+    )
+  )
+  print(list.files(d))
+  unlink(d)
+}
+#> [1] "iris.csv"   "mtcars.csv"
 ```
 
 ### Regular files (with compression)
@@ -152,5 +176,5 @@ read_csv(file_read("mtcars.bz2"), col_types = cols())
 #> 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4
 #> 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1
 #> 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1
-#> # … with 28 more rows
+#> # ℹ 28 more rows
 ```

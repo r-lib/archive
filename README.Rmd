@@ -70,6 +70,7 @@ file.size(c("mtcars.zip", "mtcars.tar.gz"))
 ### Multi file archives
 
 `archive_write_files()` is used to create a new archive from multiple files on disk.
+`archive_extract()` is used to extract an archive (with one or more files) into a local folder.
 
 ```{r}
 # Write a few files to the temp directory
@@ -92,6 +93,27 @@ read_csv(archive_read("data.tar.xz", file = 2), col_types = cols())
 
 # Or a filename to read a specific file
 read_csv(archive_read("data.tar.xz", file = "mtcars.csv"), col_types = cols())
+
+# # Use `archive_extract()` to extract all the files to a local folder.
+d <- tempfile()
+archive_extract("data.tar.xz", dir = d)
+print(list.files(d))
+unlink(d)
+
+# Or combine with `fs::path_filter()` to extract only a subset of the files.
+if(rlang::is_installed("fs")) {
+  d <- tempfile()
+  archive_extract(
+    "data.tar.xz", 
+    dir = d,
+    files = fs::path_filter(
+      archive("data.tar.xz")$path,
+      glob="*s.csv"
+    )
+  )
+  print(list.files(d))
+  unlink(d)
+}
 ```
 
 ### Regular files (with compression)

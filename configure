@@ -11,7 +11,11 @@ PKG_RPM_NAME="libarchive-devel"
 PKG_CSW_NAME="libarchive_dev"
 PKG_BREW_NAME="libarchive"
 PKG_TEST_HEADER="<archive.h>"
-PKG_LIBS=-larchive
+if [ `uname` = "Darwin" ]; then
+   PKG_LIBS="-larchive -lb2 -llzma -llz4 "
+else
+   PKG_LIBS="-larchive"
+fi
 
 # Use pkg-config if available
 pkg-config ${PKG_CONFIG_NAME} --atleast-version=1.0  2>/dev/null
@@ -29,16 +33,6 @@ elif [ "$PKGCONFIG_CFLAGS" ] || [ "$PKGCONFIG_LIBS" ]; then
   echo "Found pkg-config cflags and libs!"
   PKG_CFLAGS=${PKGCONFIG_CFLAGS}
   PKG_LIBS=${PKGCONFIG_LIBS}
-elif [ `uname` = "Darwin" ]; then
-  test ! "$CI" && brew --version 2>/dev/null
-  if [ $? -eq 0 ]; then
-    BREWDIR=`brew --prefix`
-    PKG_CFLAGS="-I$BREWDIR/opt/libarchive/include"
-    PKG_LIBS="-L$BREWDIR/opt/libarchive/lib $PKG_LIBS"
-  else
-    curl -sfL "https://autobrew.github.io/scripts/$PKG_BREW_NAME" > autobrew
-    . ./autobrew
-  fi
 fi
 
 # Find compiler

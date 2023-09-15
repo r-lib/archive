@@ -68,4 +68,15 @@ d <- tempfile()
 archive_extract(a, d, c("iris.csv", "airquality.csv"))
 list.files(d)
 unlink(d)
+
+# Can also specify files to extract by glob or pattern by combining with fs::path_filter.
+if(rlang::is_installed("fs")) {
+  d <- tempfile()
+
+  # Extract the csv files ending with 's'.
+  archive_extract(a, d, files = fs::path_filter(archive(a)$path, glob="*s.csv"))
+  print(list.files(d))
+  unlink(d)
+}
+
 }

@@ -14,6 +14,7 @@ const char* const pb_format =
     int format,
     cpp11::integers filters,
     cpp11::strings options,
+    cpp11::strings password,
     size_t sz = 16384) {
 
   struct archive* a;
@@ -37,6 +38,10 @@ const char* const pb_format =
     call(archive_write_set_options, a, std::string(options[0]).c_str());
   }
 
+  if (!cpp11::is_na(password[0])) {
+    call(archive_write_set_passphrase, a, std::string(password[0]).c_str());
+  }
+
   size_t num_written = 0;
   size_t total_written = 0;
 
@@ -48,7 +53,7 @@ const char* const pb_format =
   for (std::string file : files) {
     stat(file.c_str(), &st);
     entry = archive_entry_new();
-#if defined(_WIN32) || (!defined(__GNUC__) && !defined(__clang__))
+#if defined(__MINGW32__)
     // there are quite many CRT dialects and passing struct stat to 3rdparty library could be unstable.
     archive_entry_set_size(entry, st.st_size);
     archive_entry_set_mtime(entry, st.st_mtime, 0);
@@ -56,11 +61,12 @@ const char* const pb_format =
     archive_entry_set_atime(entry, st.st_atime, 0);
     archive_entry_set_mode(entry, st.st_mode); // seems required as not defaulting to S_IFREG.
 #else
+    #define O_BINARY 0
     archive_entry_copy_stat(entry, &st);
 #endif
     archive_entry_set_pathname(entry, file.c_str());
     call(archive_write_header, a, entry);
-    if ((fd = open(file.c_str(), O_RDONLY)) != -1) {
+    if ((fd = open(file.c_str(), O_RDONLY|O_BINARY)) != -1) {
       len = read(fd, buf.data(), buf.size());
       while (len > 0) {
         call(archive_write_data, a, buf.data(), len);

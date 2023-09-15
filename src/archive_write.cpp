@@ -74,12 +74,13 @@ void rchive_write_close(Rconnection con) {
   struct archive_entry* entry;
   in = archive_read_disk_new();
 #ifndef __MINGW32__
+  #define O_BINARY 0
   call(archive_read_disk_set_standard_lookup, in);
 #endif
   entry = archive_entry_new();
 
   std::string scratch = scratch_file(r->filename.c_str());
-  int fd = open(scratch.c_str(), O_RDONLY);
+  int fd = open(scratch.c_str(), O_RDONLY|O_BINARY);
   if (fd < 0) {
     Rf_error("Could not open scratch file");
   }
@@ -97,6 +98,10 @@ void rchive_write_close(Rconnection con) {
 
   for (int i = 0; i < FILTER_MAX && r->filters[i] != -1; ++i) {
     call(archive_write_add_filter, out, r->filters[i]);
+  }
+
+  if (!cpp11::is_na(r->password[0])) {
+    call(archive_write_set_passphrase, out, std::string(r->password[0]).c_str());
   }
 
   if (!r->options.empty()) {
@@ -135,6 +140,7 @@ void rchive_write_destroy(Rconnection con) {
     int format,
     cpp11::integers filters,
     cpp11::strings options,
+    cpp11::strings password,
     size_t sz) {
   Rconnection con;
   SEXP rc =
@@ -146,6 +152,7 @@ void rchive_write_destroy(Rconnection con) {
   r->archive_filename = std::move(archive_filename);
 
   r->format = format;
+  r->password = password;
 
   // Initialize filters
   if (filters.size() > FILTER_MAX) {

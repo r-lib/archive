@@ -1,3 +1,8 @@
+
+# archive 1.1.6
+
+* Fixed compilation issues on Big-endian platforms (#84, @barracuda156).
+
 # archive 1.1.5
 
 * archive now does not produce broken archives on Windows (#72, @cielavenir).

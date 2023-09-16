@@ -38,8 +38,8 @@ value.
 \item \code{module:option=value}, \code{module:option}, \code{module:!option}
 As above, but the corresponding option and value will be
 provided only to modules whose name matches module.
-See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sektion=3&format=html}{read options} for available read options
-See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
+See \href{https://man.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sektion=3&format=html}{read options} for available read options
+See \href{https://man.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
 
 \item{strip_components}{Remove the specified number of leading path

@@ -55,6 +55,10 @@ CXX11=`${R_HOME}/bin/R CMD config CXX11`
 CXX11FLAGS=`${R_HOME}/bin/R CMD config CXX11FLAGS`
 CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
 
+if [ "`${R_HOME}/bin/R --slave -e 'cat(if (getRversion() < \"3.6.3\") 0 else 1)'`" = "0" ]; then
+    PKG_CFLAGS="${PKG_CFLAGS} `${R_HOME}/bin/R CMD config CXX11STD`"
+fi
+
 # For debugging
 echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
 echo "PKG_CFLAGS=$PKG_CFLAGS"

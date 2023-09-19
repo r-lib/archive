@@ -19,7 +19,7 @@ write a specific file from the archive."><meta name="robots" content="noindex"><
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">archive</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.1.4.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.1.6.9000</span>
       </span>
     </div>
 
@@ -57,13 +57,15 @@ write a specific file from the archive.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">archive</span><span class="op">(</span><span class="va">file</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">archive</span><span class="op">(</span><span class="va">file</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>file</dt>
 <dd><p>File path to the archive.</p></dd>
+
+
 <dt>options</dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> default: <code>character(0)</code> Options to pass to the filter or format.
 The list of available options are documented in
@@ -80,13 +82,16 @@ value.</p></li>
 <li><p><code>module:option=value</code>, <code>module:option</code>, <code>module:!option</code>
 As above, but the corresponding option and value will be
 provided only to modules whose name matches module.
-See <a href="https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&amp;sektion=3&amp;format=html" class="external-link">read options</a> for available read options
-See <a href="https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&amp;sektion=3&amp;format=html" class="external-link">write options</a> for available write options</p></li>
+See <a href="https://man.freebsd.org/cgi/man.cgi?query=archive_read_set_options&amp;sektion=3&amp;format=html" class="external-link">read options</a> for available read options
+See <a href="https://man.freebsd.org/cgi/man.cgi?query=archive_write_set_options&amp;sektion=3&amp;format=html" class="external-link">write options</a> for available write options</p></li>
 </ul></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tibble-package.html" class="external-link">tibble</a> with details about files in the archive.</p>
+    
+
+<p>A <a href="https://tibble.tidyverse.org/reference/tibble-package.html" class="external-link">tibble</a> with details about files in the archive.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -97,8 +102,8 @@ using R connections, <code><a href="archive_extract.html">archive_extract()</a><
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">archive</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"archive"</span>, <span class="st">"extdata"</span>, <span class="st">"data.zip"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">a</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">archive</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"archive"</span>, <span class="st">"extdata"</span>, <span class="st">"data.zip"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">a</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   path            size date               </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>             </span>
@@ -119,7 +124,7 @@ using R connections, <code><a href="archive_extract.html">archive_extract()</a><
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

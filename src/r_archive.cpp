@@ -65,7 +65,7 @@ size_t push(rchive* r) {
     return 0;
   }
   if (r->last_response != ARCHIVE_OK) {
-    Rf_error(archive_error_string(r->ar));
+    Rf_error("%s", archive_error_string(r->ar));
   }
 
   /* allocate more space if required */

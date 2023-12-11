@@ -1,4 +1,4 @@
-# archive (development version)
+# archive 1.1.7
 
 * Fixed an unsafe `printf()` format string (#95).
 

@@ -9,3 +9,5 @@ compile_commands.json
 .cache
 /dev-lib
 /inst/lib/libconnection.so
+.deps
+autobrew

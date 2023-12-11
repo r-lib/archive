@@ -48,10 +48,6 @@ jobs:
           sudo locale-gen ${{ matrix.config.locale }}
           echo "LC_ALL=${{ matrix.config.locale }}" >> $GITHUB_ENV
 
-      - name: Install libarchive on macOS
-        if: runner.os == 'macOS'
-        run: brew install libarchive
-
       - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
@@ -67,5 +63,13 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
+
+      - name: Test installation with brew
+        if: runner.os == 'macOS'
+        env:
+          DISABLE_AUTOBREW: true
+        run: |
+          brew install libarchive
+          R CMD INSTALL .
 
       - uses: r-lib/actions/check-r-package@v2

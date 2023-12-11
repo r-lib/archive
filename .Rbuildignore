@@ -25,3 +25,5 @@
 ^CRAN-RELEASE$
 ^MAINTENANCE\.md$
 ^dev-lib$
+^[.]deps$
+^autobrew$

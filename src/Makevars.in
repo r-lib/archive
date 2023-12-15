@@ -9,7 +9,7 @@ $(SHLIB): $(LIB_CON)
 
 $(LIB_CON): connection/connection.o
 	@mkdir -p $(LIB_CON_DIR)
-	@$(SHLIB_LINK) -o $@ $^
+	@$(SHLIB_LINK) $(SHLIB_LIBADD) $(LIBR) -o $@ $^
 
 .PHONY: clean
 clean:

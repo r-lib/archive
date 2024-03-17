@@ -30,13 +30,13 @@ jobs:
           - {os: windows-latest, r: '4.1'}
 
           # Use older ubuntu to maximise backward compatibility
-          - {os: ubuntu-18.04,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-18.04,   r: 'release'}
-          - {os: ubuntu-18.04,   r: 'oldrel-1'}
-          - {os: ubuntu-18.04,   r: 'oldrel-2'}
-          - {os: ubuntu-18.04,   r: 'oldrel-3'}
-          - {os: ubuntu-18.04,   r: 'oldrel-4'}
-          - {os: ubuntu-18.04,   r: 'release', locale: 'en_US.ISO-8859-15'}
+          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,   r: 'release'}
+          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          - {os: ubuntu-latest,   r: 'oldrel-2'}
+          - {os: ubuntu-latest,   r: 'oldrel-3'}
+          - {os: ubuntu-latest,   r: 'oldrel-4'}
+          - {os: ubuntu-latest,   r: 'release', locale: 'en_US.ISO-8859-15'}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
@@ -48,7 +48,7 @@ jobs:
           sudo locale-gen ${{ matrix.config.locale }}
           echo "LC_ALL=${{ matrix.config.locale }}" >> $GITHUB_ENV
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -58,10 +58,6 @@ jobs:
           rtools-version: ${{ matrix.config.rtools-version }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-
-      - name: Install macOS system dependencies
-        if: runner.os == 'macOS'
-        run: brew install libarchive
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:

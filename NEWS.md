@@ -1,4 +1,4 @@
-# archive (development version)
+# archive 1.1.5
 
 * archive now does not produce broken archives on Windows (#72, @cielavenir).
 

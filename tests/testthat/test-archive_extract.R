@@ -78,6 +78,8 @@ describe("archive_extract", {
     archive_extract(ar, out_dir, strip_components = 1)
 
     expect_true(all(c("bar/iris.csv", "mtcars.csv") %in% list.files(out_dir, recursive = TRUE)))
+    expect_equal(as.vector(tools::md5sum(file.path(out_dir, "bar", "iris.csv"))), as.vector(tools::md5sum(file.path(in_dir, "foo", "bar", "iris.csv"))))
+    expect_equal(as.vector(tools::md5sum(file.path(out_dir, "mtcars.csv"))), as.vector(tools::md5sum(file.path(in_dir, "foo", "mtcars.csv"))))
   })
 
   it("can strip components if desired, zip", {
@@ -96,5 +98,7 @@ describe("archive_extract", {
     archive_extract(ar, out_dir, strip_components = 1)
 
     expect_true(all(c("bar/iris.csv", "mtcars.csv") %in% list.files(out_dir, recursive = TRUE)))
+    expect_equal(as.vector(tools::md5sum(file.path(out_dir, "bar", "iris.csv"))), as.vector(tools::md5sum(file.path(in_dir, "foo", "bar", "iris.csv"))))
+    expect_equal(as.vector(tools::md5sum(file.path(out_dir, "mtcars.csv"))), as.vector(tools::md5sum(file.path(in_dir, "foo", "mtcars.csv"))))
   })
 })

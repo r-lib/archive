@@ -81,6 +81,7 @@ describe("archive_extract", {
   })
 
   it("can handle password", {
+    skip_on_os("windows") # see https://github.com/r-lib/archive/issues/98
     in_dir <- tempfile()
     out_dir <- tempfile()
     on.exit(unlink(c(in_dir, out_dir), recursive = TRUE))

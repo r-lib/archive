@@ -1,5 +1,9 @@
 # archive (development version)
 
+* `archive_extract()` now stop reading the input file once the desired
+  files are extracted, instead of always reading to the end of the file
+  (#85, @allenluce).
+
 # archive 1.1.7
 
 * Fixed an unsafe `printf()` format string (#95).

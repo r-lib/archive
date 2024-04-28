@@ -69,7 +69,7 @@ jobs:
         env:
           DISABLE_AUTOBREW: true
         run: |
-          brew install libarchive
+          brew install libarchive zstd
           R CMD INSTALL .
 
       - uses: r-lib/actions/check-r-package@v2

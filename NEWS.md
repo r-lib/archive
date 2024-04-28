@@ -1,4 +1,4 @@
-# archive (development version)
+# archive 1.1.8
 
 * `archive_extract()` now stop reading the input file once the desired
   files are extracted, instead of always reading to the end of the file

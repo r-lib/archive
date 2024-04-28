@@ -5,9 +5,6 @@
 # R CMD INSTALL --configure-vars='INCLUDE_DIR=/.../include LIB_DIR=/.../lib'
 
 if [ `uname` = "Darwin" ]; then
-    # static linking on macOS
-    STATIC="--static"
-
     if [ `arch` = "arm64" ]; then
         if ${R_HOME}/bin/R --version | grep Platform | grep -q darwin20; then
             PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/R/arm64/lib/pkgconfig
@@ -25,6 +22,7 @@ export PKG_CONFIG_PATH
 
 # library settings
 PKG_CONFIG_NAME="libarchive"
+PKG_CONFIG_NAME_BREW="libarchive zstd"
 PKG_DEB_NAME="libarchive-dev"
 PKG_RPM_NAME="libarchive-devel"
 PKG_CSW_NAME="libarchive_dev"
@@ -35,8 +33,8 @@ PKG_LIBS="-larchive"
 # Use pkg-config if available
 pkg-config ${PKG_CONFIG_NAME} --atleast-version=1.0  2>/dev/null
 if [ $? -eq 0 ]; then
-    PKGCONFIG_CFLAGS=`pkg-config --cflags ${STATIC} ${PKG_CONFIG_NAME}`
-    PKGCONFIG_LIBS=`pkg-config --libs ${STATIC} ${PKG_CONFIG_NAME}`
+    PKGCONFIG_CFLAGS=`pkg-config --cflags ${PKG_CONFIG_NAME}`
+    PKGCONFIG_LIBS=`pkg-config --libs ${PKG_CONFIG_NAME}`
 fi
 
 # Note that cflags may be empty in case of success

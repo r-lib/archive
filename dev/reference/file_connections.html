@@ -74,8 +74,8 @@ connection (if it should be opened initially).  See section
 
 
 <dt>filter</dt>
-<dd><p><code>character(1)</code> default: <code>NULL</code> The archive filter, one of ‘none’, ‘gzip’, ‘bzip2’, ‘compress’, ‘lzma’, ‘xz’, ‘uuencode’, ‘lzip’, ‘lrzip’, ‘lzop’, ‘grzip’, ‘lz4’, ‘zstd’
-.</p></dd>
+<dd><p><code>character(1)</code> default: <code>NULL</code> The archive filter, one of <code>choices_rd(names(archive:::archive_filters()))</code>.
+Supported filters differ depending on the libarchive version and build.</p></dd>
 
 
 <dt>options</dt>

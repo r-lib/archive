@@ -2,7 +2,7 @@ VERSION=3.6.1
 RWINLIB=../windows/libarchive-$(VERSION)
 TARGET = lib$(subst gcc,,$(COMPILED_BY))$(R_ARCH)
 PKG_CPPFLAGS= \
-  -I$(RWINLIB)/include -I.
+  -I$(RWINLIB)/include -I. -Icpp11/include
 
 PKG_LIBS = \
 	-L$(RWINLIB)/$(TARGET) \

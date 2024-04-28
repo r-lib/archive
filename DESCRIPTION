@@ -17,19 +17,18 @@ Description: Bindings to 'libarchive' <http://www.libarchive.org> the
 License: MIT + file LICENSE
 URL: https://archive.r-lib.org/, https://github.com/r-lib/archive
 BugReports: https://github.com/r-lib/archive/issues
-Depends: 
+Depends:
     R (>= 3.6.0)
-Imports: 
+Imports:
     cli,
     glue,
     rlang,
     tibble
-Suggests: 
+Suggests:
     covr,
     testthat
-LinkingTo: 
-    cli,
-    cpp11
+LinkingTo:
+    cli
 ByteCompile: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

@@ -1,4 +1,11 @@
 # Anticonf (tm) script by Jeroen Ooms, Jim Hester (2017)
+
+echo "** Running ./configure"
+
+# Dynamic manual pages
+export RBIN="${R_HOME}/bin${R_ARCH_BIN}/R"
+"$RBIN" --vanilla --slave -f tools/dynamic-help.R
+
 # This script will query 'pkg-config' for the required cflags and ldflags.
 # If pkg-config is unavailable or does not find the library, try setting
 # INCLUDE_DIR and LIB_DIR manually via e.g:

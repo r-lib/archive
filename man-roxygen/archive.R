@@ -1,7 +1,9 @@
-#' @param format \code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.
-#' @param filter \code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.
+#' @param format \code{character(1)} default: \code{NULL} The archive format, one of \eval{choices_rd(names(archive:::archive_formats()))}.
+#'   Supported formats differ depending on the libarchive version and build.
+#' @param filter \code{character(1)} default: \code{NULL} The archive filter, one of \eval{choices_rd(names(archive:::archive_filters()))}.
+#'   Supported filters differ depending on the libarchive version and build.
 #' @param options \code{character()} default: \code{character(0)} Options to pass to the filter or format.
-#'   The list of available options are documented in 
+#'   The list of available options are documented in
 #'   options can have one of the following forms:
 #'   - `option=value`
 #'     The option/value pair will be provided to every module.

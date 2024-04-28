@@ -11,3 +11,4 @@ compile_commands.json
 /inst/lib/libconnection.so
 .deps
 autobrew
+/man/macros/eval2.Rd

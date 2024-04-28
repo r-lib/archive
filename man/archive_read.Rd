@@ -23,9 +23,11 @@ specified either by filename or by position.}
 connection (if it should be opened initially).  See section
 ‘Modes’ in \code{\link[base:connections]{base::connections()}} for possible values.}
 
-\item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
+\item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \eval{choices_rd(names(archive:::archive_formats()))}.
+Supported formats differ depending on the libarchive version and build.}
 
-\item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
+\item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \eval{choices_rd(names(archive:::archive_filters()))}.
+Supported filters differ depending on the libarchive version and build.}
 
 \item{options}{\code{character()} default: \code{character(0)} Options to pass to the filter or format.
 The list of available options are documented in

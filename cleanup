@@ -1,3 +1,4 @@
 #!/bin/sh
 
-rm -f src/Makevars
+rm -f src/Makevars man/macros/eval2.Rd src/*.o src/*.so \
+  src/connection/*.o src/connection/*.so inst/lib/*.so

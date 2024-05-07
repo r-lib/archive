@@ -915,12 +915,13 @@ inline r_vector<T>::operator SEXP() const {
   }
   if (length_ < capacity_) {
     p->data_ = truncate(p->data_, length_, capacity_);
-    SEXP nms = names();
+    SEXP nms = PROTECT(names());
     auto nms_size = Rf_xlength(nms);
     if ((nms_size > 0) && (length_ < nms_size)) {
       nms = truncate(nms, length_, capacity_);
       names() = nms;
     }
+    UNPROTECT(1);
   }
   return data_;
 }

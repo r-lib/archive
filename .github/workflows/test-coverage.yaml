@@ -43,7 +43,6 @@ jobs:
           file: ./cobertura.xml
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
-          verbose: true
 
       - name: Show testthat output
         if: always()

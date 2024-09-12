@@ -1,42 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://archive.r-lib.org/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://archive.r-lib.org/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://archive.r-lib.org/MAINTENANCE.html</loc>
-  </url>
-  <url>
-    <loc>https://archive.r-lib.org/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://archive.r-lib.org/index.html</loc>
-  </url>
-  <url>
-    <loc>https://archive.r-lib.org/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://archive.r-lib.org/reference/archive.html</loc>
-  </url>
-  <url>
-    <loc>https://archive.r-lib.org/reference/archive_extract.html</loc>
-  </url>
-  <url>
-    <loc>https://archive.r-lib.org/reference/archive_read.html</loc>
-  </url>
-  <url>
-    <loc>https://archive.r-lib.org/reference/archive_write.html</loc>
-  </url>
-  <url>
-    <loc>https://archive.r-lib.org/reference/archive_write_files.html</loc>
-  </url>
-  <url>
-    <loc>https://archive.r-lib.org/reference/file_connections.html</loc>
-  </url>
-  <url>
-    <loc>https://archive.r-lib.org/reference/index.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://archive.r-lib.org/LICENSE-text.html</loc></url>
+<url><loc>https://archive.r-lib.org/LICENSE.html</loc></url>
+<url><loc>https://archive.r-lib.org/MAINTENANCE.html</loc></url>
+<url><loc>https://archive.r-lib.org/authors.html</loc></url>
+<url><loc>https://archive.r-lib.org/index.html</loc></url>
+<url><loc>https://archive.r-lib.org/news/index.html</loc></url>
+<url><loc>https://archive.r-lib.org/reference/archive.html</loc></url>
+<url><loc>https://archive.r-lib.org/reference/archive_extract.html</loc></url>
+<url><loc>https://archive.r-lib.org/reference/archive_read.html</loc></url>
+<url><loc>https://archive.r-lib.org/reference/archive_write.html</loc></url>
+<url><loc>https://archive.r-lib.org/reference/archive_write_files.html</loc></url>
+<url><loc>https://archive.r-lib.org/reference/file_connections.html</loc></url>
+<url><loc>https://archive.r-lib.org/reference/index.html</loc></url>
 </urlset>
+

@@ -3,7 +3,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">archive</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.9</span>
       </span>
     </div>
 
@@ -31,20 +31,20 @@
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/r-lib/archive/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extract contents of an archive to a directory</h1>
-    <small class="dont-index">Source: <a href="https://github.com/r-lib/archive/blob/HEAD/R/archive_extract.R" class="external-link"><code>R/archive_extract.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/r-lib/archive/blob/v1.1.9/R/archive_extract.R" class="external-link"><code>R/archive_extract.R</code></a></small>
     <div class="hidden name"><code>archive_extract.Rd</code></div>
     </div>
 
@@ -64,21 +64,23 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>archive</dt>
+
+
+<dl><dt id="arg-archive">archive<a class="anchor" aria-label="anchor" href="#arg-archive"></a></dt>
 <dd><p><code>character(1)</code> The archive filename or an <code>archive</code> object.</p></dd>
 
 
-<dt>dir</dt>
+<dt id="arg-dir">dir<a class="anchor" aria-label="anchor" href="#arg-dir"></a></dt>
 <dd><p><code>character(1)</code> Directory location to extract archive contents, will be created
 if it does not exist.</p></dd>
 
 
-<dt>files</dt>
+<dt id="arg-files">files<a class="anchor" aria-label="anchor" href="#arg-files"></a></dt>
 <dd><p><code>character() || integer() || NULL</code> One or more files within the archive,
 specified either by filename or by position.</p></dd>
 
 
-<dt>options</dt>
+<dt id="arg-options">options<a class="anchor" aria-label="anchor" href="#arg-options"></a></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code> default: <code>character(0)</code> Options to pass to the filter or format.
 The list of available options are documented in
 options can have one of the following forms:</p><ul><li><p><code>option=value</code>
@@ -99,16 +101,14 @@ See <a href="https://man.freebsd.org/cgi/man.cgi?query=archive_write_set_options
 </ul></dd>
 
 
-<dt>strip_components</dt>
+<dt id="arg-strip-components">strip_components<a class="anchor" aria-label="anchor" href="#arg-strip-components"></a></dt>
 <dd><p>Remove the specified number of leading path
 elements. Pathnames with fewer elements will be silently skipped.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>The filenames extracted (invisibly).</p>
+    <p>The filenames extracted (invisibly).</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -146,15 +146,15 @@ elements. Pathnames with fewer elements will be silently skipped.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

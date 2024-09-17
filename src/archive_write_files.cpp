@@ -2,6 +2,10 @@
 #include <cli/progress.h>
 #include <fcntl.h>
 
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+
 const char* const pb_format =
     "{cli::pb_spin} %zu added | {cli::pb_current_bytes} "
     "({cli::pb_rate_bytes}) | "
@@ -60,7 +64,7 @@ const char* const pb_format =
 #endif
     archive_entry_set_pathname(entry, file.c_str());
     call(archive_write_header, a, entry);
-    if ((fd = open(file.c_str(), O_RDONLY)) != -1) {
+    if ((fd = open(file.c_str(), O_RDONLY|O_BINARY)) != -1) {
       len = read(fd, buf.data(), buf.size());
       while (len > 0) {
         call(archive_write_data, a, buf.data(), len);

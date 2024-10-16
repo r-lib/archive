@@ -1,7 +1,11 @@
 PKG_CPPFLAGS= -I. -Icpp11/include
 
-PKG_LIBS = -larchive -lxml2 -lcrypto -lnettle -lregex -lexpat -llzo2 \
-	   -llzma -llz4 -lbz2 -lz -lzstd -liconv -lws2_32
+ifeq (,$(shell pkg-config --version 2>/dev/null))
+    PKG_LIBS = -larchive -lxml2 -lcrypto -lnettle -lregex -lexpat -llzo2 \
+               -llzma -llz4 -lbz2 -lz -lzstd -liconv -lws2_32 -lbcrypt
+else
+    PKG_LIBS = $(shell pkg-config --libs libarchive)
+endif
 
 LIB_CON = ../inst/lib$(R_ARCH)/libconnection.dll
 

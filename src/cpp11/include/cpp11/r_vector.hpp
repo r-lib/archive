@@ -865,7 +865,7 @@ inline r_vector<T>::r_vector(std::initializer_list<named_arg> il)
   }
 
   unwind_protect([&] {
-    SEXP names = Rf_allocVector(STRSXP, capacity_);
+    SEXP names = PROTECT(Rf_allocVector(STRSXP, capacity_));
     Rf_setAttrib(data_, R_NamesSymbol, names);
 
     auto it = il.begin();
@@ -890,6 +890,7 @@ inline r_vector<T>::r_vector(std::initializer_list<named_arg> il)
       SEXP name = Rf_mkCharCE(it->name(), CE_UTF8);
       SET_STRING_ELT(names, i, name);
     }
+    UNPROTECT(1);
   });
 }
 
@@ -1323,13 +1324,16 @@ inline SEXP r_vector<T>::reserve_data(SEXP x, bool is_altrep, R_xlen_t size) {
   SEXP out = PROTECT(resize_data(x, is_altrep, size));
 
   // Resize names, if required
-  SEXP names = Rf_getAttrib(x, R_NamesSymbol);
+  SEXP names = PROTECT(Rf_getAttrib(x, R_NamesSymbol));
   if (names != R_NilValue) {
     if (Rf_xlength(names) != size) {
       names = resize_names(names, size);
+      UNPROTECT(1);
+      PROTECT(names);
     }
     Rf_setAttrib(out, R_NamesSymbol, names);
   }
+  UNPROTECT(1);
 
   // Copy over "most" attributes, and set OBJECT bit and S4 bit as needed.
   // Does not copy over names, dim, or dim names.

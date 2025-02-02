@@ -61,6 +61,7 @@ archive_write_dir() adds all the file(s) in a directory to a new archive."><meta
 <span>  format <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  filter <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  password <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  recursive <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  full.names <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -71,7 +72,8 @@ archive_write_dir() adds all the file(s) in a directory to a new archive."><meta
 <span>  <span class="va">files</span>,</span>
 <span>  format <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  filter <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  password <span class="op">=</span> <span class="cn">NA_character_</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -116,6 +118,10 @@ provided only to modules whose name matches module.
 See <a href="https://man.freebsd.org/cgi/man.cgi?query=archive_read_set_options&amp;sektion=3&amp;format=html" class="external-link">read options</a> for available read options
 See <a href="https://man.freebsd.org/cgi/man.cgi?query=archive_write_set_options&amp;sektion=3&amp;format=html" class="external-link">write options</a> for available write options</p></li>
 </ul></dd>
+
+
+<dt id="arg-password">password<a class="anchor" aria-label="anchor" href="#arg-password"></a></dt>
+<dd><p><code>character(1)</code> The password to process the archive.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>

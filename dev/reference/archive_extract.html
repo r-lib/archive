@@ -58,7 +58,8 @@
 <span>  dir <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>  files <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  strip_components <span class="op">=</span> <span class="fl">0L</span></span>
+<span>  strip_components <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  password <span class="op">=</span> <span class="cn">NA_character_</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -104,6 +105,10 @@ See <a href="https://man.freebsd.org/cgi/man.cgi?query=archive_write_set_options
 <dt id="arg-strip-components">strip_components<a class="anchor" aria-label="anchor" href="#arg-strip-components"></a></dt>
 <dd><p>Remove the specified number of leading path
 elements. Pathnames with fewer elements will be silently skipped.</p></dd>
+
+
+<dt id="arg-password">password<a class="anchor" aria-label="anchor" href="#arg-password"></a></dt>
+<dd><p><code>character(1)</code> The password to process the archive.</p></dd>
 
 </dl></div>
     <div id="value">

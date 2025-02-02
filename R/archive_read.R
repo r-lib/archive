@@ -19,7 +19,7 @@
 #' # Explicitly specify the format and filter if automatic detection fails.
 #' read.csv(archive_read(a, format = "zip"), nrows = 3)
 #' @export
-archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter = NULL, options = character()) {
+archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter = NULL, options = character(), password = NA_character_) {
   assert("`file` must be a length one character vector or numeric",
     length(file) == 1 && (is.character(file) || is.numeric(file)))
 
@@ -31,5 +31,5 @@ archive_read <- function(archive, file = 1L, mode = "r", format = NULL, filter =
 
   description <- glue::glue("archive_read({desc})[{file}]", desc = summary(archive)$description)
 
-  archive_read_(archive, file, description, mode, archive_formats()[format], archive_filters()[filter], options, sz = 2^14)
+  archive_read_(archive, file, description, mode, archive_formats()[format], archive_filters()[filter], options, c(password), sz = 2^14)
 }

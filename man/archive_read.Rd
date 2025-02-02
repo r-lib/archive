@@ -10,7 +10,8 @@ archive_read(
   mode = "r",
   format = NULL,
   filter = NULL,
-  options = character()
+  options = character(),
+  password = NA_character_
 )
 }
 \arguments{
@@ -49,6 +50,8 @@ provided only to modules whose name matches module.
 See \href{https://man.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sektion=3&format=html}{read options} for available read options
 See \href{https://man.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
+
+\item{password}{\code{character(1)} The password to process the archive.}
 }
 \value{
 An 'archive_read' connection to the file within the archive to be read.

@@ -9,7 +9,8 @@ archive_extract(
   dir = ".",
   files = NULL,
   options = character(),
-  strip_components = 0L
+  strip_components = 0L,
+  password = NA_character_
 )
 }
 \arguments{
@@ -44,6 +45,8 @@ See \href{https://man.freebsd.org/cgi/man.cgi?query=archive_write_set_options&se
 
 \item{strip_components}{Remove the specified number of leading path
 elements. Pathnames with fewer elements will be silently skipped.}
+
+\item{password}{\code{character(1)} The password to process the archive.}
 }
 \value{
 The filenames extracted (invisibly).

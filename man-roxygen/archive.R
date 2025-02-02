@@ -20,6 +20,7 @@
 #'     provided only to modules whose name matches module.
 #'  See [read options](https://man.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sektion=3&format=html) for available read options
 #'  See [write options](https://man.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html) for available write options
+#' @param password `character(1)` The password to process the archive. 
 #' @details
 #' If `format` and `filter` are `NULL`, they will be set automatically based on
 #' the file extension given in `file` when writing and automatically detected

@@ -194,7 +194,12 @@ static const char* strip_components(const char* p, int elements) {
       copy_data(a, ext, progress_bar, total_read, num_extracted);
       call(archive_write_finish_entry, ext);
 
-      ++num_extracted;
+      num_extracted++;
+
+      if (num_extracted == file_indexes.size() ||
+          num_extracted == file_names.size()) {
+        break;
+      }
     }
   }
 

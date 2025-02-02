@@ -64,4 +64,12 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
+      - name: Test installation with brew
+        if: runner.os == 'macOS'
+        env:
+          DISABLE_AUTOBREW: true
+        run: |
+          brew install libarchive zstd
+          R CMD INSTALL .
+
       - uses: r-lib/actions/check-r-package@v2

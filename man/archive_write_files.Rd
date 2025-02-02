@@ -31,9 +31,11 @@ archive_write_files(
 
 \item{dir}{\code{character(1)} The directory of files to add.}
 
-\item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_formats()))}.}
+\item{format}{\code{character(1)} default: \code{NULL} The archive format, one of \eval{choices_rd(names(archive:::archive_formats()))}.
+Supported formats differ depending on the libarchive version and build.}
 
-\item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \Sexpr[stage=render, results=rd]{archive:::choices_rd(names(archive:::archive_filters()))}.}
+\item{filter}{\code{character(1)} default: \code{NULL} The archive filter, one of \eval{choices_rd(names(archive:::archive_filters()))}.
+Supported filters differ depending on the libarchive version and build.}
 
 \item{options}{\code{character()} default: \code{character(0)} Options to pass to the filter or format.
 The list of available options are documented in
@@ -52,8 +54,8 @@ value.
 \item \code{module:option=value}, \code{module:option}, \code{module:!option}
 As above, but the corresponding option and value will be
 provided only to modules whose name matches module.
-See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sektion=3&format=html}{read options} for available read options
-See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
+See \href{https://man.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sektion=3&format=html}{read options} for available read options
+See \href{https://man.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
 
 \item{password}{\code{character(1)} The password to process the archive.}

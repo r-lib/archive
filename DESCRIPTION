@@ -1,6 +1,6 @@
 Package: archive
 Title: Multi-Format Archive and Compression Support
-Version: 1.1.5
+Version: 1.1.10.9000
 Authors@R: c(
     person("Jim", "Hester", role = "aut",
            comment = c(ORCID = "0000-0002-2739-7082")),
@@ -17,23 +17,22 @@ Description: Bindings to 'libarchive' <http://www.libarchive.org> the
 License: MIT + file LICENSE
 URL: https://archive.r-lib.org/, https://github.com/r-lib/archive
 BugReports: https://github.com/r-lib/archive/issues
-Depends: 
-    R (>= 3.1.0)
-Imports: 
+Depends:
+    R (>= 3.6.0)
+Imports:
     cli,
     glue,
     rlang,
     tibble
-Suggests: 
+Suggests:
     covr,
     testthat
-LinkingTo: 
-    cli,
-    cpp11
+LinkingTo:
+    cli
 ByteCompile: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1.9000
-SystemRequirements: C++11, libarchive: libarchive-dev (deb),
+SystemRequirements: libarchive: libarchive-dev (deb),
     libarchive-devel (rpm), libarchive (homebrew), libarchive_dev (csw)
 Biarch: true

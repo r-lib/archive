@@ -12,6 +12,7 @@ describe("archive", {
   it("takes options", {
     skip_on_os("windows")
     skip_on_os("solaris")
+    skip_if_no_encoding("CP866")
     skip_if(l10n_info()$`UTF-8` == FALSE)
 
     a <- archive(test_path("cp866.tar.Z.uu"), "hdrcharset=CP866")

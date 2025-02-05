@@ -92,6 +92,7 @@ describe("archive_write", {
   it("can translate character sets with a cpio archive", {
     skip_on_os("windows")
     skip_on_os("solaris")
+    skip_if_no_encoding("CP866")
     skip_on_os("mac") # for some unknown reason this test fails on macOS
 
     f <- tempfile(fileext = ".cpio")
@@ -108,6 +109,7 @@ describe("archive_write", {
   it("can translate character sets with a zip archive", {
     skip_on_os("windows")
     skip_on_os("solaris")
+    skip_if_no_encoding("CP866")
     skip_on_os("mac") # for some unknown reason this test fails on macOS
 
     f <- tempfile(fileext = ".zip")

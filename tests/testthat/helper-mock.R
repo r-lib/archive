@@ -1,4 +1,6 @@
 fake <- local({
+  `%||%` <- function(l, r) if (is.null(l)) r else l
+
   fake_through_tree <- function(tree, what, how) {
     for (d in tree) {
       for (parent in d) {

@@ -19,7 +19,7 @@ write a specific file from the archive."><!-- mathjax --><script src="https://cd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">archive</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.11</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@ write a specific file from the archive."><!-- mathjax --><script src="https://cd
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Construct a new archive</h1>
-    <small class="dont-index">Source: <a href="https://github.com/r-lib/archive/blob/v1.1.10/R/archive.R" class="external-link"><code>R/archive.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/r-lib/archive/blob/v1.1.11/R/archive.R" class="external-link"><code>R/archive.R</code></a></small>
     <div class="hidden name"><code>archive.Rd</code></div>
     </div>
 
@@ -57,7 +57,7 @@ write a specific file from the archive.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">archive</span><span class="op">(</span><span class="va">file</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">archive</span><span class="op">(</span><span class="va">file</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>, password <span class="op">=</span> <span class="cn">NA_character_</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -87,6 +87,10 @@ provided only to modules whose name matches module.
 See <a href="https://man.freebsd.org/cgi/man.cgi?query=archive_read_set_options&amp;sektion=3&amp;format=html" class="external-link">read options</a> for available read options
 See <a href="https://man.freebsd.org/cgi/man.cgi?query=archive_write_set_options&amp;sektion=3&amp;format=html" class="external-link">write options</a> for available write options</p></li>
 </ul></dd>
+
+
+<dt id="arg-password">password<a class="anchor" aria-label="anchor" href="#arg-password"></a></dt>
+<dd><p><code>character(1)</code> The password to process the archive.</p></dd>
 
 </dl></div>
     <div id="value">

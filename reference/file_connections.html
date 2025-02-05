@@ -18,7 +18,7 @@ archive_write using format = "raw", archive = file.'><!-- mathjax --><script src
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">archive</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.11</span>
       </span>
     </div>
 
@@ -45,7 +45,7 @@ archive_write using format = "raw", archive = file.'><!-- mathjax --><script src
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Construct a connections for (possibly compressed) files.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/r-lib/archive/blob/v1.1.10/R/file_read.R" class="external-link"><code>R/file_read.R</code></a>, <a href="https://github.com/r-lib/archive/blob/v1.1.10/R/file_write.R" class="external-link"><code>R/file_write.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/r-lib/archive/blob/v1.1.11/R/file_read.R" class="external-link"><code>R/file_read.R</code></a>, <a href="https://github.com/r-lib/archive/blob/v1.1.11/R/file_write.R" class="external-link"><code>R/file_write.R</code></a></small>
     <div class="hidden name"><code>file_connections.Rd</code></div>
     </div>
 
@@ -55,9 +55,21 @@ archive_write using format = "raw", archive = file.'><!-- mathjax --><script src
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">file_read</span><span class="op">(</span><span class="va">file</span>, mode <span class="op">=</span> <span class="st">"r"</span>, filter <span class="op">=</span> <span class="cn">NULL</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">file_read</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"r"</span>,</span>
+<span>  filter <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  password <span class="op">=</span> <span class="cn">NA_character_</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">file_write</span><span class="op">(</span><span class="va">file</span>, mode <span class="op">=</span> <span class="st">"w"</span>, filter <span class="op">=</span> <span class="cn">NULL</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">file_write</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  mode <span class="op">=</span> <span class="st">"w"</span>,</span>
+<span>  filter <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  password <span class="op">=</span> <span class="cn">NA_character_</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -99,6 +111,10 @@ provided only to modules whose name matches module.
 See <a href="https://man.freebsd.org/cgi/man.cgi?query=archive_read_set_options&amp;sektion=3&amp;format=html" class="external-link">read options</a> for available read options
 See <a href="https://man.freebsd.org/cgi/man.cgi?query=archive_write_set_options&amp;sektion=3&amp;format=html" class="external-link">write options</a> for available write options</p></li>
 </ul></dd>
+
+
+<dt id="arg-password">password<a class="anchor" aria-label="anchor" href="#arg-password"></a></dt>
+<dd><p><code>character(1)</code> The password to process the archive.</p></dd>
 
 </dl></div>
     <div id="value">

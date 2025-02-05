@@ -114,10 +114,14 @@ libarchive_version <- function() {
 
 libarchive_zlib_version <- function() {
   version <- libarchive_zlib_version_()
-  if (nzchar(version)) {
-    return(package_version(version))
+  # remove suffix from 1.3.1.zlib-ng and similar
+  version <- sub("[.]?[^0-9.-].*$", "", version)
+  version <- package_version(version, strict = FALSE)
+  if (is.na(version)) {
+    package_version("0.0.0")
+  } else {
+    version
   }
-  package_version("0.0.0")
 }
 
 libarchive_liblzma_version <- function() {

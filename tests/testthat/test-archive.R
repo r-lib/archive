@@ -25,3 +25,22 @@ describe("archive", {
     expect_equal(a$path, "mtcars.csv")
   })
 })
+
+describe("libarchive_zlib_version", {
+  it("handles simple versions", {
+    fake(libarchive_zlib_version, "libarchive_zlib_version_", "1.3.1")
+    expect_equal(libarchive_zlib_version(), package_version("1.3.1"))
+  })
+  it("removes non-numeric suffix", {
+    fake(libarchive_zlib_version, "libarchive_zlib_version_", "1.3.1.zlib-ng")
+    expect_equal(libarchive_zlib_version(), package_version("1.3.1"))
+  })
+  it("handles nonsensical versions", {
+    fake(libarchive_zlib_version, "libarchive_zlib_version_", "1")
+    expect_equal(libarchive_zlib_version(), package_version("0.0.0"))
+    fake(libarchive_zlib_version, "libarchive_zlib_version_", "1.foobar")
+    expect_equal(libarchive_zlib_version(), package_version("0.0.0"))
+    fake(libarchive_zlib_version, "libarchive_zlib_version_", "not-really-good")
+    expect_equal(libarchive_zlib_version(), package_version("0.0.0"))
+  })
+})

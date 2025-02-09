@@ -3,6 +3,10 @@
 #include <string.h>
 #include <vector>
 
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+
 std::string my_basename(std::string const& str) {
   std::size_t found = str.find_last_of("/\\");
   return str.substr(found + 1);
@@ -79,7 +83,7 @@ void rchive_write_close(Rconnection con) {
   entry = archive_entry_new();
 
   std::string scratch = scratch_file(r->filename.c_str());
-  int fd = open(scratch.c_str(), O_RDONLY);
+  int fd = open(scratch.c_str(), O_RDONLY|O_BINARY);
   if (fd < 0) {
     Rf_error("Could not open scratch file");
   }

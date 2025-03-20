@@ -6,12 +6,18 @@ LIB_CON_DIR = ../inst/lib$(R_ARCH)
 
 LIB_CON = $(LIB_CON_DIR)/libconnection.so
 
+all: $(SHLIB) mrproper
+
 $(SHLIB): $(LIB_CON)
+
+mrproper: $(SHLIB)
+	rm -rf ../.deps
 
 $(LIB_CON): connection/connection.o
 	@mkdir -p $(LIB_CON_DIR)
 	@$(SHLIB_LINK) $(SHLIB_LIBADD) $(LIBR) -o $@ $^
 
-.PHONY: clean
+.PHONY: clean mrproper
+
 clean:
 	@rm -f $(OBJECTS) $(SHLIB) $(LIB_CON) connection/connection.o

@@ -29,8 +29,8 @@ jobs:
           # Use 4.1 for encoding bugs
           - {os: windows-latest, r: '4.1'}
 
-          - {os: ubuntu-20.04,    r: 'next'}          
-          - {os: ubuntu-22.04,    r: 'next'}          
+          - {os: ubuntu-20.04,    r: 'next'}
+          - {os: ubuntu-22.04,    r: 'next'}
           # Use older ubuntu to maximise backward compatibility
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
@@ -73,5 +73,7 @@ jobs:
         run: |
           brew install libarchive zstd
           R CMD INSTALL .
+
+      - uses: r-hub/actions/setup-r-sysreqs@v1
 
       - uses: r-lib/actions/check-r-package@v2

@@ -29,6 +29,8 @@ jobs:
           # Use 4.1 for encoding bugs
           - {os: windows-latest, r: '4.1'}
 
+          - {os: ubuntu-20.04,    r: 'next'}          
+          - {os: ubuntu-22.04,    r: 'next'}          
           # Use older ubuntu to maximise backward compatibility
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}

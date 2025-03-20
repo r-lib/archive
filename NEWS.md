@@ -1,5 +1,7 @@
 # archive (development version)
 
+* No changes.
+
 # archive 1.1.11
 
 * No changes.

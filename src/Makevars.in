@@ -11,7 +11,7 @@ all: $(SHLIB) mrproper
 $(SHLIB): $(LIB_CON)
 
 mrproper: $(SHLIB)
-	rm -rf ../.deps
+	@rm -rf ../.deps
 
 $(LIB_CON): connection/connection.o
 	@mkdir -p $(LIB_CON_DIR)

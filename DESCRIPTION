@@ -35,4 +35,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1.9000
 SystemRequirements: libarchive: libarchive-dev (deb),
     libarchive-devel (rpm), libarchive (homebrew), libarchive_dev (csw)
+Config/Needs/website: tidyverse/tidytemplate
 Biarch: true

@@ -106,7 +106,7 @@ archive(f1)
 #> # A tibble: 1 × 3
 #>   path        size date               
 #>   <chr>      <int> <dttm>             
-#> 1 mtcars.csv  1783 2026-03-09 14:43:10
+#> 1 mtcars.csv  1783 2026-03-09 14:46:42
 unlink(f1)
 
 # They can also be specified explicitly
@@ -116,7 +116,7 @@ archive(f2)
 #> # A tibble: 1 × 3
 #>   path        size date               
 #>   <chr>      <int> <dttm>             
-#> 1 mtcars.csv  1783 2026-03-09 14:43:10
+#> 1 mtcars.csv  1783 2026-03-09 14:46:42
 unlink(f2)
 
 # You can also pass additional options to control things like compression level
@@ -126,6 +126,6 @@ archive(f3)
 #> # A tibble: 1 × 3
 #>   path        size date               
 #>   <chr>      <int> <dttm>             
-#> 1 mtcars.csv  1783 2026-03-09 14:43:10
+#> 1 mtcars.csv  1783 2026-03-09 14:46:42
 unlink(f3)
 ```

@@ -1,5 +1,7 @@
 # archive (development version)
 
+* Fix configure for R-4.6 (stop using CXX11)
+
 # archive 1.1.12
 
 * No changes.

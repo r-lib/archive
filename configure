@@ -74,12 +74,12 @@ elif [ `uname` = "Darwin" ]; then
 fi
 
 # Find compiler
-CXX11=`${R_HOME}/bin/R CMD config CXX11`
-CXX11FLAGS=`${R_HOME}/bin/R CMD config CXX11FLAGS`
+CXX=`${R_HOME}/bin/R CMD config CXX`
+CXXFLAGS=`${R_HOME}/bin/R CMD config CXXFLAGS`
 CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
 
 if [ "`${R_HOME}/bin/R --slave -e 'cat(if (getRversion() < \"3.6.3\") 0 else 1)'`" = "0" ]; then
-    PKG_CFLAGS="${PKG_CFLAGS} `${R_HOME}/bin/R CMD config CXX11STD`"
+    PKG_CFLAGS="${PKG_CFLAGS} `${R_HOME}/bin/R CMD config CXXSTD`"
 fi
 
 # For debugging
@@ -88,7 +88,7 @@ echo "PKG_CFLAGS=$PKG_CFLAGS"
 echo "PKG_LIBS=$PKG_LIBS"
 
 # Test configuration
-echo "#include $PKG_TEST_HEADER" | ${CXX11} ${CPPFLAGS} ${PKG_CFLAGS} ${CXX11FLAGS} -E -xc++ - > /dev/null
+echo "#include $PKG_TEST_HEADER" | ${CXX} ${CPPFLAGS} ${PKG_CFLAGS} ${CXXFLAGS} -E -xc++ - > /dev/null
 
 # Customize the error
 if [ $? -ne 0 ]; then

@@ -1,9 +1,8 @@
 #pragma once
 
-#include <stddef.h>  // for ptrdiff_t, size_t
-
 #include <algorithm>         // for max
 #include <array>             // for array
+#include <cstddef>           // for ptrdiff_t, size_t
 #include <cstdio>            // for snprintf
 #include <cstring>           // for memcpy
 #include <exception>         // for exception
@@ -864,10 +863,9 @@ inline r_vector<T>::r_vector(std::initializer_list<named_arg> il)
     valid_length(value, 1);
   }
 
-  unwind_protect([&] {
-    SEXP names = PROTECT(Rf_allocVector(STRSXP, capacity_));
-    Rf_setAttrib(data_, R_NamesSymbol, names);
+  sexp names = safe[Rf_allocVector](STRSXP, capacity_);
 
+  unwind_protect([&] {
     auto it = il.begin();
 
     for (R_xlen_t i = 0; i < capacity_; ++i, ++it) {
@@ -890,8 +888,9 @@ inline r_vector<T>::r_vector(std::initializer_list<named_arg> il)
       SEXP name = Rf_mkCharCE(it->name(), CE_UTF8);
       SET_STRING_ELT(names, i, name);
     }
-    UNPROTECT(1);
   });
+
+  safe[Rf_setAttrib](data_, R_NamesSymbol, names);
 }
 
 template <typename T>
@@ -1324,16 +1323,14 @@ inline SEXP r_vector<T>::reserve_data(SEXP x, bool is_altrep, R_xlen_t size) {
   SEXP out = PROTECT(resize_data(x, is_altrep, size));
 
   // Resize names, if required
+  // Protection seems needed to make rchk happy
   SEXP names = PROTECT(Rf_getAttrib(x, R_NamesSymbol));
   if (names != R_NilValue) {
     if (Rf_xlength(names) != size) {
       names = resize_names(names, size);
-      UNPROTECT(1);
-      PROTECT(names);
     }
     Rf_setAttrib(out, R_NamesSymbol, names);
   }
-  UNPROTECT(1);
 
   // Copy over "most" attributes, and set OBJECT bit and S4 bit as needed.
   // Does not copy over names, dim, or dim names.
@@ -1342,7 +1339,7 @@ inline SEXP r_vector<T>::reserve_data(SEXP x, bool is_altrep, R_xlen_t size) {
   // Does not look like it would ever error in our use cases, so no `safe[]`.
   Rf_copyMostAttrib(x, out);
 
-  UNPROTECT(1);
+  UNPROTECT(2);
   return out;
 }
 

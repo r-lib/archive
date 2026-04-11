@@ -28,3 +28,4 @@
 ^[.]deps$
 ^autobrew$
 ^man/macros/eval2.Rd$
+^[.]dev$

@@ -12,3 +12,4 @@ compile_commands.json
 .deps
 autobrew
 /man/macros/eval2.Rd
+/.dev

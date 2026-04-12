@@ -2,6 +2,10 @@
 
 ## archive (development version)
 
+## archive 1.1.13
+
+CRAN release: 2026-04-12
+
 - Fix configure for R-4.6 (stop using CXX11)
 
 ## archive 1.1.12

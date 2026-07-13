@@ -13,7 +13,7 @@ export RBIN="${R_HOME}/bin${R_ARCH_BIN}/R"
 
 if [ `uname` = "Darwin" ]; then
     if [ `arch` = "arm64" ]; then
-        if ${R_HOME}/bin/R --version | grep Platform | grep -q darwin20; then
+        if ${R_HOME}/bin/R --version | grep Platform | grep -q darwin2[03]; then
             PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/R/arm64/lib/pkgconfig
         fi
         PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/homebrew/opt/libarchive/lib/pkgconfig

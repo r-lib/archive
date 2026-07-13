@@ -1,5 +1,12 @@
 # archive (development version)
 
+* Errors raised while opening or reading an archive connection (e.g. reading a
+  file that does not exist) are now reported as regular R errors instead of
+  crashing the R session.
+
+* Filters that libarchive handles via an external helper program (e.g.
+  `lzop`) no longer error out; they now emit a message and continue.
+
 # archive 1.1.13
 
 * Fix configure for R-4.6 (stop using CXX11)

@@ -6,16 +6,18 @@
 /* callback function to store received data */
 static size_t rchive_write_direct_data(
     const void* contents, size_t sz, size_t n, Rconnection con) {
-  rchive* r = (rchive*)con->private_ptr;
+  return callback_unwind_protect([&]() -> size_t {
+    rchive* r = (rchive*)con->private_ptr;
 
-  size_t realsize = sz * n;
-  call(archive_write_data, con, contents, realsize);
-  r->size += realsize;
+    size_t realsize = sz * n;
+    call(archive_write_data, con, contents, realsize);
+    r->size += realsize;
 
-  return n;
+    return n;
+  });
 }
 
-static Rboolean rchive_write_direct_open(Rconnection con) {
+static Rboolean rchive_write_direct_open_impl(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
   local_utf8_locale ll;
@@ -53,25 +55,34 @@ static Rboolean rchive_write_direct_open(Rconnection con) {
   return TRUE;
 }
 
+static Rboolean rchive_write_direct_open(Rconnection con) {
+  return callback_unwind_protect(
+      [&] { return rchive_write_direct_open_impl(con); });
+}
+
 /* This function closes the temporary scratch file, then writes the actual
  * archive file based on the archive filename given and then unlinks the
  * scratch file */
 void rchive_write_direct_close(Rconnection con) {
-  if (!con->isopen) {
-    return;
-  }
-  /* Close scratch file */
-  call(archive_write_close, con);
-  call(archive_write_free, con);
+  callback_unwind_protect([&] {
+    if (!con->isopen) {
+      return;
+    }
+    /* Close scratch file */
+    call(archive_write_close, con);
+    call(archive_write_free, con);
 
-  con->isopen = FALSE;
+    con->isopen = FALSE;
+  });
 }
 
 void rchive_write_direct_destroy(Rconnection con) {
-  rchive* r = (rchive*)con->private_ptr;
+  callback_unwind_protect([&] {
+    rchive* r = (rchive*)con->private_ptr;
 
-  /* free the handle connection */
-  delete r;
+    /* free the handle connection */
+    delete r;
+  });
 }
 
 // This writes a single (direct) file to a new connection. Unlike other archive

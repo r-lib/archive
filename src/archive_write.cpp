@@ -11,13 +11,15 @@ std::string my_basename(std::string const& str) {
 /* callback function to store received data */
 static size_t
 rchive_write_data(const void* contents, size_t sz, size_t n, Rconnection ctx) {
-  rchive* r = (rchive*)ctx->private_ptr;
+  return callback_unwind_protect([&]() -> size_t {
+    rchive* r = (rchive*)ctx->private_ptr;
 
-  size_t realsize = sz * n;
-  call(archive_write_data, ctx, contents, realsize);
-  r->size += realsize;
+    size_t realsize = sz * n;
+    call(archive_write_data, ctx, contents, realsize);
+    r->size += realsize;
 
-  return n;
+    return n;
+  });
 }
 
 std::string scratch_file(const char* filename) {
@@ -27,7 +29,7 @@ std::string scratch_file(const char* filename) {
   return out;
 }
 
-static Rboolean rchive_write_open(Rconnection con) {
+static Rboolean rchive_write_open_impl(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
   local_utf8_locale ll;
@@ -47,10 +49,14 @@ static Rboolean rchive_write_open(Rconnection con) {
   return TRUE;
 }
 
+static Rboolean rchive_write_open(Rconnection con) {
+  return callback_unwind_protect([&] { return rchive_write_open_impl(con); });
+}
+
 /* This function closes the temporary scratch file, then writes the actual
  * archive file based on the archive filename given and then unlinks the
  * scratch file */
-void rchive_write_close(Rconnection con) {
+void rchive_write_close_impl(Rconnection con) {
   char buf[8192];
   size_t bytes_read;
   rchive* r = (rchive*)con->private_ptr;
@@ -121,11 +127,17 @@ void rchive_write_close(Rconnection con) {
   unlink(scratch.c_str());
 }
 
-void rchive_write_destroy(Rconnection con) {
-  rchive* r = (rchive*)con->private_ptr;
+void rchive_write_close(Rconnection con) {
+  callback_unwind_protect([&] { rchive_write_close_impl(con); });
+}
 
-  /* free the handle connection */
-  delete r;
+void rchive_write_destroy(Rconnection con) {
+  callback_unwind_protect([&] {
+    rchive* r = (rchive*)con->private_ptr;
+
+    /* free the handle connection */
+    delete r;
+  });
 }
 
 // This writes a single file to a new connection, it first writes the data

@@ -69,7 +69,7 @@ bool entry_matches(const std::string& str, archive_entry* entry) {
   return str == pathname;
 }
 
-static Rboolean rchive_read_open(Rconnection con) {
+static Rboolean rchive_read_open_impl(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
   local_utf8_locale ll;
@@ -155,35 +155,45 @@ static Rboolean rchive_read_open(Rconnection con) {
   return FALSE;
 }
 
-void rchive_read_close(Rconnection con) {
-  call(archive_read_close, con);
+static Rboolean rchive_read_open(Rconnection con) {
+  return callback_unwind_protect([&] { return rchive_read_open_impl(con); });
+}
 
-  con->isopen = FALSE;
-  con->incomplete = FALSE;
+void rchive_read_close(Rconnection con) {
+  callback_unwind_protect([&] {
+    call(archive_read_close, con);
+
+    con->isopen = FALSE;
+    con->incomplete = FALSE;
+  });
 }
 
 void rchive_read_destroy(Rconnection con) {
-  rchive* r = (rchive*)con->private_ptr;
+  callback_unwind_protect([&] {
+    rchive* r = (rchive*)con->private_ptr;
 
-  /* free the handle connection */
-  call(archive_read_free, con);
+    /* free the handle connection */
+    call(archive_read_free, con);
 
-  delete r;
+    delete r;
+  });
 }
 
 /* Support for readBin() */
 static size_t rchive_read(void* target, size_t sz, size_t ni, Rconnection con) {
-  rchive* r = (rchive*)con->private_ptr;
-  size_t size = sz * ni;
+  return callback_unwind_protect([&]() -> size_t {
+    rchive* r = (rchive*)con->private_ptr;
+    size_t size = sz * ni;
 
-  /* append data to the target buffer */
-  size_t total_size = pop(target, size, r);
-  while ((size > total_size) && r->has_more) {
-    push(r);
-    total_size += pop((char*)target + total_size, (size - total_size), r);
-  }
-  con->incomplete = (Rboolean)r->has_more;
-  return total_size;
+    /* append data to the target buffer */
+    size_t total_size = pop(target, size, r);
+    while ((size > total_size) && r->has_more) {
+      push(r);
+      total_size += pop((char*)target + total_size, (size - total_size), r);
+    }
+    con->incomplete = (Rboolean)r->has_more;
+    return total_size;
+  });
 }
 
 /* https://github.com/jeroen/curl/blob/102eb33288c853e0b3d4344fa1725388f606cecc/src/curl.c#L145

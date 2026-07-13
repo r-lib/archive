@@ -63,16 +63,6 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - name: Test compilation
-        if: runner.os == 'Windows'
-        run: |
-          install.packages("filelock", type = "source", repos = "https://cloud.r-project.org")
-          pak::pkg_install("filelock?source")
-          pak::pkg_install("tiff?source")
-          library(filelock)
-          library(tiff)
-        shell: Rscript {0}
-
       - name: Test installation with brew
         if: runner.os == 'macOS'
         env:

@@ -25,7 +25,6 @@ Imports:
     rlang,
     tibble
 Suggests:
-    covr,
     testthat
 LinkingTo:
     cli

@@ -41,10 +41,9 @@ int64_t
 input_seek(struct archive*, void* client_data, int64_t offset, int whence) {
   struct input_data* data = static_cast<input_data*>(client_data);
   static auto seek = cpp11::package("base")["seek"];
-  if(offset != (double)offset){
-      REprintf("As R does not support int64, tried to use double, but the conversion didn't went well, error will be raised. original=%lld, converted=%lld\n",offset,(int64_t)((double)offset));
-  }
 
+  /* R has no native int64; base::seek()'s `where` is read as a double, so pass
+   * a double to avoid truncation to 32-bit int for offsets >= 2 GB (#81). */
   seek(
       data->connection,
       (double)offset,

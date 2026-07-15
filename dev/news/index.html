@@ -34,7 +34,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="archive-development-version">archive (development version)<a class="anchor" aria-label="anchor" href="#archive-development-version"></a></h2>
-<ul><li><p>Errors raised while opening or reading an archive connection (e.g. reading a file that does not exist) are now reported as regular R errors instead of crashing the R session.</p></li>
+<ul><li><p><code><a href="../reference/archive_write.html">archive_write()</a></code> and friends can now write the <code>"pax"</code> (POSIX pax interchange), <code>"ustar"</code>, and <code>"gnutar"</code> tar formats via the <code>format</code> argument. Note that the existing <code>"tar"</code> format already writes the pax-restricted variant (<a href="https://github.com/r-lib/archive/issues/4" class="external-link">#4</a>).</p></li>
+<li><p>Errors raised while opening or reading an archive connection (e.g. reading a file that does not exist) are now reported as regular R errors instead of crashing the R session.</p></li>
 <li><p>Filters that libarchive handles via an external helper program (e.g. <code>lzop</code>) no longer error out; they now emit a message and continue.</p></li>
 </ul></div>
     <div class="section level2">

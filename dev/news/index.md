@@ -2,6 +2,12 @@
 
 ## archive (development version)
 
+- [`archive_write()`](https://archive.r-lib.org/dev/reference/archive_write.md)
+  and friends can now write the `"pax"` (POSIX pax interchange),
+  `"ustar"`, and `"gnutar"` tar formats via the `format` argument. Note
+  that the existing `"tar"` format already writes the pax-restricted
+  variant ([\#4](https://github.com/r-lib/archive/issues/4)).
+
 - Errors raised while opening or reading an archive connection
   (e.g. reading a file that does not exist) are now reported as regular
   R errors instead of crashing the R session.

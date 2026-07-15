@@ -9,6 +9,7 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  workflow_dispatch:
 
 name: R-CMD-check
 
@@ -23,20 +24,18 @@ jobs:
       matrix:
         config:
           - {os: macOS-latest,   r: 'release'}
-
-          - {os: windows-2022, r: 'devel', rtools-version: '42'}
-          - {os: windows-latest, r: 'release', rtools-version: '42'}
-          # Use 4.1 for encoding bugs
-          - {os: windows-latest, r: '4.1'}
-
-          # Use older ubuntu to maximise backward compatibility
-          - {os: ubuntu-18.04,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-18.04,   r: 'release'}
-          - {os: ubuntu-18.04,   r: 'oldrel-1'}
-          - {os: ubuntu-18.04,   r: 'oldrel-2'}
-          - {os: ubuntu-18.04,   r: 'oldrel-3'}
-          - {os: ubuntu-18.04,   r: 'oldrel-4'}
-          - {os: ubuntu-18.04,   r: 'release', locale: 'en_US.ISO-8859-15'}
+          - {os: windows-latest, r: 'devel' }
+          - {os: windows-latest, r: 'next' }
+          - {os: windows-latest, r: 'release' }
+          - {os: windows-latest, r: 'oldrel-4'}
+          - {os: ubuntu-latest,  r: 'next'}
+          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,  r: 'release'}
+          - {os: ubuntu-latest,  r: 'oldrel-1'}
+          - {os: ubuntu-latest,  r: 'oldrel-2'}
+          - {os: ubuntu-latest,  r: 'oldrel-3'}
+          - {os: ubuntu-latest,  r: 'oldrel-4'}
+          - {os: ubuntu-latest,  r: 'release', locale: 'en_US.ISO-8859-15'}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
@@ -48,7 +47,7 @@ jobs:
           sudo locale-gen ${{ matrix.config.locale }}
           echo "LC_ALL=${{ matrix.config.locale }}" >> $GITHUB_ENV
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -59,13 +58,19 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-      - name: Install macOS system dependencies
-        if: runner.os == 'macOS'
-        run: brew install libarchive
-
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
           needs: check
+
+      - name: Test installation with brew
+        if: runner.os == 'macOS'
+        env:
+          DISABLE_AUTOBREW: true
+        run: |
+          brew install libarchive zstd
+          R CMD INSTALL .
+
+      - uses: r-hub/actions/setup-r-sysreqs@v1
 
       - uses: r-lib/actions/check-r-package@v2

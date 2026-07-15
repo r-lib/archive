@@ -4,7 +4,7 @@
 \alias{archive}
 \title{Construct a new archive}
 \usage{
-archive(file, options = character())
+archive(file, options = character(), password = NA_character_)
 }
 \arguments{
 \item{file}{File path to the archive.}
@@ -26,9 +26,11 @@ value.
 \item \code{module:option=value}, \code{module:option}, \code{module:!option}
 As above, but the corresponding option and value will be
 provided only to modules whose name matches module.
-See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sektion=3&format=html}{read options} for available read options
-See \href{https://www.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
+See \href{https://man.freebsd.org/cgi/man.cgi?query=archive_read_set_options&sektion=3&format=html}{read options} for available read options
+See \href{https://man.freebsd.org/cgi/man.cgi?query=archive_write_set_options&sektion=3&format=html}{write options} for available write options
 }}
+
+\item{password}{\code{character(1)} The password to process the archive.}
 }
 \value{
 A \link[tibble:tibble-package]{tibble} with details about files in the archive.

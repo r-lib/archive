@@ -1,3 +1,46 @@
+# archive (development version)
+
+* Errors raised while opening or reading an archive connection (e.g. reading a
+  file that does not exist) are now reported as regular R errors instead of
+  crashing the R session.
+
+* Filters that libarchive handles via an external helper program (e.g.
+  `lzop`) no longer error out; they now emit a message and continue.
+
+# archive 1.1.13
+
+* Fix configure for R-4.6 (stop using CXX11)
+
+# archive 1.1.12
+
+* No changes.
+
+# archive 1.1.11
+
+* No changes.
+
+# archive 1.1.10
+
+* No changes.
+
+# archive 1.1.9
+
+* No changes.
+
+# archive 1.1.8
+
+* `archive_extract()` now stop reading the input file once the desired
+  files are extracted, instead of always reading to the end of the file
+  (#85, @allenluce).
+
+# archive 1.1.7
+
+* Fixed an unsafe `printf()` format string (#95).
+
+# archive 1.1.6
+
+* Fixed compilation issues on Big-endian platforms (#84, @barracuda156).
+
 # archive 1.1.5
 
 * archive now does not produce broken archives on Windows (#72, @cielavenir).

@@ -14,6 +14,7 @@
 #include <R_ext/Boolean.h>
 
 #include <clocale>
+#include <utility>
 #include <vector>
 
 #define R_EOF -1
@@ -40,6 +41,7 @@ struct rchive {
   size_t size = 0;
   int filters[FILTER_MAX];
   std::string options;
+  cpp11::strings password;
 };
 
 size_t pop(void* target, size_t max, rchive* r);
@@ -55,7 +57,25 @@ int input_close(struct archive* a, void* client_data);
 int archive_write_add_filter(struct archive* a, int code);
 #endif
 
+template <typename Fun>
+inline decltype(std::declval<Fun>()()) callback_unwind_protect(Fun&& fun) {
+  try {
+    return std::forward<Fun>(fun)();
+  } catch (cpp11::unwind_exception& e) {
+    R_ContinueUnwind(e.token);
+    throw; /* unreachable: R_ContinueUnwind performs a longjmp */
+  } catch (const std::exception& e) {
+    Rf_error("%s", e.what());
+    throw; /* unreachable: Rf_error performs a longjmp */
+  }
+}
+
 #define call(f, ...) call_(__FILE__, __LINE__, #f, f, __VA_ARGS__)
+
+inline void archive_message(const char* msg) {
+  static auto r_message = cpp11::package("base")["message"];
+  r_message(msg);
+}
 
 template <typename F, typename... Args>
 inline int call_(
@@ -71,18 +91,25 @@ inline int call_(
   }
   r->last_response = f(r->ar, args...);
   if (r->last_response < ARCHIVE_OK) {
-    con->isopen = FALSE;
     const char* msg = archive_error_string(r->ar);
-    if (msg) {
-      Rf_errorcall(
-          R_NilValue, "%s:%i %s(): %s", file_name, line, function_name, msg);
+    // ARCHIVE_WARN is a partial success, e.g. external lzop/lrzip/grzip
+    if (r->last_response == ARCHIVE_WARN) {
+      if (msg) {
+        archive_message(msg);
+      }
     } else {
-      Rf_errorcall(
-          R_NilValue,
-          "%s:%i %s(): unknown libarchive error",
-          file_name,
-          line,
-          function_name);
+      con->isopen = FALSE;
+      if (msg) {
+        Rf_errorcall(
+            R_NilValue, "%s:%i %s(): %s", file_name, line, function_name, msg);
+      } else {
+        Rf_errorcall(
+            R_NilValue,
+            "%s:%i %s(): unknown libarchive error",
+            file_name,
+            line,
+            function_name);
+      }
     }
   }
   return r->last_response;
@@ -99,7 +126,13 @@ inline int call_(
   ssize_t response = f(ar, args...);
   if (response < ARCHIVE_OK) {
     const char* msg = archive_error_string(ar);
-    if (msg) {
+    /* ARCHIVE_WARN is a partial success (see the Rconnection overload above):
+     * emit a message and continue instead of aborting. */
+    if (response == ARCHIVE_WARN) {
+      if (msg) {
+        archive_message(msg);
+      }
+    } else if (msg) {
       Rf_errorcall(
           R_NilValue, "%s:%i %s(): %s", file_name, line, function_name, msg);
     } else {

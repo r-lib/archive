@@ -1,5 +1,26 @@
 #include "r_archive.h"
 
+/* Define BSWAP_32 on Big Endian systems */
+#ifdef WORDS_BIGENDIAN
+#if (defined(__sun) && defined(__SVR4))
+#include <sys/byteorder.h>
+#elif (defined(__APPLE__) && defined(__ppc__) || defined(__ppc64__))
+#include <libkern/OSByteOrder.h>
+#define BSWAP_32 OSSwapInt32
+#elif (defined(__OpenBSD__))
+#define BSWAP_32(x) swap32(x)
+#elif (defined(__NetBSD__))
+#include <sys/types.h>
+#include <machine/bswap.h>
+#define BSWAP_32(x) bswap32(x)
+#elif (defined(__GLIBC__))
+#include <byteswap.h>
+#define BSWAP_32(x) bswap_32(x)
+#elif (defined(_AIX))
+#define BSWAP_32(x) __builtin_bswap32(x)
+#endif
+#endif
+
 /* Read archives
  *
  * The custom R connection code was adapted from curl package by Jeroen Ooms
@@ -48,7 +69,7 @@ bool entry_matches(const std::string& str, archive_entry* entry) {
   return str == pathname;
 }
 
-static Rboolean rchive_read_open(Rconnection con) {
+static Rboolean rchive_read_open_impl(Rconnection con) {
   rchive* r = (rchive*)con->private_ptr;
 
   local_utf8_locale ll;
@@ -85,6 +106,10 @@ static Rboolean rchive_read_open(Rconnection con) {
 
   if (!r->options.empty()) {
     call(archive_read_set_options, con, r->options.c_str());
+  }
+
+  if (!cpp11::is_na(r->password[0])) {
+    call(archive_read_add_passphrase, con, std::string(r->password[0]).c_str());
   }
 
   static auto open = cpp11::package("base")["open"];
@@ -130,35 +155,45 @@ static Rboolean rchive_read_open(Rconnection con) {
   return FALSE;
 }
 
-void rchive_read_close(Rconnection con) {
-  call(archive_read_close, con);
+static Rboolean rchive_read_open(Rconnection con) {
+  return callback_unwind_protect([&] { return rchive_read_open_impl(con); });
+}
 
-  con->isopen = FALSE;
-  con->incomplete = FALSE;
+void rchive_read_close(Rconnection con) {
+  callback_unwind_protect([&] {
+    call(archive_read_close, con);
+
+    con->isopen = FALSE;
+    con->incomplete = FALSE;
+  });
 }
 
 void rchive_read_destroy(Rconnection con) {
-  rchive* r = (rchive*)con->private_ptr;
+  callback_unwind_protect([&] {
+    rchive* r = (rchive*)con->private_ptr;
 
-  /* free the handle connection */
-  call(archive_read_free, con);
+    /* free the handle connection */
+    call(archive_read_free, con);
 
-  delete r;
+    delete r;
+  });
 }
 
 /* Support for readBin() */
 static size_t rchive_read(void* target, size_t sz, size_t ni, Rconnection con) {
-  rchive* r = (rchive*)con->private_ptr;
-  size_t size = sz * ni;
+  return callback_unwind_protect([&]() -> size_t {
+    rchive* r = (rchive*)con->private_ptr;
+    size_t size = sz * ni;
 
-  /* append data to the target buffer */
-  size_t total_size = pop(target, size, r);
-  while ((size > total_size) && r->has_more) {
-    push(r);
-    total_size += pop((char*)target + total_size, (size - total_size), r);
-  }
-  con->incomplete = (Rboolean)r->has_more;
-  return total_size;
+    /* append data to the target buffer */
+    size_t total_size = pop(target, size, r);
+    while ((size > total_size) && r->has_more) {
+      push(r);
+      total_size += pop((char*)target + total_size, (size - total_size), r);
+    }
+    con->incomplete = (Rboolean)r->has_more;
+    return total_size;
+  });
 }
 
 /* https://github.com/jeroen/curl/blob/102eb33288c853e0b3d4344fa1725388f606cecc/src/curl.c#L145
@@ -181,6 +216,7 @@ static int rchive_fgetc(Rconnection con) {
     cpp11::integers format,
     cpp11::integers filters,
     cpp11::strings options,
+    cpp11::strings password,
     size_t sz = 16384) {
   Rconnection con;
 
@@ -201,6 +237,7 @@ static int rchive_fgetc(Rconnection con) {
   }
 
   r->format = format.size() == 0 ? -1 : format[0];
+  r->password = password;
 
   /* Initialize filters */
   if (filters.size() > FILTER_MAX) {

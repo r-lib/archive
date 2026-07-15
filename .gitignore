@@ -8,3 +8,8 @@ windows/
 compile_commands.json
 .cache
 /dev-lib
+/inst/lib/libconnection.so
+.deps
+autobrew
+/man/macros/eval2.Rd
+/.dev

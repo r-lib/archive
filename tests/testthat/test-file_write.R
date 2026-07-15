@@ -57,12 +57,23 @@ if (libarchive_version() >= "3.2.0") {
         "uu",
         "xz")
 
+      # Drop external formats without helper program
+      external_programs <- c(lzo = "lzop")
+      for (ext in names(external_programs)) {
+        if (!nzchar(Sys.which(external_programs[[ext]]))) {
+          extensions <- setdiff(extensions, ext)
+        }
+      }
+
       f <- "mtcars.csv"
       test_extension <- function(ext) {
         filename <- paste0(f, ".", ext)
         on.exit(unlink(filename))
 
-        expect_error(write.csv(mtcars, file_write(filename)), NA, info = ext)
+        # Omit message about using external program
+        expect_error(
+          suppressMessages(write.csv(mtcars, file_write(filename))),
+          NA, info = ext)
         expect_equal(read.csv(file_read(filename), row.names = 1), mtcars)
       }
       for (ext in extensions) {

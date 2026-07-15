@@ -25,3 +25,8 @@
 ^CRAN-RELEASE$
 ^MAINTENANCE\.md$
 ^dev-lib$
+^[.]deps$
+^autobrew$
+^man/macros/eval2.Rd$
+^[.]dev$
+^[.]covrignore$

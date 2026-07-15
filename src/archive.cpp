@@ -5,7 +5,7 @@
 using namespace cpp11::literals;
 
 [[cpp11::register]] cpp11::sexp
-archive_(cpp11::sexp connection, cpp11::strings options) {
+archive_(cpp11::sexp connection, cpp11::strings options, cpp11::strings password) {
 
   local_utf8_locale ll;
 
@@ -23,6 +23,10 @@ archive_(cpp11::sexp connection, cpp11::strings options) {
   if (options.size() > 0) {
     call(archive_read_set_options, a, std::string(options[0]).c_str());
   }
+  if (!cpp11::is_na(password[0])) {
+    call(archive_read_add_passphrase, a, std::string(password[0]).c_str());
+  }
+
   std::unique_ptr<input_data> r(new input_data);
   r->buf.resize(16384);
   r->connection = connection;
@@ -88,6 +92,9 @@ archive_(cpp11::sexp connection, cpp11::strings options) {
     "lha"_nm = ARCHIVE_FORMAT_LHA, "mtree"_nm = ARCHIVE_FORMAT_MTREE,
     "shar"_nm = ARCHIVE_FORMAT_SHAR, "rar"_nm = ARCHIVE_FORMAT_RAR,
     "raw"_nm = ARCHIVE_FORMAT_RAW, "tar"_nm = ARCHIVE_FORMAT_TAR,
+    "ustar"_nm = ARCHIVE_FORMAT_TAR_USTAR,
+    "pax"_nm = ARCHIVE_FORMAT_TAR_PAX_INTERCHANGE,
+    "gnutar"_nm = ARCHIVE_FORMAT_TAR_GNUTAR,
     "xar"_nm = ARCHIVE_FORMAT_XAR, "zip"_nm = ARCHIVE_FORMAT_ZIP
 #if ARCHIVE_VERSION_NUMBER >= 3002000
         ,

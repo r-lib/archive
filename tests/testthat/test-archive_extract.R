@@ -47,6 +47,7 @@ describe("archive_extract", {
   it("can take options", {
     skip_on_os("windows")
     skip_on_os("solaris")
+    skip_if_no_encoding("CP866")
     skip_if(l10n_info()$`UTF-8` == FALSE)
 
     out_dir <- tempfile()
@@ -78,6 +79,22 @@ describe("archive_extract", {
     archive_extract(ar, out_dir, strip_components = 1)
 
     expect_true(all(c("bar/iris.csv", "mtcars.csv") %in% list.files(out_dir, recursive = TRUE)))
+  })
+
+  it("can handle password", {
+    skip_on_os("windows") # see https://github.com/r-lib/archive/issues/98
+    in_dir <- tempfile()
+    out_dir <- tempfile()
+    on.exit(unlink(c(in_dir, out_dir), recursive = TRUE))
+    dir.create(in_dir, recursive = TRUE)
+    write.csv(iris, file.path(in_dir, "iris.csv"))
+
+    ar <- tempfile(fileext = ".zip")
+    archive_write_dir(ar, in_dir, options = "encryption=1", password = "foobar")
+
+    expect_error(archive_extract(ar, out_dir), "Passphrase required for this entry")
+    archive_extract(ar, out_dir, password = "foobar")
+    expect_true(all(c("iris.csv") %in% list.files(out_dir, recursive = TRUE)))
   })
 })
 

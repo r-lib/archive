@@ -25,6 +25,21 @@ describe("archive", {
     a <- archive(test_path("mtcars.tar.gz"))
     expect_equal(a$path, "mtcars.csv")
   })
+  it("seeks past 2GB into an archive (#81)", {
+    # Regression test: the seek offset must reach libarchive as a 64-bit value.
+    # Uses a sparse file so nothing near 2GB is actually written to disk.
+    skip_on_cran()
+    skip_on_os("windows") # seek()+write() is not guaranteed to be sparse here
+
+    zip <- tempfile(fileext = ".zip")
+    on.exit(unlink(zip))
+    write_sparse_zip(zip)
+
+    a <- archive(zip)
+    expect_equal(NROW(a), 1L)
+    expect_equal(a[["path"]], "a")
+    expect_equal(a[["size"]], 5)
+  })
 })
 
 describe("libarchive_zlib_version", {

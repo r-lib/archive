@@ -42,9 +42,11 @@ input_seek(struct archive*, void* client_data, int64_t offset, int whence) {
   struct input_data* data = static_cast<input_data*>(client_data);
   static auto seek = cpp11::package("base")["seek"];
 
+  /* R has no native int64; base::seek()'s `where` is read as a double, so pass
+   * a double to avoid truncation to 32-bit int for offsets >= 2 GB (#81). */
   seek(
       data->connection,
-      offset,
+      (double)offset,
       whence == SEEK_END ? "end" : whence == SEEK_CUR ? "current" : "start");
   /* need to call seek again to get the current position */
   int64_t value = cpp11::as_cpp<int64_t>(seek(data->connection));

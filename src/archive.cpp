@@ -92,6 +92,9 @@ archive_(cpp11::sexp connection, cpp11::strings options, cpp11::strings password
     "lha"_nm = ARCHIVE_FORMAT_LHA, "mtree"_nm = ARCHIVE_FORMAT_MTREE,
     "shar"_nm = ARCHIVE_FORMAT_SHAR, "rar"_nm = ARCHIVE_FORMAT_RAR,
     "raw"_nm = ARCHIVE_FORMAT_RAW, "tar"_nm = ARCHIVE_FORMAT_TAR,
+    "ustar"_nm = ARCHIVE_FORMAT_TAR_USTAR,
+    "pax"_nm = ARCHIVE_FORMAT_TAR_PAX_INTERCHANGE,
+    "gnutar"_nm = ARCHIVE_FORMAT_TAR_GNUTAR,
     "xar"_nm = ARCHIVE_FORMAT_XAR, "zip"_nm = ARCHIVE_FORMAT_ZIP
 #if ARCHIVE_VERSION_NUMBER >= 3002000
         ,

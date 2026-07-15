@@ -58,6 +58,35 @@ describe("archive_write", {
     }
   })
 
+  it("supports explicit tar-dialect formats (pax, ustar, gnutar)", {
+    for (fmt in c("pax", "ustar", "gnutar")) {
+      f <- tempfile(fileext = ".tar")
+      on.exit(unlink(f), add = TRUE)
+
+      expect_error(
+        write.csv(mtcars, archive_write(f, "mtcars.csv", format = fmt)),
+        NA, info = fmt)
+      expect_equal(
+        read.csv(archive_read(f, "mtcars.csv"), row.names = 1), mtcars,
+        info = fmt)
+    }
+  })
+
+  it("writes genuine pax that stores names ustar cannot", {
+    # A single path component longer than 100 bytes cannot be stored in a
+    # ustar header, so this round-trips only if a real pax extended header is
+    # written.
+    long_name <- paste0(strrep("a", 150), ".csv")
+
+    f <- tempfile(fileext = ".tar")
+    on.exit(unlink(f))
+
+    write.csv(mtcars, archive_write(f, long_name, format = "pax"))
+
+    expect_true(long_name %in% archive(f)$path)
+    expect_equal(read.csv(archive_read(f, long_name), row.names = 1), mtcars)
+  })
+
   it("can take options", {
     f <- tempfile(fileext = ".tar.gz")
     f2 <- tempfile(fileext = ".tar.gz")

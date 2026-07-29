@@ -30,3 +30,4 @@
 ^man/macros/eval2.Rd$
 ^[.]dev$
 ^[.]covrignore$
+^[.]claude$

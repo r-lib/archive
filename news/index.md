@@ -1,5 +1,22 @@
 # Changelog
 
+## archive 1.1.14
+
+CRAN release: 2026-07-30
+
+- [`archive_write()`](https://archive.r-lib.org/reference/archive_write.md)
+  and friends can now write the `"pax"` (POSIX pax interchange),
+  `"ustar"`, and `"gnutar"` tar formats via the `format` argument. Note
+  that the existing `"tar"` format already writes the pax-restricted
+  variant ([\#4](https://github.com/r-lib/archive/issues/4)).
+
+- Errors raised while opening or reading an archive connection
+  (e.g. reading a file that does not exist) are now reported as regular
+  R errors instead of crashing the R session.
+
+- Filters that libarchive handles via an external helper program (e.g.
+  `lzop`) no longer error out; they now emit a message and continue.
+
 ## archive 1.1.13
 
 CRAN release: 2026-04-12

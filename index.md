@@ -13,6 +13,7 @@ as well as efficiently reading and writing archives directly to disk.
 You can install archive from CRAN with:
 
 ``` r
+
 # install.packages("archive")
 ```
 
@@ -30,6 +31,7 @@ connection. Most base R file system functions use connections, as well
 as some packages like [readr](https://readr.tidyverse.org/).
 
 ``` r
+
 library(readr) # read_csv(), write_csv(), cols()
 
 # Write a single dataset to zip
@@ -72,6 +74,7 @@ file.size(c("mtcars.zip", "mtcars.tar.gz"))
 is used to create a new archive from multiple files on disk.
 
 ``` r
+
 # Write a few files to the temp directory
 write_csv(iris, "iris.csv")
 write_csv(mtcars, "mtcars.csv")
@@ -133,6 +136,7 @@ encodings.
 reads a compressed file, automatically detecting the compression used.
 
 ``` r
+
 # Write bzip2, uuencoded data
 write_csv(mtcars, file_write("mtcars.bz2", filter = c("uuencode", "bzip2")))
 

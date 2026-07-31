@@ -17,16 +17,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/r-lib/archive/blob/v1.1.13/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/r-lib/archive/blob/main/DESCRIPTION)
 
 Hester J, Csárdi G (2026). *archive: Multi-Format Archive and
-Compression Support*. R package version 1.1.13,
+Compression Support*. R package version 1.1.14,
 <https://archive.r-lib.org/>.
 
     @Manual{,
       title = {archive: Multi-Format Archive and Compression Support},
       author = {Jim Hester and Gábor Csárdi},
       year = {2026},
-      note = {R package version 1.1.13},
+      note = {R package version 1.1.14},
       url = {https://archive.r-lib.org/},
     }

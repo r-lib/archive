@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">archive</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.13.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.14.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="archive-development-version">archive (development version)<a class="anchor" aria-label="anchor" href="#archive-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.14" id="archive-1114">archive 1.1.14<a class="anchor" aria-label="anchor" href="#archive-1114"></a></h2><p class="text-muted">CRAN release: 2026-07-30</p>
 <ul><li><p><code><a href="../reference/archive_write.html">archive_write()</a></code> and friends can now write the <code>"pax"</code> (POSIX pax interchange), <code>"ustar"</code>, and <code>"gnutar"</code> tar formats via the <code>format</code> argument. Note that the existing <code>"tar"</code> format already writes the pax-restricted variant (<a href="https://github.com/r-lib/archive/issues/4" class="external-link">#4</a>).</p></li>
 <li><p>Errors raised while opening or reading an archive connection (e.g. reading a file that does not exist) are now reported as regular R errors instead of crashing the R session.</p></li>
 <li><p>Filters that libarchive handles via an external helper program (e.g. <code>lzop</code>) no longer error out; they now emit a message and continue.</p></li>

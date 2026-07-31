@@ -2,6 +2,10 @@
 
 ## archive (development version)
 
+## archive 1.1.14
+
+CRAN release: 2026-07-30
+
 - [`archive_write()`](https://archive.r-lib.org/dev/reference/archive_write.md)
   and friends can now write the `"pax"` (POSIX pax interchange),
   `"ustar"`, and `"gnutar"` tar formats via the `format` argument. Note

@@ -39,6 +39,47 @@ write_sparse_zip <- function(path, lh_off = 2200000000, content = "hello") {
   invisible(path)
 }
 
+# Write a valid ustar archive with one entry per element of `sizes`. The
+# entry data are sparse holes, so the file is only a few KB on disk. Used to
+# check that entry sizes of 2 GiB or more are not truncated (#122).
+write_sparse_tar <- function(path, sizes) {
+  # as.octmode() and sprintf("%o") only take 32-bit integers, so format
+  # the high and low 8 octal digits separately
+  octal <- function(x, width) {
+    hi <- sprintf("%o", as.integer(x %/% 8^8))
+    lo <- sprintf("%08o", as.integer(x %% 8^8))
+    out <- sub("^0+(?=.)", "", paste0(hi, lo), perl = TRUE)
+    out <- paste0(strrep("0", width - 1 - nchar(out)), out)
+    c(charToRaw(out), as.raw(0))
+  }
+  field <- function(x, width) {
+    x <- charToRaw(x)
+    c(x, raw(width - length(x)))
+  }
+  header <- function(name, size) {
+    hdr <- c(
+      field(name, 100), octal(420, 8), octal(0, 8), octal(0, 8),
+      octal(size, 12), octal(0, 12), charToRaw(strrep(" ", 8)),
+      charToRaw("0"), raw(100), charToRaw("ustar"), as.raw(0),
+      charToRaw("00"), raw(247)
+    )
+    hdr[149:156] <- c(octal(sum(as.integer(hdr)), 7), charToRaw(" "))
+    hdr
+  }
+
+  con <- file(path, "wb")
+  on.exit(close(con))
+  pos <- 0
+  for (i in seq_along(sizes)) {
+    writeBin(header(paste0("f", i), sizes[i]), con)
+    # data is padded to a multiple of 512 bytes, leave it as a sparse hole
+    pos <- pos + 512 + ceiling(sizes[i] / 512) * 512
+    seek(con, where = pos, rw = "write")
+  }
+  writeBin(raw(1024), con)
+  invisible(path)
+}
+
 skip_if_no_encoding <- function(enc) {
   tryCatch({
     iconv("xxx", from = env, to = env)

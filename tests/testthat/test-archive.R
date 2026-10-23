@@ -40,6 +40,20 @@ describe("archive", {
     expect_equal(a[["path"]], "a")
     expect_equal(a[["size"]], 5)
   })
+  it("reports entry sizes of 2 GiB or more (#122)", {
+    skip_on_cran()
+    skip_on_os("windows") # seek()+write() is not guaranteed to be sparse here
+
+    tar <- tempfile(fileext = ".tar")
+    on.exit(unlink(tar))
+    sizes <- c(2.5 * 2^30, 4.5 * 2^30, 10)
+    write_sparse_tar(tar, sizes)
+
+    a <- archive(tar)
+    expect_equal(a[["path"]], c("f1", "f2", "f3"))
+    expect_type(a[["size"]], "double")
+    expect_equal(a[["size"]], sizes)
+  })
 })
 
 describe("libarchive_zlib_version", {

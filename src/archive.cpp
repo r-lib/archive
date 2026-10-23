@@ -10,7 +10,8 @@ archive_(cpp11::sexp connection, cpp11::strings options, cpp11::strings password
   local_utf8_locale ll;
 
   std::vector<std::string> paths;
-  std::vector<__LA_INT64_T> sizes;
+  // double, not integer, so sizes of 2 GiB or more are not truncated
+  std::vector<double> sizes;
   std::vector<time_t> dates;
 
   struct archive* a;
@@ -42,7 +43,7 @@ archive_(cpp11::sexp connection, cpp11::strings options, cpp11::strings password
 
   while (archive_read_next_header(a, &entry) == ARCHIVE_OK) {
     paths.push_back(archive_entry_pathname(entry));
-    sizes.push_back(archive_entry_size(entry));
+    sizes.push_back(static_cast<double>(archive_entry_size(entry)));
     dates.push_back(archive_entry_mtime(entry));
     call(archive_read_data_skip, a);
   }

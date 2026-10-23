@@ -1,5 +1,8 @@
 # archive (development version)
 
+* `archive()` now returns the `size` column as a double, so entries of
+  2 GiB or more no longer get a negative or wrapped size (#122).
+
 # archive 1.1.14
 
 * `archive_write()` and friends can now write the `"pax"` (POSIX pax

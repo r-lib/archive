@@ -2,6 +2,11 @@
 
 ## archive (development version)
 
+- [`archive()`](https://archive.r-lib.org/dev/reference/archive.md) now
+  returns the `size` column as a double, so entries of 2 GiB or more no
+  longer get a negative or wrapped size
+  ([\#122](https://github.com/r-lib/archive/issues/122)).
+
 ## archive 1.1.14
 
 CRAN release: 2026-07-30

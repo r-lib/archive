@@ -105,8 +105,8 @@ write.csv(mtcars, archive_write(f1, "mtcars.csv"))
 archive(f1)
 #> # A tibble: 1 × 3
 #>   path        size date               
-#>   <chr>      <int> <dttm>             
-#> 1 mtcars.csv  1783 2026-07-31 21:01:07
+#>   <chr>      <dbl> <dttm>             
+#> 1 mtcars.csv  1783 2026-10-23 07:55:30
 unlink(f1)
 
 # They can also be specified explicitly
@@ -115,8 +115,8 @@ write.csv(mtcars, archive_write(f2, "mtcars.csv", format = "tar", filter = "bzip
 archive(f2)
 #> # A tibble: 1 × 3
 #>   path        size date               
-#>   <chr>      <int> <dttm>             
-#> 1 mtcars.csv  1783 2026-07-31 21:01:08
+#>   <chr>      <dbl> <dttm>             
+#> 1 mtcars.csv  1783 2026-10-23 07:55:30
 unlink(f2)
 
 # You can also pass additional options to control things like compression level
@@ -125,7 +125,7 @@ write.csv(mtcars, archive_write(f3, "mtcars.csv", options = "compression-level=2
 archive(f3)
 #> # A tibble: 1 × 3
 #>   path        size date               
-#>   <chr>      <int> <dttm>             
-#> 1 mtcars.csv  1783 2026-07-31 21:01:08
+#>   <chr>      <dbl> <dttm>             
+#> 1 mtcars.csv  1783 2026-10-23 07:55:30
 unlink(f3)
 ```

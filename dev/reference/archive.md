@@ -71,7 +71,7 @@ a <- archive(system.file(package = "archive", "extdata", "data.zip"))
 a
 #> # A tibble: 3 × 3
 #>   path            size date               
-#>   <chr>          <int> <dttm>             
+#>   <chr>          <dbl> <dttm>             
 #> 1 iris.csv         192 2017-04-28 19:55:29
 #> 2 mtcars.csv       274 2017-04-28 19:55:29
 #> 3 airquality.csv   142 2017-04-28 19:55:29
